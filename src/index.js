@@ -17,6 +17,50 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "designer/:designerID",
+        element: <Designer />,
+        errorElement: <ErrorPage />,
+        loader: rootLoader,
+        action: rootAction,
+        children: [
+          {
+            path: "projects/:projectId",
+            element: <Project />,
+            errorElement: <ErrorPage />,
+          },
+        ]
+      },
+      {
+        path: "supporter/:supporterID",
+        element: <Supporter />,
+        errorElement: <ErrorPage />,
+        loader: rootLoader,
+        action: rootAction,
+        children: [
+          {
+            path: "projects/:projectId",
+            element: <Project />,
+            errorElement: <ErrorPage />,
+          },
+        ]
+      },
+      {
+        path: "admin",
+        element: <Admin />,
+        errorElement: <ErrorPage />,
+        loader: rootLoader,
+        action: rootAction,
+        children: [
+          {
+            path: "projects/:projectId",
+            element: <Project />,
+            errorElement: <ErrorPage />,
+          },
+        ]
+      },
+    ]
   },
   {
     path: "createDesigner",
@@ -31,48 +75,6 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     loader: rootLoader,
     action: rootAction,
-  },
-  {
-    path: "designer/:designerID",
-    element: <Designer />,
-    errorElement: <ErrorPage />,
-    loader: rootLoader,
-    action: rootAction,
-    children: [
-      {
-        path: "projects/:projectId",
-        element: <Project />,
-        errorElement: <ErrorPage />,
-      },
-    ]
-  },
-  {
-    path: "supporter/:supporterID",
-    element: <Supporter />,
-    errorElement: <ErrorPage />,
-    loader: rootLoader,
-    action: rootAction,
-    children: [
-      {
-        path: "projects/:projectId",
-        element: <Project />,
-        errorElement: <ErrorPage />,
-      },
-    ]
-  },
-  {
-    path: "admin",
-    element: <Admin />,
-    errorElement: <ErrorPage />,
-    loader: rootLoader,
-    action: rootAction,
-    children: [
-      {
-        path: "projects/:projectId",
-        element: <Project />,
-        errorElement: <ErrorPage />,
-      },
-    ]
   },
 ]);
 

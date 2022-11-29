@@ -1,5 +1,5 @@
 import { Outlet, Link, useLoaderData, Form, redirect } from "react-router-dom";
-import {getProjects, createProject} from "./controller/Controller";
+import {listProjects, createProject} from "./controller/Controller";
 import Model from "./model/Model";
 import React from "react";
 import { redrawCanvas } from "./boundary/Boundary.js";
@@ -9,7 +9,7 @@ export async function action() {
   }
 
 export async function loader() {
-  const projects = await getProjects();
+  const projects = await listProjects();
   return { projects };
 }
 

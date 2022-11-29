@@ -10,6 +10,9 @@ export default class Model {
 
         }
         else if (type === "Supporter") {
+
+        }
+        else if (type === "Admin") {
             
         }
     }

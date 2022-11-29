@@ -10,9 +10,10 @@ function Root() {
   const [inputUsername, setInputUsername] = useState("");
   const [inputPassword, setInputPassword] = useState("");
 
-  const designerLoginHandler = () => {
+  const designerLoginHandler = async () => {
     console.log(inputUsername);
     console.log(inputPassword);
+    console.log("ANYBODY THERE?");
 
     let request = {
       "accountType": "Designers",
@@ -22,22 +23,22 @@ function Root() {
     let value = JSON.stringify(request)
 
     let data = { "body" : value }
+    console.log(data);
 
-    instance.post("/login", data)
-      .then(function (response) {
-        redirect(`/designer/id=${inputUsername}`);
-        // if (response.data.statusCode === 200) { 
-        //   redirect(`/designer/${inputUsername}`);
-        // }
-      })
-      .catch(function(error) {
-        document.getElementById("errorMessage").value = error;
-      })
+    const response = await instance.post("/login", data)  
+    if (response.data.statusCode === 200) {
+      console.log("redirect")
+      redirect(`/supporter/id=${inputUsername}`);
+    }
+    else {
+      alert(response.data.error);
+    }
   }
 
-  const supporterLoginHandler = () => {
+  const supporterLoginHandler = async () => {
     console.log(inputUsername);
     console.log(inputPassword);
+    console.log("ANYBODY THERE?");
 
     let request = {
       "accountType": "Supporters",
@@ -47,21 +48,22 @@ function Root() {
     let value = JSON.stringify(request)
 
     let data = { "body" : value }
+    console.log(data);
 
-    instance.post("/login", data)
-      .then(function (response) {
-        if (response.data.statusCode === 200) { 
-          redirect(`/supporter/id=${inputUsername}`);
-        }
-      })
-      .catch(function(error) {
-        document.getElementById("errorMessage").value = error;
-      })
+    const response = await instance.post("/login", data)  
+    if (response.data.statusCode === 200) {
+      console.log("redirect")
+      redirect(`/supporter/id=${inputUsername}`);
+    }
+    else {
+      alert(response.data.error);
+    }
   }
 
-  const adminLoginHandler = () => {
+  const adminLoginHandler = async () => {
     console.log(inputUsername);
     console.log(inputPassword);
+    console.log("ANYBODY THERE?");
 
     let request = {
       "accountType": "Admins",
@@ -71,16 +73,16 @@ function Root() {
     let value = JSON.stringify(request)
 
     let data = { "body" : value }
+    console.log(data);
 
-    instance.post("/login", data)
-      .then(function (response) {
-        if (response.data.statusCode === 200) { 
-          redirect(`/admin`);
-        }
-      })
-      .catch(function(error) {
-        document.getElementById("errorMessage").value = error;
-      })
+    const response = await instance.post("/login", data)  
+    if (response.data.statusCode === 200) {
+      console.log("redirect")
+      redirect(`/supporter/id=${inputUsername}`);
+    }
+    else {
+      alert(response.data.error);
+    }
   }
 
   return (
@@ -106,7 +108,6 @@ function Root() {
               Create Supporter Account
             </p>
           </Link>
-          <h3 id="errorMessage"></h3>
       </div>
     </>
   );
