@@ -5,18 +5,21 @@ import "./index.css";
 import App from "./App";
 import ErrorPage from "./ErrorPage";
 import reportWebVitals from "./reportWebVitals";
-import Root from "./routes/Root";
-import Designer from "./routes/Designer";
+import Root, { loader as rootLoader } from "./routes/root";
+import Project from "./routes/Project";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
-  },
-  {
-    path: "designer/:designerId",
-    element: <Designer />,
+    loader: rootLoader,
+    children: [
+      {
+        path: "projects/:projectId",
+        element: <Project />,
+      },
+    ],
   },
 ]);
 

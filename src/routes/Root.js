@@ -1,12 +1,17 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useLoaderData } from "react-router-dom";
+import { getProjects } from "../projects";
 
-export async function loader() {}
+export async function loader() {
+  const projects = await getProjects();
+  return { projects };
+}
 
 export default function Root() {
+  const { projects } = useLoaderData();
   return (
     <>
       <div id="sidebar">
-        <h1>React Router Contacts</h1>
+        <h1>React Router Projects</h1>
         <div>
           <form id="search-form" role="search">
             <input
@@ -26,15 +31,17 @@ export default function Root() {
         <nav>
           <ul>
             <li>
-              <a href={`designer/1`}>Your Name</a>
+              <Link to={`project/1`}>Your Name</Link>
             </li>
             <li>
-              <a href={`designer/2`}>Your Friend</a>
+              <Link to={`project/2`}>Your Friend</Link>
             </li>
           </ul>
         </nav>
       </div>
-      <div id="detail"></div>
+      <div id="detail">
+        <Outlet />
+      </div>
     </>
   );
 }
