@@ -2,10 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 import "./index.css";
-import Designer from "./Designer";
+import Designer from "./routes/Designer";
 import ErrorPage from "./ErrorPage";
 import reportWebVitals from "./reportWebVitals";
-import Root, { loader as rootLoader } from "./routes/Root";
+import Root, { loader as rootLoader, action as rootAction} from "./routes/Designer";
 import Project from "./routes/Project";
 
 const router = createBrowserRouter([
@@ -14,6 +14,7 @@ const router = createBrowserRouter([
     element: <Root />,
     errorElement: <ErrorPage />,
     loader: rootLoader,
+    action: rootAction,
     children: [
       { 
         path: "designer/:designerID",

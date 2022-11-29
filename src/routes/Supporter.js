@@ -1,8 +1,7 @@
-import { Outlet, Link, useLoaderData } from "react-router-dom";
+import { Outlet, Link, useLoaderData, Form, redirect } from "react-router-dom";
 
 export async function getProjects() {
   const projects = [{
-    projectID: "fucker",
     projectName: "Test Project",
     projectDesigner: "Fuck Michael",
     avatar: "https://placekitten.com/g/200/200",
@@ -10,6 +9,14 @@ export async function getProjects() {
   }]
   return projects;
 }
+
+export async function createProject() { 
+
+}
+
+export async function action() {
+    await createProject();
+  }
 
 export async function loader() {
   const projects = await getProjects();
@@ -33,18 +40,15 @@ export default function Root() {
             <div id="search-spinner" aria-hidden hidden={true} />
             <div className="sr-only" aria-live="polite"></div>
           </form>
-          <form method="post">
-            <button type="submit">New</button>
-          </form>
         </div>
         <nav>
         {projects.length ? (
             <ul>
               {projects.map((project) => (
-                <li key={project.projectID}>
-                  <Link to={`projects/${project.projectID}`}>
+                <li key={project.id}>
+                  <Link to={`projects/${project.id}`}>
                       <p>
-                        {project.projectName}
+                        {project.projectName} {project.projectDesigner}
                       </p>
                   </Link>
                 </li>
@@ -58,6 +62,9 @@ export default function Root() {
         </nav>
       </div>
       <div id="detail">
+        <Form method="post">
+            <button type="submit">New Project</button>
+        </Form>
         <Outlet />
       </div>
     </>

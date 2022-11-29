@@ -1,14 +1,33 @@
-import { Outlet, Link, useLoaderData } from "react-router-dom";
+import { Outlet, Link, useLoaderData, Form, redirect } from "react-router-dom";
 
 export async function getProjects() {
-  const projects = [{
+  const projects = [
+    {
+    projectID: "fucker",
     projectName: "Test Project",
     projectDesigner: "Fuck Michael",
-    avatar: "https://placekitten.com/g/200/200",
     reward: "Reward spot",
-  }]
+    isLaunched: true
+    },
+    {
+        projectID: "fucker2",
+        projectName: "Test Project 2.0",
+        projectDesigner: "Fuck Michael Again",
+        reward: "Reward spot",
+        isLaunched: false
+    },
+
+]
   return projects;
 }
+
+export async function createProject() { 
+
+}
+
+export async function action() {
+    await createProject();
+  }
 
 export async function loader() {
   const projects = await getProjects();
@@ -20,45 +39,47 @@ export default function Root() {
   return (
     <>
       <div id="sidebar">
-        <div>
-          <form id="search-form" role="search">
-            <input
-              id="q"
-              aria-label="Search contacts"
-              placeholder="Search"
-              type="search"
-              name="q"
-            />
-            <div id="search-spinner" aria-hidden hidden={true} />
-            <div className="sr-only" aria-live="polite"></div>
-          </form>
-          <form method="post">
-            <button type="submit">New</button>
-          </form>
-        </div>
-        <nav>
         {projects.length ? (
             <ul>
-              {projects.map((project) => (
-                <li key={project.id}>
-                  <Link to={`projects/${project.id}`}>
-                      <p>
-                        {project.projectName} {project.projectDesigner}
-                      </p>
-                    {project.reward}
-                  </Link>
-                </li>
-              ))}
+            {projects.map((project) => (
+                <div>
+                    {project.isLaunched ? (
+                        <>
+                            <h2>List of Active Projects</h2>
+                            <li key={project.projectID}>
+                            <Link to={`projects/${project.projectID}`}>
+                                <p>
+                                    {project.projectName}
+                                </p>
+                            </Link>
+                            </li>
+                        </>
+                    ) : ( 
+                        <>
+                            <h2>List of Inactive Projects</h2>
+                            <li key={project.projectID}>
+                            <Link to={`projects/${project.projectID}`}>
+                                <p>
+                                    {project.projectName}
+                                </p>
+                            </Link>
+                            </li>
+                        </>
+                    )}
+                </div>
+            ))}
             </ul>
-          ) : (
+        ) : (
             <p>
               <i>No projects</i>
             </p>
           )}
-        </nav>
       </div>
+      <Outlet />
       <div id="detail">
-        <Outlet />
+        <Form method="post">
+            <button type="submit">New Project</button>
+        </Form>
       </div>
     </>
   );
