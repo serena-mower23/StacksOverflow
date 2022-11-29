@@ -2,10 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 import "./index.css";
-import App from "./App";
+import Designer from "./Designer";
 import ErrorPage from "./ErrorPage";
 import reportWebVitals from "./reportWebVitals";
-import Root, { loader as rootLoader } from "./routes/root";
+import Root, { loader as rootLoader } from "./routes/Root";
 import Project from "./routes/Project";
 
 const router = createBrowserRouter([
@@ -15,6 +15,10 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     loader: rootLoader,
     children: [
+      { 
+        path: "designer/:designerID",
+        element: <Designer />
+      },
       {
         path: "projects/:projectId",
         element: <Project />,
