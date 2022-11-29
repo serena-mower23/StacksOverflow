@@ -1,29 +1,5 @@
 import { Outlet, Link, useLoaderData, Form, redirect } from "react-router-dom";
-
-export async function getProjects() {
-  const projects = [
-    {
-    projectID: "fucker",
-    projectName: "Test Project",
-    projectDesigner: "Fuck Michael",
-    reward: "Reward spot",
-    isLaunched: true
-    },
-    {
-        projectID: "fucker2",
-        projectName: "Test Project 2.0",
-        projectDesigner: "Fuck Michael Again",
-        reward: "Reward spot",
-        isLaunched: false
-    },
-
-]
-  return projects;
-}
-
-export async function createProject() { 
-
-}
+import {getProjects, createProject} from "./controller/Controller";
 
 export async function action() {
     await createProject();
