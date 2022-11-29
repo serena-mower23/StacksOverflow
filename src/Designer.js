@@ -1,5 +1,9 @@
-import { Outlet, Link, useLoaderData, Form, redirect } from "react-router-dom";
+import { Outlet, Link, useLoaderData, Form } from "react-router-dom";
 import {getProjects, createProject} from "./controller/Controller";
+import Model from "./model/Model";
+import React from "react";
+import { redrawCanvas } from "./boundary/Boundary.js";
+import 'url-search-params-polyfill';
 
 export async function action() {
     await createProject();
@@ -10,7 +14,21 @@ export async function loader() {
   return { projects };
 }
 
+
 export default function Designer() {
+    const params = new URLSearchParams(window.location.search);
+
+    const designerID = params.get("id");
+    
+    const [model, setModel] = React.useState(new Model("Designer", designerID));
+    const [redraw, forceRedraw] = React.useState(0);
+
+    const appRef = React.useRef(null); // Later need to be able to refer to App
+
+    React.useEffect(() => {
+        redrawCanvas(model, appRef.current);
+    }, [model, redraw]);
+      
   const { projects } = useLoaderData();
   return (
     <>

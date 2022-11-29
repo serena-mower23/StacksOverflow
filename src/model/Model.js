@@ -1,53 +1,16 @@
-import { Form } from "react-router-dom";
+export default class Model {
+    constructor(type, id) {
+        this.initialize(type, id)
+        this.type = type
+        this.id = id
+    }
+    
+    initialize(type, id) {
+        if (type === "Designer") {
 
-export function Project() {
-  const project = {
-    projectID: "fucker",
-    projectName: "Test Project",
-    projectDesigner: "Fuck Michael",
-    reward: "Reward spot",
-    isLaunched: true
-};
-
-return (
-  <div id="project">
-    <div>
-      <img
-        key={project.avatar}
-        src={project.avatar || null}
-      />
-    </div>
-
-    <div>
-      <h1>
-        {project.first || project.last ? (
-          <>
-            {project.first} {project.last}
-          </>
-        ) : (
-          <i>No Name</i>
-        )}{" "}
-      </h1>
-
-      {project.twitter && (
-        <p>
-          <a
-            target="_blank"
-            href={`https://twitter.com/${project.twitter}`}
-          >
-            {project.twitter}
-          </a>
-        </p>
-      )}
-
-      {project.notes && <p>{project.notes}</p>}
-
-      <div>
-        <Form action="edit">
-          <button type="submit">Edit</button>
-        </Form>
-      </div>
-    </div>
-  </div>
-);
+        }
+        else if (type === "Supporter") {
+            
+        }
+    }
 }

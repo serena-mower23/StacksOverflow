@@ -1,5 +1,8 @@
 import { Outlet, Link, useLoaderData, Form, redirect } from "react-router-dom";
 import {getProjects, createProject} from "./controller/Controller";
+import Model from "./model/Model";
+import React from "react";
+import { redrawCanvas } from "./boundary/Boundary.js";
 
 export async function action() {
     await createProject();
@@ -11,11 +14,21 @@ export async function loader() {
 }
 
 export default function Root() {
+
+  const [model, setModel] = React.useState(new Model("Admin"));
+  const [redraw, forceRedraw] = React.useState(0);
+
+  const appRef = React.useRef(null); // Later need to be able to refer to App
+
+  React.useEffect(() => {
+      redrawCanvas(model, appRef.current);
+  }, [model, redraw]);
   const { projects } = useLoaderData();
   return (
     <>
-      <h2>List of Projects</h2>
-        <nav>
+        <div id="sidebar">
+        <h2>List of Projects</h2>
+        <p>Clikc to View Project</p>
         {projects.length ? (
             <ul>
               {projects.map((project) => (
@@ -33,29 +46,10 @@ export default function Root() {
               <i>No projects</i>
             </p>
           )}
-        </nav>
+        </div>
       <div id="detail">
         <Outlet />
       </div>
     </>
   );
-}
-
-export function CreateSupporter() {
-    return (
-        <>
-        <h2>$tacksOverflow</h2>
-        <Form method="post">
-            <p>Email:</p>
-            <input type="text"></input>
-            <p>Password:</p>
-            <input type="text"></input>
-            <p>Name:</p>
-            <input type="text"></input>
-            <div>
-            <button type="submit">Create Supporter</button>
-            </div>
-        </Form>
-        </>
-    )
 }

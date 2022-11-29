@@ -10,7 +10,7 @@ import Admin from "./Admin";
 import {CreateDesigner, loader as rootLoader, action as rootAction} from "./Designer";
 import { CreateSupporter } from "./Supporter";
 import Root from "./Root";
-import {Project} from "./model/Model";
+import Project from "./Project";
 
 const router = createBrowserRouter([
   {
