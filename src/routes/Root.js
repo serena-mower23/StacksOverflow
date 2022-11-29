@@ -20,8 +20,26 @@ export default function Root() {
             <div className="sr-only" aria-live="polite"></div>
           </form>
           <form method="post">
-            <button type="submit">New</button>
+            <button type="submit">Log In</button>
           </form>
+          <body>
+            <form >
+              <p>"Enter your email"</p>
+              <script>
+                const email = document.createElement("input");
+                email.setAttribute("type", "text");
+                document.body.appendChild(email);
+              </script>
+
+              <p>"Enter your password"</p>
+              <script>
+                const password = document.createElement("input");
+                password.setAttribute("type", "text");
+                document.body.appendChild(password);
+              </script>
+              <button type="submit">Input</button>
+            </form>
+          </body>
         </div>
         <nav>
           <ul>
@@ -30,6 +48,14 @@ export default function Root() {
             </li>
             <li>
               <a href={`designer/2`}>Your Friend</a>
+            </li>
+          </ul>
+          <ul>
+            <li>
+              <a href={`supporter/1`}>Your Mom</a>
+            </li>
+            <li>
+              <a href={`supporter/2`}>Your Dad</a>
             </li>
           </ul>
         </nav>
