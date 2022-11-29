@@ -34,7 +34,7 @@ export async function loader() {
   return { projects };
 }
 
-export default function Root() {
+export default function Designer() {
   const { projects } = useLoaderData();
   return (
     <>
@@ -83,4 +83,23 @@ export default function Root() {
       </div>
     </>
   );
+}
+
+export function CreateDesigner() {
+    return (
+        <>
+        <h2>$tacksOverflow</h2>
+        <Form method="post">
+            <p>Email:</p>
+            <input type="text"></input>
+            <p>Password:</p>
+            <input type="text"></input>
+            <p>Name:</p>
+            <input type="text"></input>
+            <div>
+            <button type="submit">Create Designer</button>
+            </div>
+        </Form>
+        </>
+    )
 }

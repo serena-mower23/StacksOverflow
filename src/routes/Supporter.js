@@ -62,11 +62,27 @@ export default function Root() {
         </nav>
       </div>
       <div id="detail">
-        <Form method="post">
-            <button type="submit">New Project</button>
-        </Form>
         <Outlet />
       </div>
     </>
   );
+}
+
+export function CreateSupporter() {
+    return (
+        <>
+        <h2>$tacksOverflow</h2>
+        <Form method="post">
+            <p>Email:</p>
+            <input type="text"></input>
+            <p>Password:</p>
+            <input type="text"></input>
+            <p>Name:</p>
+            <input type="text"></input>
+            <div>
+            <button type="submit">Create Supporter</button>
+            </div>
+        </Form>
+        </>
+    )
 }
