@@ -2,11 +2,13 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 import "./index.css";
-import App from "./App";
 import ErrorPage from "./ErrorPage";
 import reportWebVitals from "./reportWebVitals";
-import Root from "./routes/Root";
 import Designer from "./routes/Designer";
+import {CreateDesigner, loader as rootLoader, action as rootAction} from "./routes/Designer";
+import { CreateSupporter } from "./routes/Supporter";
+import Root from "./routes/Root";
+import Project from "./routes/Project";
 
 const router = createBrowserRouter([
   {
@@ -15,8 +17,32 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "designer/:designerId",
+    path: "createDesigner",
+    element: <CreateDesigner />,
+    errorElement: <ErrorPage />,
+    loader: rootLoader,
+    action: rootAction,
+  },
+  {
+    path: "createSupporter",
+    element: <CreateSupporter />,
+    errorElement: <ErrorPage />,
+    loader: rootLoader,
+    action: rootAction,
+  },
+  {
+    path: "designer/:designerID",
     element: <Designer />,
+    errorElement: <ErrorPage />,
+    loader: rootLoader,
+    action: rootAction,
+    children: [
+      {
+        path: "projects/:projectId",
+        element: <Project />,
+        errorElement: <ErrorPage />,
+      },
+    ]
   },
 ]);
 

@@ -1,75 +1,105 @@
-import { Form } from "react-router-dom";
+import { Outlet, Link, useLoaderData, Form, redirect } from "react-router-dom";
 
-export default function Designer() {
-  const contact = {
-  first: "Your",
-  last: "Name",
-  avatar: "https://placekitten.com/g/200/200",
-  twitter: "your_handle",
-  notes: "Some notes",
-  favorite: true,
-};
+export async function getProjects() {
+  const projects = [
+    {
+    projectID: "fucker",
+    projectName: "Test Project",
+    projectDesigner: "Fuck Michael",
+    reward: "Reward spot",
+    isLaunched: true
+    },
+    {
+        projectID: "fucker2",
+        projectName: "Test Project 2.0",
+        projectDesigner: "Fuck Michael Again",
+        reward: "Reward spot",
+        isLaunched: false
+    },
 
-return (
-  <div id="contact">
-    <div>
-      <img
-        key={contact.avatar}
-        src={contact.avatar || null}
-      />
-    </div>
-
-    <div>
-      <h1>
-        {contact.first || contact.last ? (
-          <>
-            {contact.first} {contact.last}
-          </>
-        ) : (
-          <i>No Name</i>
-        )}{" "}
-        <Favorite contact={contact} />
-      </h1>
-
-      {contact.twitter && (
-        <p>
-          <a
-            target="_blank"
-            href={`https://twitter.com/${contact.twitter}`}
-          >
-            {contact.twitter}
-          </a>
-        </p>
-      )}
-
-      {contact.notes && <p>{contact.notes}</p>}
-
-      <div>
-        <Form action="edit">
-          <button type="submit">Edit</button>
-        </Form>
-      </div>
-    </div>
-  </div>
-);
+]
+  return projects;
 }
 
-function Favorite({ contact }) {
-// yes, this is a `let` for later
-let favorite = contact.favorite;
-return (
-  <Form method="post">
-    <button
-      name="favorite"
-      value={favorite ? "false" : "true"}
-      aria-label={
-        favorite
-          ? "Remove from favorites"
-          : "Add to favorites"
-      }
-    >
-      {favorite ? "★" : "☆"}
-    </button>
-  </Form>
-);
+export async function createProject() { 
+
+}
+
+export async function action() {
+    await createProject();
+  }
+
+export async function loader() {
+  const projects = await getProjects();
+  return { projects };
+}
+
+export default function Designer() {
+  const { projects } = useLoaderData();
+  return (
+    <>
+      <div id="sidebar">
+        {projects.length ? (
+            <ul>
+            {projects.map((project) => (
+                <div>
+                    {project.isLaunched ? (
+                        <>
+                            <h2>List of Active Projects</h2>
+                            <li key={project.projectID}>
+                            <Link to={`projects/${project.projectID}`}>
+                                <p>
+                                    {project.projectName}
+                                </p>
+                            </Link>
+                            </li>
+                        </>
+                    ) : ( 
+                        <>
+                            <h2>List of Inactive Projects</h2>
+                            <li key={project.projectID}>
+                            <Link to={`projects/${project.projectID}`}>
+                                <p>
+                                    {project.projectName}
+                                </p>
+                            </Link>
+                            </li>
+                        </>
+                    )}
+                </div>
+            ))}
+            </ul>
+        ) : (
+            <p>
+              <i>No projects</i>
+            </p>
+          )}
+      </div>
+      <Outlet />
+      <div id="detail">
+        <Form method="post">
+            <button type="submit">New Project</button>
+        </Form>
+      </div>
+    </>
+  );
+}
+
+export function CreateDesigner() {
+    return (
+        <>
+        <h2>$tacksOverflow</h2>
+        <Form method="post">
+            <p>Email:</p>
+            <input type="text"></input>
+            <p>Password:</p>
+            <input type="text"></input>
+            <p>Name:</p>
+            <input type="text"></input>
+            <div>
+            <button type="submit">Create Designer</button>
+            </div>
+        </Form>
+        </>
+    )
 }
