@@ -4,7 +4,7 @@ export default function Root() {
   return (
     <>
       <div id="detail">
-        <h2>$tackOverflow</h2>
+        <h2>$tacksOverflow</h2>
           <form method="post" action="/login">
             <p>Enter your email:</p>
             <input type="text"></input>
