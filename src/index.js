@@ -4,11 +4,13 @@ import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
 import "./index.css";
 import ErrorPage from "./ErrorPage";
 import reportWebVitals from "./reportWebVitals";
-import Designer from "./routes/Designer";
-import {CreateDesigner, loader as rootLoader, action as rootAction} from "./routes/Designer";
-import { CreateSupporter } from "./routes/Supporter";
-import Root from "./routes/Root";
-import Project from "./routes/Project";
+import Designer from "./Designer";
+import Supporter from "./Supporter";
+import Admin from "./Admin";
+import {CreateDesigner, loader as rootLoader, action as rootAction} from "./Designer";
+import { CreateSupporter } from "./Supporter";
+import Root from "./Root";
+import {Project} from "./model/Model";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +35,34 @@ const router = createBrowserRouter([
   {
     path: "designer/:designerID",
     element: <Designer />,
+    errorElement: <ErrorPage />,
+    loader: rootLoader,
+    action: rootAction,
+    children: [
+      {
+        path: "projects/:projectId",
+        element: <Project />,
+        errorElement: <ErrorPage />,
+      },
+    ]
+  },
+  {
+    path: "supporter/:supporterID",
+    element: <Supporter />,
+    errorElement: <ErrorPage />,
+    loader: rootLoader,
+    action: rootAction,
+    children: [
+      {
+        path: "projects/:projectId",
+        element: <Project />,
+        errorElement: <ErrorPage />,
+      },
+    ]
+  },
+  {
+    path: "admin",
+    element: <Admin />,
     errorElement: <ErrorPage />,
     loader: rootLoader,
     action: rootAction,

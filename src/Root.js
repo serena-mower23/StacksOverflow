@@ -1,18 +1,28 @@
 import { Outlet, Link } from "react-router-dom";
 
-export default function Root() {
+function Root() {
+  const designerLoginHandler = (info) => {
+    console.log(info);
+  }
+
+  const supporterLoginHandler = (info) => {
+    console.log(info);
+  }
+
   return (
     <>
       <div id="detail">
         <h2>$tacksOverflow</h2>
           <form method="post" action="/login">
+        <h2>$tackOverflow</h2>
+          <form>
             <p>Enter your email:</p>
             <input type="text"></input>
-            <p>Enter your password</p>
+            <p>Enter your password:</p>
             <input type="password"></input>
             <div>
-              <button type="submit">Designer Login</button>
-              <button type="submit">Supporter Login</button>
+              <button onClick={(e) => designerLoginHandler(e)}>Designer Login</button>
+              <button onClick={(e) => designerLoginHandler(e)}>Supporter Login</button>
             </div>
           </form>
           <Link to={`/createDesigner`}>
@@ -29,3 +39,4 @@ export default function Root() {
     </>
   );
 }
+export default Root;
