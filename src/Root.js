@@ -80,35 +80,41 @@ function Root() {
 
   return (
     <>
-      <div id="detail">
+      <div className="container mt-5 d-flex flex-column align-items-center">
         <h2>$tacksOverflow</h2>
         <p>Enter your email:</p>
         <input
           type="text"
           value={inputUsername}
           onChange={(e) => setInputUsername(e.target.value)}
+          className="mb-3"
         ></input>
         <p>Enter your password:</p>
         <input
           type="password"
           value={inputPassword}
           onChange={(e) => setInputPassword(e.target.value)}
+          className="mb-3"
         ></input>
-        <div>
-          <button onClick={(e) => designerLoginHandler()}>
+        <div className="d-grid d-sm-block text-center">
+          <button className="btn btn-primary m-1" onClick={(e) => designerLoginHandler()}>
             Designer Login
           </button>
-          <button onClick={(e) => supporterLoginHandler()}>
+          <button className="btn btn-primary m-1" onClick={(e) => supporterLoginHandler()}>
             Supporter Login
           </button>
-          <button onClick={(e) => adminLoginHandler()}>Admin Login</button>
-        </div>
+          <button className="btn btn-primary m-1" onClick={(e) => adminLoginHandler()}>Admin Login</button>
+        </div> 
+        <div className="mt-3">
         <Link to={`/createDesigner`}>
           <p>Create Designer Account</p>
         </Link>
+        </div>
+        <div className="mb-3">
         <Link to={`/createSupporter`}>
           <p>Create Supporter Account</p>
         </Link>
+        </div>
       </div>
     </>
   );

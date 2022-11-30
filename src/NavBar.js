@@ -7,8 +7,12 @@ export default function NavBar() {
     navigate("/");
   };
   return (
-    <>
-      <button onClick={(e) => logoutHandler()}>Logout</button>
-    </>
+    <div className="container">
+    <nav className="navbar navbar-expand-lg mb-4">
+        <div className="container-fluid">
+                    <button className="nav-link btn btn-link" onClick={(e) => logoutHandler()}>Log out of @</button>
+        </div>
+    </nav>
+</div>
   );
 }

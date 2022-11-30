@@ -12,7 +12,7 @@ export default function Admin() {
   const { projects } = useLoaderData();
 
   return (
-    <>
+    <div className="container">
       <NavBar />
       <div id="sidebar">
         <h2>$tacksOverflow</h2>
@@ -36,6 +36,6 @@ export default function Admin() {
       <div id="detail">
         <Outlet />
       </div>
-    </>
+    </div>
   );
 }
