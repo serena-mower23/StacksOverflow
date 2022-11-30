@@ -26,25 +26,7 @@ export async function loader() {
   const params = new URLSearchParams(window.location.search);
   const designerID = params.get("designerID");
   const projects = await listDesignerProjects(designerID);
-  console.log("Florence Pugh");
   console.log(projects);
-  return { projects };
-}
-
-export default function Designer() {
-  const params = new URLSearchParams(window.location.search);
-  const designerID = params.get("designerID");
-  console.log("I SWEAR TO GOSD");
-  let url = window.location.href;
-  console.log(url);
-  const [inputName, setInputName] = React.useState("");
-  const [inputType, setInputType] = React.useState("");
-  const [inputStory, setInputStory] = React.useState("");
-  const [inputGoal, setInputGoal] = React.useState("");
-  const [inputDeadline, setInputDeadline] = React.useState("");
-  const navigate = useNavigate();
-
-  const { projects } = useLoaderData();
 
   const activeProjects = [];
   const inactiveProjects = [];
@@ -56,6 +38,21 @@ export default function Designer() {
       inactiveProjects.push(projects[i]);
     }
   }
+  return { activeProjects, inactiveProjects };
+}
+
+export default function Designer() {
+  const params = new URLSearchParams(window.location.search);
+  const designerID = params.get("designerID");
+
+  const [inputName, setInputName] = React.useState("");
+  const [inputType, setInputType] = React.useState("");
+  const [inputStory, setInputStory] = React.useState("");
+  const [inputGoal, setInputGoal] = React.useState("");
+  const [inputDeadline, setInputDeadline] = React.useState("");
+  const navigate = useNavigate();
+
+  const { activeProjects, inactiveProjects } = useLoaderData();
 
   return (
     <>

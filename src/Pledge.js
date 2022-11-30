@@ -24,9 +24,7 @@ export default function Pledge() {
   const [inputReward, setInputReward] = React.useState("");
   const params = new URLSearchParams(window.location.search);
   const projectID = params.get("projectID");
-  const designerID = params.get("designerID");
   const navigate = useNavigate();
-  let url = window.location.href
 
   const createPledgeHandler = async () => {
     const response = await action(
@@ -35,6 +33,7 @@ export default function Pledge() {
       inputSupporters,
       inputReward
     );
+    console.log(response);
 
     if (response.data.statusCode === 200) {
       navigate(-1);
