@@ -1,6 +1,7 @@
 import { Outlet, Link, useLoaderData, Form, redirect } from "react-router-dom";
 import { listProjects } from "./controller/Controller";
 import React from "react";
+import NavBar from "./NavBar";
 
 export async function loader() {
   const projects = await listProjects();
@@ -13,6 +14,7 @@ export default function Admin() {
 
   return (
     <>
+    <NavBar/>
       <div id="sidebar">
         <h2>$tacksOverflow</h2>
         <h2>List of Projects</h2>
