@@ -60,7 +60,7 @@ export async function viewProject(projectID) {
   return project;
 }
 
-export async function register(accountType, id, password, name) {
+export async function register(accountType, name, id, password) {
   let request = {
     accountType: accountType,
     name: name,
