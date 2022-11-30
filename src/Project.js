@@ -1,6 +1,6 @@
 import React from "react";
 import { viewProject } from "./controller/Controller";
-import { useLoaderData, Outlet, Link } from "react-router-dom";
+import { useLoaderData, Outlet, Link, useNavigate } from "react-router-dom";
 
 export async function loader() {
   console.log("hello?");
@@ -11,11 +11,23 @@ export async function loader() {
   return { project };
 }
 
-export default async function Project() {
-  const { project } = await useLoaderData();
+export default function Project() {
+  const params = new URLSearchParams(window.location.search);
+  const projectID = params.get("projectID");
+  const designerID = params.get("designerID");
+  const { project } = useLoaderData();
+  const navigate = useNavigate();
+
+  const dashboardHandler = async () => {
+    navigate(-1);
+  };
+
   return (
     <>
-      <div id="sidebar">
+      <div>
+      <button onClick={(e) => dashboardHandler()}>
+        Back to Designer Dashboard
+      </button>
         <h1>{project.ProjectName}</h1>
         <p>{project.ProjectType}</p>
         <p>{project.ProjectStory}</p>
@@ -25,7 +37,7 @@ export default async function Project() {
         <p>{project.Deadline}</p>
       </div>
       <div id="details">
-        <Link to={`/createPledge`}>
+        <Link to={`/createPledge?projectID=${[projectID]}&designerID=${designerID}`}>
           <p>Create New Pledge</p>
         </Link>
       </div>
