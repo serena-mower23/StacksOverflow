@@ -22,6 +22,7 @@ export async function action(
 }
 
 export async function loader() {
+  console.log("designer loader");
   const params = new URLSearchParams(window.location.search);
   const designerID = params.get("designerID");
   const projects = await listDesignerProjects(designerID);
