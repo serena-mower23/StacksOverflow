@@ -80,22 +80,3 @@ export default function Designer() {
     </>
   );
 }
-
-export function CreateDesigner() {
-    return (
-        <>
-        <h2>$tacksOverflow</h2>
-        <Form method="post">
-            <p>Email:</p>
-            <input type="text"></input>
-            <p>Password:</p>
-            <input type="text"></input>
-            <p>Name:</p>
-            <input type="text"></input>
-            <div>
-            <button type="submit">Create Designer</button>
-            </div>
-        </Form>
-        </>
-    )
-}

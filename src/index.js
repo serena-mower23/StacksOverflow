@@ -7,7 +7,7 @@ import reportWebVitals from "./reportWebVitals";
 import Designer from "./Designer";
 import Supporter from "./Supporter";
 import Admin, {loader as adminLoader} from "./Admin";
-import {CreateDesigner, loader as designerLoader, action as createAction} from "./Designer";
+import {CreateDesigner, CreateProject, loader as designerLoader, action as createAction} from "./Designer";
 import { CreateSupporter } from "./Supporter";
 import Root from "./Root";
 import Project from "./Project";
@@ -59,7 +59,7 @@ const router = createBrowserRouter([
   },
   {
     path: "createDesigner",
-    element: <CreateDesigner />,
+    element: <CreateProject />,
     errorElement: <ErrorPage />,
   },
   {
