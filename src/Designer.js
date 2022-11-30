@@ -25,12 +25,17 @@ export async function loader() {
   const params = new URLSearchParams(window.location.search);
   const designerID = params.get("designerID");
   const projects = await listDesignerProjects(designerID);
+  console.log("Florence Pugh");
+  console.log(projects);
   return { projects };
 }
 
 export default function Designer() {
   const params = new URLSearchParams(window.location.search);
   const designerID = params.get("designerID");
+  console.log("I SWEAR TO GOSD");
+  let url = window.location.href;
+  console.log(url);
   const [inputName, setInputName] = React.useState("");
   const [inputType, setInputType] = React.useState("");
   const [inputStory, setInputStory] = React.useState("");
@@ -76,7 +81,7 @@ export default function Designer() {
             <i>No Projects</i>
           </p>
         )}
-                <h2>List of Inactive Projects</h2>
+        <h2>List of Inactive Projects</h2>
         {inactiveProjects.length ? (
           <ul>
             {inactiveProjects.map((project) => (
@@ -99,6 +104,7 @@ export default function Designer() {
           </p>
         )}
       </div>
+      <Outlet/>
       <div id="detail">
         <p>Project Name:</p>
         <input
