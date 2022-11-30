@@ -10,15 +10,18 @@ export async function action(
   inputGoal,
   inputDeadline,
   designerID
-) {
-  await createProject(
-    inputName,
-    inputType,
-    inputStory,
-    inputGoal,
-    inputDeadline,
-    designerID
-  );
+) 
+if(inputName && inputType && inputStory && inputGoal && inputDeadline && designerID){
+  {
+    await createProject(
+      inputName,
+      inputType,
+      inputStory,
+      inputGoal,
+      inputDeadline,
+      designerID
+    );
+  }
 }
 
 export async function loader() {
