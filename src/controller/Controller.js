@@ -4,7 +4,7 @@ const instance = axios.create({
     baseURL: "https://puwud6fni0.execute-api.us-east-1.amazonaws.com/Prod"
   })
 
-export async function listDProjects(id) {
+export async function listDesignerProjects(id) {
     let projects = [];
 
     let request = {
@@ -14,7 +14,7 @@ export async function listDProjects(id) {
 
     let data = { "body" : value }
     
-    const response = await instance.post("/listDProjects", data)
+    const response = await instance.post("/listDesignerProjects", data)
     console.log(response.data);
     if (response.data.statusCode === 200) {
         projects = response.data;
@@ -39,7 +39,7 @@ export async function listProjects() {
     return projects;
   }
   
-  export async function createProject() { 
+  export async function createProject(projectName, projectType, projectStory, projectGoal, deadline, designerID) { 
     let request = {
         "projectName": projectName,
         "projectType": projectType,
@@ -52,13 +52,37 @@ export async function listProjects() {
     let value = JSON.stringify(request)
     let data = { "body" : value }
     console.log(data);
+    const response = await instance.get("/createProject");    
+    console.log(response.data.body);
 
-    instance.post("/createProject", data)
-    .then(function(response) {
-        console.log(response.body);
-        request = response.body;
-    })
-    .catch(function(error) {
-        request = error.body
-    })
+    if (response.data.statusCode === 200) {
+        request = response.data.body;
+    }
+    else {
+        alert(response.data.error);
+    }
+    return request;
+  }
+
+  export async function createPledge(projectID, reward, amount, supporterLimit) { 
+    let request = {
+        "projectID": projectID,
+        "reward": reward,
+        "amount": amount,
+        "supporterLimit": supporterLimit
+      }
+
+    let value = JSON.stringify(request)
+    let data = { "body" : value }
+    console.log(data);
+
+    const response = await instance.get("/createPledge");    
+    console.log(response.data.body);
+    if (response.data.statusCode === 200) {
+        request = response.data.body;
+    }
+    else {
+        alert(response.data.error);
+    }
+    return request;
   }
