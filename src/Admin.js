@@ -5,7 +5,6 @@ import NavBar from "./NavBar";
 
 export async function loader() {
   const projects = await listProjects();
-  console.log("MY DUDE");
   return { projects };
 }
 
@@ -18,7 +17,6 @@ export default function Admin() {
       <div id="sidebar">
         <h2>$tacksOverflow</h2>
         <h2>List of Projects</h2>
-        <p>Click to View Project</p>
         {projects.length ? (
           <ul>
             {projects.map((project) => (
