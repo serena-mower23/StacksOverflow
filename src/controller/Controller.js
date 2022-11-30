@@ -42,5 +42,25 @@ export function listProjects() {
   }
   
   export async function createProject() { 
-    
+    let request = {
+        "projectName": projectName,
+        "projectType": projectType,
+        "projectStory": projectStory,
+        "projectGoal": projectGoal,
+        "deadline": deadline,
+        "designerID": designerID
+      }
+
+    let value = JSON.stringify(request)
+    let data = { "body" : value }
+    console.log(data);
+
+    instance.post("/createProject", data)
+    .then(function(response) {
+        console.log(response.body);
+        request = response.body;
+    })
+    .catch(function(error) {
+        request = error.body
+    })
   }
