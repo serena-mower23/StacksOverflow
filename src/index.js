@@ -45,6 +45,7 @@ const router = createBrowserRouter([
         path: "projects",
         element: <Project />,
         errorElement: <ErrorPage />,
+        loader: projectLoader,
         children: [
           {
             path: "createPledge",
@@ -54,7 +55,7 @@ const router = createBrowserRouter([
           },
         ],
       },
-    ],
+    ]
   },
   {
     path: "supporter",
