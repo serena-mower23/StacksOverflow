@@ -1,6 +1,7 @@
 import React from "react";
 import { viewProject } from "./controller/Controller";
 import { useLoaderData, Outlet, Link, useNavigate } from "react-router-dom";
+import { viewTemplates } from "./controller/Controller";
 
 export async function loader() {
   console.log("hello?");
@@ -15,8 +16,17 @@ export default function Project() {
   const params = new URLSearchParams(window.location.search);
   const projectID = params.get("projectID");
   const designerID = params.get("designerID");
+  const [pledges, setPledges] = React.useState("");
   const { project } = useLoaderData();
   const navigate = useNavigate();
+
+  React.useEffect(() => {
+    grabPledgeTemplates()
+  }, [pledges]);
+
+  const grabPledgeTemplates = async () => {
+    const response = await viewTemplates(projectID);
+  }
 
   const dashboardHandler = async () => {
     navigate(-1);
