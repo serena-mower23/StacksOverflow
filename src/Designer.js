@@ -1,4 +1,4 @@
-import { Outlet, Link, useLoaderData } from "react-router-dom";
+import { Outlet, Link, useLoaderData, useNavigate } from "react-router-dom";
 import { listDesignerProjects, createProject } from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
@@ -25,56 +25,86 @@ export async function loader() {
   const params = new URLSearchParams(window.location.search);
   const designerID = params.get("designerID");
   const projects = await listDesignerProjects(designerID);
+  console.log("Florence Pugh");
+  console.log(projects);
   return { projects };
 }
 
 export default function Designer() {
   const params = new URLSearchParams(window.location.search);
   const designerID = params.get("designerID");
+  console.log("I SWEAR TO GOSD");
+  let url = window.location.href;
+  console.log(url);
   const [inputName, setInputName] = React.useState("");
   const [inputType, setInputType] = React.useState("");
   const [inputStory, setInputStory] = React.useState("");
   const [inputGoal, setInputGoal] = React.useState("");
   const [inputDeadline, setInputDeadline] = React.useState("");
+  const navigate = useNavigate();
 
   const { projects } = useLoaderData();
+
+  const activeProjects = [];
+  const inactiveProjects = [];
+
+  for (let i = 0; i < projects.length; i++) {
+    if (projects[i].isLaunched === 1) {
+      activeProjects.push(projects[i]);
+    } else {
+      inactiveProjects.push(projects[i]);
+    }
+  }
   return (
     <>
       <div id="sidebar">
         <h2>$tacksOverflow</h2>
-        {projects.length ? (
+        <h2>List of Active Projects</h2>
+        {activeProjects.length ? (
           <ul>
-            {projects.map((project) => (
-              <div>
-                {project.isLaunched ? (
-                  <>
-                    <h2>List of Active Projects</h2>
-                    <li key={project.ProjectID}>
-                      <Link to={`projects?projectID=${project.ProjectID}`}>
-                        <p>{project.ProjectName}</p>
-                      </Link>
-                    </li>
-                  </>
-                ) : (
-                  <>
-                    <h2>List of Inactive Projects</h2>
-                    <li key={project.ProjectID}>
-                      <Link to={`projects?projectID=${project.ProjectID}`}>
-                        <p>{project.ProjectName}</p>
-                      </Link>
-                    </li>
-                  </>
-                )}
-              </div>
+            {activeProjects.map((project) => (
+              <li key={project.ProjectID}>
+                <button
+                  onClick={(e) => {
+                    navigate(
+                      `projects?projectID=${project.ProjectID}&designerID=${designerID}`
+                    );
+                  }}
+                >
+                  {project.ProjectName}
+                </button>
+              </li>
             ))}
           </ul>
         ) : (
           <p>
-            <i>No projects</i>
+            <i>No Projects</i>
+          </p>
+        )}
+        <h2>List of Inactive Projects</h2>
+        {inactiveProjects.length ? (
+          <ul>
+            {inactiveProjects.map((project) => (
+              <li key={project.ProjectID}>
+                <button
+                  onClick={(e) => {
+                    navigate(
+                      `projects?projectID=${project.ProjectID}&designerID=${designerID}`
+                    );
+                  }}
+                >
+                  {project.ProjectName}
+                </button>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>
+            <i>No Projects</i>
           </p>
         )}
       </div>
-      <Outlet />
+      <Outlet/>
       <div id="detail">
         <p>Project Name:</p>
         <input
