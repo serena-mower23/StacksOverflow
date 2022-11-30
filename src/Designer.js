@@ -23,6 +23,9 @@ if(inputName && inputType && inputStory && inputGoal && inputDeadline && designe
       designerID
     );
   }
+  else {
+    alert("Hey dumb bitch");
+  }
 }
 
 export async function loader() {
