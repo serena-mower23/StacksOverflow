@@ -70,7 +70,7 @@ const router = createBrowserRouter([
   },
   {
     path: "createDesigner",
-    element: <CreateProject />,
+    element: <CreateDesigner />,
     errorElement: <ErrorPage />,
   },
   {
