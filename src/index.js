@@ -8,12 +8,10 @@ import Designer from "./Designer";
 import Supporter from "./Supporter";
 import Admin, { loader as adminLoader } from "./Admin";
 import {
-  CreateDesigner,
   loader as designerLoader,
   action as createAction,
 } from "./Designer";
-import { CreateSupporter } from "./Supporter";
-import Root from "./Root";
+import Root, {CreateDesigner, CreateSupporter} from "./Root";
 import Project, { loader as projectLoader } from "./Project";
 
 const router = createBrowserRouter([

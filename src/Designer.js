@@ -25,7 +25,6 @@ export async function loader() {
   const params = new URLSearchParams(window.location.search);
   const designerID = params.get("designerID");
   const projects = await listDesignerProjects(designerID);
-  // const projects = [];
   return { projects };
 }
 
@@ -50,18 +49,18 @@ export default function Designer() {
                 {project.isLaunched ? (
                   <>
                     <h2>List of Active Projects</h2>
-                    <li key={project.projectID}>
-                      <Link to={`projects?projectID=${project.projectID}`}>
-                        <p>{project.projectName}</p>
+                    <li key={project.ProjectID}>
+                      <Link to={`projects?projectID=${project.ProjectID}`}>
+                        <p>{project.ProjectName}</p>
                       </Link>
                     </li>
                   </>
                 ) : (
                   <>
                     <h2>List of Inactive Projects</h2>
-                    <li key={project.projectID}>
-                      <Link to={`projects?projectID=${project.projectID}`}>
-                        <p>{project.projectName}</p>
+                    <li key={project.ProjectID}>
+                      <Link to={`projects?projectID=${project.ProjectID}`}>
+                        <p>{project.ProjectName}</p>
                       </Link>
                     </li>
                   </>
@@ -119,25 +118,6 @@ export default function Designer() {
           </button>
         </div>
       </div>
-    </>
-  );
-}
-
-export function CreateDesigner() {
-  return (
-    <>
-      <h2>$tacksOverflow</h2>
-      <Form method="post">
-        <p>Email:</p>
-        <input type="text"></input>
-        <p>Password:</p>
-        <input type="text"></input>
-        <p>Name:</p>
-        <input type="text"></input>
-        <div>
-          <button type="submit">Create Designer</button>
-        </div>
-      </Form>
     </>
   );
 }

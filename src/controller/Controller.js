@@ -8,16 +8,17 @@ export async function listDesignerProjects(id) {
   let projects = [];
 
   let request = {
-    ProjectID: id,
+    designerID: id,
   };
   let value = JSON.stringify(request);
 
   let data = { body: value };
 
   const response = await instance.post("/listDesignerProjects", data);
+  console.log("/listDesignerProjects");
   console.log(response.data);
   if (response.data.statusCode === 200) {
-    projects = response.data;
+    projects = response.data.body;
   } else {
     alert(response.data.error);
   }
@@ -27,6 +28,7 @@ export async function listDesignerProjects(id) {
 export async function listProjects() {
   let projects = [];
   const response = await instance.get("/listProjects");
+  console.log("/listProjects");
   console.log(response.data.body);
   if (response.data.statusCode === 200) {
     projects = response.data.body;
@@ -47,6 +49,7 @@ export async function viewProject(projectID) {
   console.log(data);
 
   const response = await instance.post("/viewProject", data);
+  console.log("/viewProject");
   console.log(response.data);
   if (response.data.statusCode === 200) {
     project = response.data.body;
