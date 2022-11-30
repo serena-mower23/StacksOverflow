@@ -87,33 +87,45 @@ function Root() {
           type="text"
           value={inputUsername}
           onChange={(e) => setInputUsername(e.target.value)}
-          className="mb-3"
+          className="mb-3 form-control"
         ></input>
         <p>Enter your password:</p>
         <input
           type="password"
           value={inputPassword}
           onChange={(e) => setInputPassword(e.target.value)}
-          className="mb-3"
+          className="mb-3 form-control"
         ></input>
         <div className="d-grid d-sm-block text-center">
-          <button className="btn btn-primary m-1" onClick={(e) => designerLoginHandler()}>
-            Designer Login
+          <button
+            className="btn btn-primary m-1"
+            onClick={(e) => designerLoginHandler()}
+          >
+            &#129297; Designer Login
           </button>
-          <button className="btn btn-primary m-1" onClick={(e) => supporterLoginHandler()}>
-            Supporter Login
+          <button
+            className="btn btn-primary m-1"
+            onClick={(e) => supporterLoginHandler()}
+          >
+            &#128179; Supporter Login
           </button>
-          <button className="btn btn-primary m-1" onClick={(e) => adminLoginHandler()}>Admin Login</button>
-        </div> 
+          <button
+            className="btn btn-primary m-1"
+            onClick={(e) => adminLoginHandler()}
+          >
+            {" "}
+            &#129299; Admin Login
+          </button>
+        </div>
         <div className="mt-3">
-        <Link to={`/createDesigner`}>
-          <p>Create Designer Account</p>
-        </Link>
+          <Link to={`/createDesigner`}>
+            <p>Create Designer Account</p>
+          </Link>
         </div>
         <div className="mb-3">
-        <Link to={`/createSupporter`}>
-          <p>Create Supporter Account</p>
-        </Link>
+          <Link to={`/createSupporter`}>
+            <p>Create Supporter Account</p>
+          </Link>
         </div>
       </div>
     </>

@@ -7,12 +7,15 @@ export default function NavBar() {
     navigate("/");
   };
   return (
-    <div className="container">
-    <nav className="navbar navbar-expand-lg mb-4">
+    <div className="container-fluid">
+      <nav class="navbar navbar-expand-lg bg-light">
         <div className="container-fluid">
-                    <button className="nav-link btn btn-link" onClick={(e) => logoutHandler()}>Log out of @</button>
+          <label className="navbar-brand m-2 h1">&#128184; $tacksOverflow &#128184;</label>
+          <button className="nav-link btn btn-link" onClick={(e) => logoutHandler()}>
+            Log out
+          </button>
         </div>
-    </nav>
-</div>
+      </nav>
+    </div>
   );
 }

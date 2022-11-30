@@ -71,7 +71,6 @@ export default function Designer() {
     <>
       <NavBar />
       <div id="sidebar">
-        <h2>$tacksOverflow</h2>
         <h2>List of Active Projects</h2>
         {activeProjects.length ? (
           <ul>

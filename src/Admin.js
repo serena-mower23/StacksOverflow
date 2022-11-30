@@ -15,7 +15,6 @@ export default function Admin() {
     <div className="container">
       <NavBar />
       <div id="sidebar">
-        <h2>$tacksOverflow</h2>
         <h2>List of Projects</h2>
         {projects.length ? (
           <ul>
