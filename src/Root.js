@@ -28,7 +28,7 @@ function Root() {
     const response = await instance.post("/login", data)  
     if (response.data.statusCode === 200) {
       console.log("redirect")
-      redirect(`/supporter/id=${inputUsername}`);
+      redirect(`/designer/id=${inputUsername}`);
     }
     else {
       alert(response.data.error);
@@ -78,7 +78,7 @@ function Root() {
     const response = await instance.post("/login", data)  
     if (response.data.statusCode === 200) {
       console.log("redirect")
-      redirect(`/supporter/id=${inputUsername}`);
+      redirect("/admin");
     }
     else {
       alert(response.data.error);
