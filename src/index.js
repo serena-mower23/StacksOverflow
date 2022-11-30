@@ -46,16 +46,14 @@ const router = createBrowserRouter([
         element: <Project />,
         errorElement: <ErrorPage />,
         loader: projectLoader,
-        children: [
-          {
-            path: "createPledge",
-            element: <Pledge />,
-            errorElement: <ErrorPage />,
-            action: createPledgeAction,
-          },
-        ],
       },
     ]
+  },
+  {
+    path: "createPledge",
+    element: <Pledge />,
+    errorElement: <ErrorPage />,
+    action: createPledgeAction,
   },
   {
     path: "designer/projects",

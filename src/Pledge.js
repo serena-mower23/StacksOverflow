@@ -1,18 +1,57 @@
 import React from "react";
 import { createPledge } from "./controller/Controller";
-export async function action(inputAmount, inputSupporters, inputReward) {
-  const params = new URLSearchParams(window.location.search);
-  const projectID = params.get("projectID");
-  await createPledge(projectID, inputAmount, inputSupporters, inputReward);
+import { useNavigate } from "react-router-dom";
+
+export async function action(
+  projectID,
+  inputAmount,
+  inputSupporters,
+  inputReward
+) {
+  const response = await createPledge(
+    projectID,
+    inputAmount,
+    inputSupporters,
+    inputReward
+  );
+  console.log(response);
+  return response;
 }
 
 export default function Pledge() {
   const [inputAmount, setInputAmount] = React.useState("");
   const [inputSupporters, setInputSupporters] = React.useState("");
   const [inputReward, setInputReward] = React.useState("");
+  const params = new URLSearchParams(window.location.search);
+  const projectID = params.get("projectID");
+  const designerID = params.get("designerID");
+  const navigate = useNavigate();
+  let url = window.location.href
+
+  const createPledgeHandler = async () => {
+    const response = await action(
+      projectID,
+      inputAmount,
+      inputSupporters,
+      inputReward
+    );
+
+    if (response.data.statusCode === 200) {
+      navigate(-1);
+    } else {
+      alert("Cry");
+    }
+  };
+
+  const projectDetailsHandler = async () => {
+    navigate(-1);
+  };
 
   return (
     <div id="detail">
+      <button onClick={(e) => projectDetailsHandler()}>
+        Back to Project Details
+      </button>
       <h2>Create Pledge</h2>
       <p>Pledge Amount:</p>
       <input
@@ -30,11 +69,7 @@ export default function Pledge() {
         onChange={(e) => setInputReward(e.target.value)}
       ></input>
       <div>
-        <button
-          onClick={(e) => action(inputAmount, inputSupporters, inputReward)}
-        >
-          Create Project
-        </button>
+        <button onClick={(e) => createPledgeHandler()}>Create Pledge</button>
       </div>
     </div>
   );
