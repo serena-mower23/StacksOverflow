@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate, Form } from "react-router-dom";
 import axios from "axios";
 
-
 const instance = axios.create({
   baseURL: "https://puwud6fni0.execute-api.us-east-1.amazonaws.com/Prod",
 });
@@ -10,6 +9,7 @@ const instance = axios.create({
 function Root() {
   const [inputUsername, setInputUsername] = useState("");
   const [inputPassword, setInputPassword] = useState("");
+
   const navigate = useNavigate();
 
   const designerLoginHandler = async () => {
@@ -81,7 +81,7 @@ function Root() {
   return (
     <>
       <div id="detail">
-        <h2>$tackOverflow</h2>
+        <h2>$tacksOverflow</h2>
         <p>Enter your email:</p>
         <input
           type="text"
@@ -114,41 +114,3 @@ function Root() {
   );
 }
 export default Root;
-
-export function CreateDesigner() {
-  return (
-    <>
-      <h2>$tacksOverflow</h2>
-      <Form method="post">
-        <p>Email:</p>
-        <input type="text"></input>
-        <p>Password:</p>
-        <input type="text"></input>
-        <p>Name:</p>
-        <input type="text"></input>
-        <div>
-          <button type="submit">Create Designer</button>
-        </div>
-      </Form>
-    </>
-  );
-}
-
-export function CreateSupporter() {
-  return (
-    <>
-      <h2>$tacksOverflow</h2>
-      <Form method="post">
-        <p>Email:</p>
-        <input type="text"></input>
-        <p>Password:</p>
-        <input type="text"></input>
-        <p>Name:</p>
-        <input type="text"></input>
-        <div>
-          <button type="submit">Create Supporter</button>
-        </div>
-      </Form>
-    </>
-  );
-}

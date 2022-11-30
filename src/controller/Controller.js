@@ -39,6 +39,7 @@ export async function listProjects() {
 }
 
 export async function viewProject(projectID) {
+    console.log("hello? anyone home?");
   let project = {};
   let request = {
     projectID: projectID,
@@ -57,6 +58,30 @@ export async function viewProject(projectID) {
     alert(response.data.error);
   }
   return project;
+}
+
+export async function register(accountType, id, password, name) {
+  let request = {
+    accountType: accountType,
+    name: name,
+    ID: id,
+    password: password,
+  };
+
+  let value = JSON.stringify(request);
+  let data = { body: value };
+  console.log(data);
+
+  const response = await instance.post("/register", data);
+  console.log("/register");
+  console.log(response.data.body);
+  let result = null;
+  if (response.data.statusCode === 200) {
+    result = "true";
+  } else {
+    result = response.data.error;
+  }
+  return result;
 }
 
 export async function createProject(
@@ -80,13 +105,31 @@ export async function createProject(
   let data = { body: value };
   console.log(data);
 
-  instance
-    .post("/createProject", data)
-    .then(function (response) {
-      console.log(response.body);
-      request = response.body;
-    })
-    .catch(function (error) {
-      request = error.body;
-    });
+  const response = await instance.post("/createProject", data);
+  console.log(response.data.body);
+  if (response.data.statusCode !== 200) {
+    alert(response.data.error);
+  }
+}
+
+export async function createPledge(projectID, maxSupporters, amount, reward) {
+  let request = {
+    projectID: projectID,
+    maxSupporters: maxSupporters,
+    pledgeAmount: amount,
+    reward: reward,
+  };
+
+  let value = JSON.stringify(request);
+  let data = { body: value };
+  console.log(data);
+
+  const response = await instance.get("/createPledge");
+  console.log(response.data.body);
+  if (response.data.statusCode === 200) {
+    request = response.data.body;
+  } else {
+    alert(response.data.error);
+  }
+  return request;
 }

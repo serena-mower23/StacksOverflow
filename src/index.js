@@ -7,11 +7,11 @@ import reportWebVitals from "./reportWebVitals";
 import Designer from "./Designer";
 import Supporter from "./Supporter";
 import Admin, { loader as adminLoader } from "./Admin";
-import {
-  loader as designerLoader,
-  action as createAction,
-} from "./Designer";
-import Root, {CreateDesigner, CreateSupporter} from "./Root";
+import CreateDesigner from "./CreateDesigner";
+import CreateSupporter from "./CreateSupporter";
+import { loader as designerLoader, action as createAction } from "./Designer";
+import Pledge, { action as createPledgeAction } from "./Pledge";
+import Root from "./Root";
 import Project, { loader as projectLoader } from "./Project";
 
 const router = createBrowserRouter([
@@ -45,6 +45,14 @@ const router = createBrowserRouter([
         path: "projects",
         element: <Project />,
         errorElement: <ErrorPage />,
+        children: [
+          {
+            path: "createPledge",
+            element: <Pledge />,
+            errorElement: <ErrorPage />,
+            action: createPledgeAction,
+          },
+        ],
       },
     ],
   },
