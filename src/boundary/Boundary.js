@@ -1,4 +1,1 @@
-
-export function redrawCanvas(model, canvasObj) {
-    
-}
+export function redrawCanvas(model, canvasObj) {}
