@@ -21,12 +21,12 @@ export default function Project() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    grabPledgeTemplates()
+    grabPledgeTemplates();
   }, [pledges]);
 
   const grabPledgeTemplates = async () => {
     const response = await viewTemplates(projectID);
-  }
+  };
 
   const dashboardHandler = async () => {
     navigate(-1);
@@ -35,9 +35,9 @@ export default function Project() {
   return (
     <>
       <div>
-      <button onClick={(e) => dashboardHandler()}>
-        Back to Designer Dashboard
-      </button>
+        <button onClick={(e) => dashboardHandler()}>
+          Close Project
+        </button>
         <h1>{project.ProjectName}</h1>
         <p>{project.ProjectType}</p>
         <p>{project.ProjectStory}</p>
@@ -47,7 +47,9 @@ export default function Project() {
         <p>{project.Deadline}</p>
       </div>
       <div id="details">
-        <Link to={`/createPledge?projectID=${[projectID]}&designerID=${designerID}`}>
+        <Link
+          to={`/createPledge?projectID=${[projectID]}&designerID=${designerID}`}
+        >
           <p>Create New Pledge</p>
         </Link>
       </div>

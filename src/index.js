@@ -42,12 +42,12 @@ const router = createBrowserRouter([
     action: createAction,
     children: [
       {
-        path: "designer/projects",
+        path: "projects",
         element: <Project />,
         errorElement: <ErrorPage />,
         loader: projectLoader,
       },
-    ]
+    ],
   },
   {
     path: "createPledge",

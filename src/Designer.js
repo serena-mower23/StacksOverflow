@@ -77,15 +77,11 @@ export default function Designer() {
           <ul>
             {activeProjects.map((project) => (
               <li key={project.ProjectID}>
-                <button
-                  onClick={(e) => {
-                    navigate(
-                      `projects?projectID=${project.ProjectID}&designerID=${designerID}`
-                    );
-                  }}
+                <Link
+                  to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
                 >
-                  {project.ProjectName}
-                </button>
+                  <p>{project.ProjectName}</p>
+                </Link>
               </li>
             ))}
           </ul>
@@ -99,15 +95,11 @@ export default function Designer() {
           <ul>
             {inactiveProjects.map((project) => (
               <li key={project.ProjectID}>
-                <button
-                  onClick={(e) => {
-                    navigate(
-                      `projects?projectID=${project.ProjectID}&designerID=${designerID}`
-                    );
-                  }}
+                <Link
+                  to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
                 >
-                  {project.ProjectName}
-                </button>
+                  <p>{project.ProjectName}</p>
+                </Link>
               </li>
             ))}
           </ul>
@@ -117,7 +109,9 @@ export default function Designer() {
           </p>
         )}
       </div>
-      <Outlet />
+      <div>
+        <Outlet />
+      </div>
       <div id="detail">
         <p>Project Name:</p>
         <input

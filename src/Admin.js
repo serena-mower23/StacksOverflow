@@ -13,7 +13,7 @@ export default function Admin() {
 
   return (
     <>
-    <NavBar/>
+      <NavBar />
       <div id="sidebar">
         <h2>$tacksOverflow</h2>
         <h2>List of Projects</h2>
