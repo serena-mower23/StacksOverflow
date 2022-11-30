@@ -1,8 +1,6 @@
 import { Outlet, Link, useLoaderData, Form } from "react-router-dom";
-import { listDProjects, createProject } from "./controller/Controller";
-import Model from "./model/Model";
+import { listDesignerProjects, createProject } from "./controller/Controller";
 import React from "react";
-import { redrawCanvas } from "./boundary/Boundary.js";
 import "url-search-params-polyfill";
 
 export async function action(
@@ -26,7 +24,7 @@ export async function action(
 export async function loader() {
   const params = new URLSearchParams(window.location.search);
   const designerID = params.get("designerID");
-  const projects = await listDProjects(designerID);
+  const projects = await listDesignerProjects(designerID);
   // const projects = [];
   return { projects };
 }

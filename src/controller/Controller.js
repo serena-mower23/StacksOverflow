@@ -4,7 +4,7 @@ const instance = axios.create({
   baseURL: "https://puwud6fni0.execute-api.us-east-1.amazonaws.com/Prod",
 });
 
-export async function listDProjects(id) {
+export async function listDesignerProjects(id) {
   let projects = [];
 
   let request = {
@@ -14,7 +14,7 @@ export async function listDProjects(id) {
 
   let data = { body: value };
 
-  const response = await instance.post("/listDProjects", data);
+  const response = await instance.post("/listDesignerProjects", data);
   console.log(response.data);
   if (response.data.statusCode === 200) {
     projects = response.data;
