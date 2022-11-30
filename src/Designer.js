@@ -68,9 +68,9 @@ export default function Designer() {
   const { activeProjects, inactiveProjects } = useLoaderData();
 
   return (
-    <>
+    <div>
       <NavBar />
-      <div id="sidebar">
+      <div>
         <h2>List of Active Projects</h2>
         {activeProjects.length ? (
           <ul>
@@ -154,6 +154,6 @@ export default function Designer() {
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
