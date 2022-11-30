@@ -6,11 +6,15 @@ import ErrorPage from "./ErrorPage";
 import reportWebVitals from "./reportWebVitals";
 import Designer from "./Designer";
 import Supporter from "./Supporter";
-import Admin, {loader as adminLoader} from "./Admin";
-import {CreateDesigner, loader as designerLoader, action as createAction} from "./Designer";
+import Admin, { loader as adminLoader } from "./Admin";
+import {
+  CreateDesigner,
+  loader as designerLoader,
+  action as createAction,
+} from "./Designer";
 import { CreateSupporter } from "./Supporter";
 import Root from "./Root";
-import Project, {loader as projectLoader} from "./Project";
+import Project, { loader as projectLoader } from "./Project";
 
 const router = createBrowserRouter([
   {
@@ -28,9 +32,9 @@ const router = createBrowserRouter([
         path: "projects",
         element: <Project />,
         errorElement: <ErrorPage />,
-        loader: projectLoader
+        loader: projectLoader,
       },
-    ]
+    ],
   },
   {
     path: "designer",
@@ -44,7 +48,7 @@ const router = createBrowserRouter([
         element: <Project />,
         errorElement: <ErrorPage />,
       },
-    ]
+    ],
   },
   {
     path: "supporter",
@@ -56,7 +60,7 @@ const router = createBrowserRouter([
         element: <Project />,
         errorElement: <ErrorPage />,
       },
-    ]
+    ],
   },
   {
     path: "createDesigner",

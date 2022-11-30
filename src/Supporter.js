@@ -1,12 +1,12 @@
 import { Outlet, Link, useLoaderData, Form, redirect } from "react-router-dom";
-import {listProjects, createProject} from "./controller/Controller";
+import { listProjects, createProject } from "./controller/Controller";
 import Model from "./model/Model";
 import React from "react";
 import { redrawCanvas } from "./boundary/Boundary.js";
 
 export async function action() {
-    await createProject();
-  }
+  await createProject();
+}
 
 export async function loader() {
   const projects = await listProjects();
@@ -24,7 +24,7 @@ export default function Supporter() {
   const appRef = React.useRef(null); // Later need to be able to refer to App
 
   React.useEffect(() => {
-      redrawCanvas(model, appRef.current);
+    redrawCanvas(model, appRef.current);
   }, [model, redraw]);
 
   const { projects } = useLoaderData();
@@ -45,14 +45,14 @@ export default function Supporter() {
           </form>
         </div>
         <nav>
-        {projects.length ? (
+          {projects.length ? (
             <ul>
               {projects.map((project) => (
                 <li key={project.id}>
                   <Link to={`projects/${project.id}`}>
-                      <p>
-                        {project.projectName} {project.projectDesigner}
-                      </p>
+                    <p>
+                      {project.projectName} {project.projectDesigner}
+                    </p>
                   </Link>
                 </li>
               ))}
@@ -72,20 +72,20 @@ export default function Supporter() {
 }
 
 export function CreateSupporter() {
-    return (
-        <>
-        <h2>$tacksOverflow</h2>
-        <Form method="post">
-            <p>Email:</p>
-            <input type="text"></input>
-            <p>Password:</p>
-            <input type="text"></input>
-            <p>Name:</p>
-            <input type="text"></input>
-            <div>
-            <button type="submit">Create Supporter</button>
-            </div>
-        </Form>
-        </>
-    )
+  return (
+    <>
+      <h2>$tacksOverflow</h2>
+      <Form method="post">
+        <p>Email:</p>
+        <input type="text"></input>
+        <p>Password:</p>
+        <input type="text"></input>
+        <p>Name:</p>
+        <input type="text"></input>
+        <div>
+          <button type="submit">Create Supporter</button>
+        </div>
+      </Form>
+    </>
+  );
 }

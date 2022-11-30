@@ -1,8 +1,6 @@
 import React from "react";
-import {viewProject} from "./controller/Controller";
+import { viewProject } from "./controller/Controller";
 import { useLoaderData } from "react-router-dom";
-
-
 
 export async function loader() {
   console.log("hello?");
@@ -19,15 +17,9 @@ export default function Project() {
   console.log(project);
   return (
     <div id="project">
-        <h1>
-          {project.projectName}
-        </h1>
-        <p>
-          {project.projectDesigner}
-        </p>
-        <p>
-          {project.reward}
-        </p>
+      <h1>{project.projectName}</h1>
+      <p>{project.projectDesigner}</p>
+      <p>{project.reward}</p>
     </div>
   );
-  }
+}
