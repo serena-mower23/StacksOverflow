@@ -81,7 +81,7 @@ function Root() {
   return (
     <>
       <div id="detail">
-        <h2>$tackOverflow</h2>
+        <h2>$tacksOverflow</h2>
         <p>Enter your email:</p>
         <input
           type="text"
