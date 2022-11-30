@@ -1,1 +1,1 @@
-console.log("hello world");
+export function redrawCanvas(model, canvasObj) {}

@@ -1,61 +1,41 @@
 import { Outlet, Link, useLoaderData, Form, redirect } from "react-router-dom";
-import {getProjects, createProject} from "./controller/Controller";
-
-export async function action() {
-    await createProject();
-  }
+import { listProjects } from "./controller/Controller";
+import React from "react";
 
 export async function loader() {
-  const projects = await getProjects();
+  const projects = await listProjects();
+  console.log("MY DUDE");
   return { projects };
 }
 
-export default function Root() {
+export default function Admin() {
   const { projects } = useLoaderData();
+
   return (
     <>
-      <h2>List of Projects</h2>
-        <nav>
+      <div id="sidebar">
+        <h2>$tacksOverflow</h2>
+        <h2>List of Projects</h2>
+        <p>Click to View Project</p>
         {projects.length ? (
-            <ul>
-              {projects.map((project) => (
-                <li key={project.id}>
-                  <Link to={`projects/${project.id}`}>
-                      <p>
-                        {project.projectName} {project.projectDesigner}
-                      </p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>
-              <i>No projects</i>
-            </p>
-          )}
-        </nav>
+          <ul>
+            {projects.map((project) => (
+              <li key={project.ProjectID}>
+                <Link to={`projects?projectID=${project.ProjectID}`}>
+                  <p>{project.ProjectName}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>
+            <i>No projects</i>
+          </p>
+        )}
+      </div>
       <div id="detail">
         <Outlet />
       </div>
     </>
   );
-}
-
-export function CreateSupporter() {
-    return (
-        <>
-        <h2>$tacksOverflow</h2>
-        <Form method="post">
-            <p>Email:</p>
-            <input type="text"></input>
-            <p>Password:</p>
-            <input type="text"></input>
-            <p>Name:</p>
-            <input type="text"></input>
-            <div>
-            <button type="submit">Create Supporter</button>
-            </div>
-        </Form>
-        </>
-    )
 }

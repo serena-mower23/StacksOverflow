@@ -6,11 +6,13 @@ import ErrorPage from "./ErrorPage";
 import reportWebVitals from "./reportWebVitals";
 import Designer from "./Designer";
 import Supporter from "./Supporter";
-import Admin from "./Admin";
-import {CreateDesigner, loader as rootLoader, action as rootAction} from "./Designer";
-import { CreateSupporter } from "./Supporter";
+import Admin, { loader as adminLoader } from "./Admin";
+import CreateDesigner from "./CreateDesigner";
+import CreateSupporter from "./CreateSupporter";
+import { loader as designerLoader, action as createAction } from "./Designer";
+import Pledge, { action as createPledgeAction } from "./Pledge";
 import Root from "./Root";
-import {Project} from "./model/Model";
+import Project, { loader as projectLoader } from "./Project";
 
 const router = createBrowserRouter([
   {
@@ -19,60 +21,62 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
   },
   {
-    path: "createDesigner",
-    element: <CreateDesigner />,
+    path: "/admin",
+    element: <Admin />,
     errorElement: <ErrorPage />,
-    loader: rootLoader,
-    action: rootAction,
+    loader: adminLoader,
+    children: [
+      {
+        path: "projects",
+        element: <Project />,
+        errorElement: <ErrorPage />,
+        loader: projectLoader,
+      },
+    ],
+  },
+  {
+    path: "designer",
+    element: <Designer />,
+    errorElement: <ErrorPage />,
+    loader: designerLoader,
+    action: createAction,
+    children: [
+      {
+        path: "projects",
+        element: <Project />,
+        errorElement: <ErrorPage />,
+        children: [
+          {
+            path: "createPledge",
+            element: <Pledge />,
+            errorElement: <ErrorPage />,
+            action: createPledgeAction,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: "supporter",
+    element: <Supporter />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "projects",
+        element: <Project />,
+        errorElement: <ErrorPage />,
+      },
+    ],
+  },
+  {
+    path: "createDesigner",
+    element: <CreateProject />,
+    errorElement: <ErrorPage />,
   },
   {
     path: "createSupporter",
     element: <CreateSupporter />,
     errorElement: <ErrorPage />,
-    loader: rootLoader,
-    action: rootAction,
-  },
-  {
-    path: "designer/:designerID",
-    element: <Designer />,
-    errorElement: <ErrorPage />,
-    loader: rootLoader,
-    action: rootAction,
-    children: [
-      {
-        path: "projects/:projectId",
-        element: <Project />,
-        errorElement: <ErrorPage />,
-      },
-    ]
-  },
-  {
-    path: "supporter/:supporterID",
-    element: <Supporter />,
-    errorElement: <ErrorPage />,
-    loader: rootLoader,
-    action: rootAction,
-    children: [
-      {
-        path: "projects/:projectId",
-        element: <Project />,
-        errorElement: <ErrorPage />,
-      },
-    ]
-  },
-  {
-    path: "admin",
-    element: <Admin />,
-    errorElement: <ErrorPage />,
-    loader: rootLoader,
-    action: rootAction,
-    children: [
-      {
-        path: "projects/:projectId",
-        element: <Project />,
-        errorElement: <ErrorPage />,
-      },
-    ]
   },
 ]);
 

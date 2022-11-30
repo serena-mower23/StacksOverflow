@@ -1,81 +1,123 @@
-import { Outlet, Link, useLoaderData, Form, redirect } from "react-router-dom";
-import {getProjects, createProject} from "./controller/Controller";
+import { Outlet, Link, useLoaderData } from "react-router-dom";
+import { listDesignerProjects, createProject } from "./controller/Controller";
+import React from "react";
+import "url-search-params-polyfill";
 
-export async function action() {
-    await createProject();
-  }
+export async function action(
+  inputName,
+  inputType,
+  inputStory,
+  inputGoal,
+  inputDeadline,
+  designerID
+) {
+  await createProject(
+    inputName,
+    inputType,
+    inputStory,
+    inputGoal,
+    inputDeadline,
+    designerID
+  );
+}
 
 export async function loader() {
-  const projects = await getProjects();
+  const params = new URLSearchParams(window.location.search);
+  const designerID = params.get("designerID");
+  const projects = await listDesignerProjects(designerID);
   return { projects };
 }
 
 export default function Designer() {
+  const params = new URLSearchParams(window.location.search);
+  const designerID = params.get("designerID");
+  const [inputName, setInputName] = React.useState("");
+  const [inputType, setInputType] = React.useState("");
+  const [inputStory, setInputStory] = React.useState("");
+  const [inputGoal, setInputGoal] = React.useState("");
+  const [inputDeadline, setInputDeadline] = React.useState("");
+
   const { projects } = useLoaderData();
   return (
     <>
       <div id="sidebar">
+        <h2>$tacksOverflow</h2>
         {projects.length ? (
-            <ul>
+          <ul>
             {projects.map((project) => (
-                <div>
-                    {project.isLaunched ? (
-                        <>
-                            <h2>List of Active Projects</h2>
-                            <li key={project.projectID}>
-                            <Link to={`projects/${project.projectID}`}>
-                                <p>
-                                    {project.projectName}
-                                </p>
-                            </Link>
-                            </li>
-                        </>
-                    ) : ( 
-                        <>
-                            <h2>List of Inactive Projects</h2>
-                            <li key={project.projectID}>
-                            <Link to={`projects/${project.projectID}`}>
-                                <p>
-                                    {project.projectName}
-                                </p>
-                            </Link>
-                            </li>
-                        </>
-                    )}
-                </div>
+              <div>
+                {project.isLaunched ? (
+                  <>
+                    <h2>List of Active Projects</h2>
+                    <li key={project.ProjectID}>
+                      <Link to={`projects?projectID=${project.ProjectID}`}>
+                        <p>{project.ProjectName}</p>
+                      </Link>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <h2>List of Inactive Projects</h2>
+                    <li key={project.ProjectID}>
+                      <Link to={`projects?projectID=${project.ProjectID}`}>
+                        <p>{project.ProjectName}</p>
+                      </Link>
+                    </li>
+                  </>
+                )}
+              </div>
             ))}
-            </ul>
+          </ul>
         ) : (
-            <p>
-              <i>No projects</i>
-            </p>
-          )}
+          <p>
+            <i>No projects</i>
+          </p>
+        )}
       </div>
       <Outlet />
       <div id="detail">
-        <Form method="post">
-            <button type="submit">New Project</button>
-        </Form>
+        <p>Project Name:</p>
+        <input
+          type="text"
+          onChange={(e) => setInputName(e.target.value)}
+        ></input>
+        <p>Project Type:</p>
+        <input
+          type="text"
+          onChange={(e) => setInputType(e.target.value)}
+        ></input>
+        <p>Project Story:</p>
+        <input
+          type="text"
+          onChange={(e) => setInputStory(e.target.value)}
+        ></input>
+        <p>Project Goal:</p>
+        <input
+          type="text"
+          onChange={(e) => setInputGoal(e.target.value)}
+        ></input>
+        <p>Deadline:</p>
+        <input
+          type="text"
+          onChange={(e) => setInputDeadline(e.target.value)}
+        ></input>
+        <div>
+          <button
+            onClick={(e) =>
+              action(
+                inputName,
+                inputType,
+                inputStory,
+                inputGoal,
+                inputDeadline,
+                designerID
+              )
+            }
+          >
+            Create Project
+          </button>
+        </div>
       </div>
     </>
   );
-}
-
-export function CreateDesigner() {
-    return (
-        <>
-        <h2>$tacksOverflow</h2>
-        <Form method="post">
-            <p>Email:</p>
-            <input type="text"></input>
-            <p>Password:</p>
-            <input type="text"></input>
-            <p>Name:</p>
-            <input type="text"></input>
-            <div>
-            <button type="submit">Create Designer</button>
-            </div>
-        </Form>
-        </>
-    )
 }
