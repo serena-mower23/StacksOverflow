@@ -11,19 +11,26 @@ export async function action(
   inputGoal,
   inputDeadline,
   designerID
-) 
-if(inputName && inputType && inputStory && inputGoal && inputDeadline && designerID){
-  {
-    await createProject(
-      inputName,
-      inputType,
-      inputStory,
-      inputGoal,
-      inputDeadline,
-      designerID
-    );
-  }
-  else {
+) {
+  if (
+    inputName &&
+    inputType &&
+    inputStory &&
+    inputGoal &&
+    inputDeadline &&
+    designerID
+  ) {
+    {
+      await createProject(
+        inputName,
+        inputType,
+        inputStory,
+        inputGoal,
+        inputDeadline,
+        designerID
+      );
+    }
+  } else {
     alert("Hey dumb bitch");
   }
 }
