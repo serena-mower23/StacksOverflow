@@ -10,7 +10,7 @@ import Admin, {loader as adminLoader} from "./Admin";
 import {CreateDesigner, loader as designerLoader, action as createAction} from "./Designer";
 import { CreateSupporter } from "./Supporter";
 import Root from "./Root";
-import Project from "./Project";
+import Project, {loader as projectLoader} from "./Project";
 
 const router = createBrowserRouter([
   {
@@ -28,30 +28,31 @@ const router = createBrowserRouter([
         path: "projects",
         element: <Project />,
         errorElement: <ErrorPage />,
+        loader: projectLoader
       },
     ]
   },
   {
-    path: "designer/:designerID",
+    path: "designer",
     element: <Designer />,
     errorElement: <ErrorPage />,
     loader: designerLoader,
     action: createAction,
     children: [
       {
-        path: "projects/:projectId",
+        path: "projects",
         element: <Project />,
         errorElement: <ErrorPage />,
       },
     ]
   },
   {
-    path: "supporter/:supporterID",
+    path: "supporter",
     element: <Supporter />,
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "projects/:projectId",
+        path: "projects",
         element: <Project />,
         errorElement: <ErrorPage />,
       },

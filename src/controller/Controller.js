@@ -8,7 +8,7 @@ export async function listDProjects(id) {
     let projects = [];
 
     let request = {
-        "id": id
+        "ProjectID": id
     }
     let value = JSON.stringify(request);
 
@@ -27,7 +27,6 @@ export async function listDProjects(id) {
 
 export async function listProjects() {
     let projects = [];
-    console.log("SHE DOESNT EVEN GO HERE");
     const response = await instance.get("/listProjects");    
     console.log(response.data.body);
     if (response.data.statusCode === 200) {
@@ -38,15 +37,36 @@ export async function listProjects() {
     }
     return projects;
   }
-  
-  export async function createProject() { 
+
+  export async function viewProject(projectID) {
+    let project = {}
     let request = {
-        "projectName": projectName,
-        "projectType": projectType,
-        "projectStory": projectStory,
-        "projectGoal": projectGoal,
+        "projectID": projectID
+    }
+
+    let value = JSON.stringify(request)
+    let data = { "body" : value }
+    console.log(data);
+
+    const response = await instance.post("/viewProject", data);
+    console.log(response.data);
+    if (response.data.statusCode === 200) {
+        project = response.data.body;
+    }
+    else {
+        alert(response.data.error);
+    }
+    return project;
+  }
+  
+  export async function createProject(projectName, projectType, projectStory, projectGoal, deadline, designerID) { 
+    let request = {        
+        "designerID": designerID,
+        "name": projectName,
+        "type": projectType,
+        "story": projectStory,
+        "goal": projectGoal,
         "deadline": deadline,
-        "designerID": designerID
       }
 
     let value = JSON.stringify(request)

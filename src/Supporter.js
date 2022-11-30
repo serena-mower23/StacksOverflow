@@ -16,7 +16,7 @@ export async function loader() {
 export default function Supporter() {
   const params = new URLSearchParams(window.location.search);
 
-  const supporterID = params.get("id");
+  const supporterID = params.get("supporterID");
 
   const [model, setModel] = React.useState(new Model("Supporter", supporterID));
   const [redraw, forceRedraw] = React.useState(0);

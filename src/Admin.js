@@ -26,10 +26,9 @@ export default function Admin() {
       redrawCanvas(model, appRef.current);
   }, [model, redraw]);
 
-
-
   return (
     <>
+    <h2>$tacksOverflow</h2>
         <div id="sidebar">
         <h2>List of Projects</h2>
         <p>Click to View Project</p>

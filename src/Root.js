@@ -1,5 +1,5 @@
 import React, {useState, useRef} from "react";
-import { Outlet, Link, redirect } from "react-router-dom";
+import { Outlet, Link, redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const instance = axios.create({
@@ -9,11 +9,11 @@ const instance = axios.create({
 function Root() {
   const [inputUsername, setInputUsername] = useState("");
   const [inputPassword, setInputPassword] = useState("");
+  const navigate = useNavigate();
 
   const designerLoginHandler = async () => {
     console.log(inputUsername);
     console.log(inputPassword);
-    console.log("ANYBODY THERE?");
 
     let request = {
       "accountType": "Designers",
@@ -27,8 +27,7 @@ function Root() {
 
     const response = await instance.post("/login", data)  
     if (response.data.statusCode === 200) {
-      console.log("redirect")
-      redirect(`/designer/id=${inputUsername}`);
+      navigate(`/designer?designerID=${inputUsername}`);
     }
     else {
       alert(response.data.error);
@@ -38,7 +37,6 @@ function Root() {
   const supporterLoginHandler = async () => {
     console.log(inputUsername);
     console.log(inputPassword);
-    console.log("ANYBODY THERE?");
 
     let request = {
       "accountType": "Supporters",
@@ -52,8 +50,7 @@ function Root() {
 
     const response = await instance.post("/login", data)  
     if (response.data.statusCode === 200) {
-      console.log("redirect")
-      redirect(`/supporter/id=${inputUsername}`);
+      navigate(`/supporter?supporterID=${inputUsername}`);
     }
     else {
       alert(response.data.error);
@@ -63,7 +60,6 @@ function Root() {
   const adminLoginHandler = async () => {
     console.log(inputUsername);
     console.log(inputPassword);
-    console.log("ANYBODY THERE?");
 
     let request = {
       "accountType": "Admins",
@@ -77,8 +73,7 @@ function Root() {
 
     const response = await instance.post("/login", data)  
     if (response.data.statusCode === 200) {
-      console.log("redirect")
-      redirect("/admin");
+      navigate("/admin");
     }
     else {
       alert(response.data.error);
