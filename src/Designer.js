@@ -45,7 +45,8 @@ export default function Designer() {
   const inactiveProjects = [];
 
   for (let i = 0; i < projects.length; i++) {
-    if (projects[i].isLaunched === 1) {
+    console.log(projects[i])
+    if (projects[i].IsLaunched === 1) {
       activeProjects.push(projects[i]);
     } else {
       inactiveProjects.push(projects[i]);
