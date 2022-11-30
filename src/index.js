@@ -6,8 +6,8 @@ import ErrorPage from "./ErrorPage";
 import reportWebVitals from "./reportWebVitals";
 import Designer from "./Designer";
 import Supporter from "./Supporter";
-import Admin from "./Admin";
-import {CreateDesigner, loader as rootLoader, action as rootAction} from "./Designer";
+import Admin, {loader as adminLoader} from "./Admin";
+import {CreateDesigner, loader as designerLoader, action as createAction} from "./Designer";
 import { CreateSupporter } from "./Supporter";
 import Root from "./Root";
 import Project from "./Project";
@@ -17,48 +17,43 @@ const router = createBrowserRouter([
     path: "/",
     element: <Root />,
     errorElement: <ErrorPage />,
+  },
+  {
+    path: "/admin",
+    element: <Admin />,
+    errorElement: <ErrorPage />,
+    loader: adminLoader,
     children: [
       {
-        path: "designer/:designerID",
-        element: <Designer />,
+        path: "projects/:projectId",
+        element: <Project />,
         errorElement: <ErrorPage />,
-        loader: rootLoader,
-        action: rootAction,
-        children: [
-          {
-            path: "projects/:projectId",
-            element: <Project />,
-            errorElement: <ErrorPage />,
-          },
-        ]
       },
+    ]
+  },
+  {
+    path: "designer/:designerID",
+    element: <Designer />,
+    errorElement: <ErrorPage />,
+    loader: designerLoader,
+    action: createAction,
+    children: [
       {
-        path: "supporter/:supporterID",
-        element: <Supporter />,
+        path: "projects/:projectId",
+        element: <Project />,
         errorElement: <ErrorPage />,
-        loader: rootLoader,
-        action: rootAction,
-        children: [
-          {
-            path: "projects/:projectId",
-            element: <Project />,
-            errorElement: <ErrorPage />,
-          },
-        ]
       },
+    ]
+  },
+  {
+    path: "supporter/:supporterID",
+    element: <Supporter />,
+    errorElement: <ErrorPage />,
+    children: [
       {
-        path: "admin",
-        element: <Admin />,
+        path: "projects/:projectId",
+        element: <Project />,
         errorElement: <ErrorPage />,
-        loader: rootLoader,
-        action: rootAction,
-        children: [
-          {
-            path: "projects/:projectId",
-            element: <Project />,
-            errorElement: <ErrorPage />,
-          },
-        ]
       },
     ]
   },
@@ -66,15 +61,11 @@ const router = createBrowserRouter([
     path: "createDesigner",
     element: <CreateDesigner />,
     errorElement: <ErrorPage />,
-    loader: rootLoader,
-    action: rootAction,
   },
   {
     path: "createSupporter",
     element: <CreateSupporter />,
     errorElement: <ErrorPage />,
-    loader: rootLoader,
-    action: rootAction,
   },
 ]);
 

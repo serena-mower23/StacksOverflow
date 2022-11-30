@@ -8,8 +8,9 @@ export async function action() {
     await createProject();
   }
 
-export function loader() {
-  const projects = listProjects(true, "id");
+export async function loader() {
+  const projects = await listProjects();
+  console.log("MY DUDE");
   return { projects };
 }
 
@@ -32,10 +33,10 @@ export default function Admin() {
         {projects.length ? (
             <ul>
               {projects.map((project) => (
-                <li key={project.id}>
-                  <Link to={`projects/${project.id}`}>
+                <li key={project.ProjectID}>
+                  <Link to={`projects/${project.ProjectID}`}>
                       <p>
-                        {project.projectName} {project.projectDesigner}
+                        {project.ProjectName}
                       </p>
                   </Link>
                 </li>

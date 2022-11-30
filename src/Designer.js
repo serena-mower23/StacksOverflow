@@ -1,5 +1,5 @@
 import { Outlet, Link, useLoaderData, Form } from "react-router-dom";
-import {listProjects, createProject} from "./controller/Controller";
+import {listDProjects, createProject} from "./controller/Controller";
 import Model from "./model/Model";
 import React from "react";
 import { redrawCanvas } from "./boundary/Boundary.js";
@@ -10,10 +10,10 @@ export async function action() {
   }
 
 export async function loader() {
-  const projects = await listProjects();
+//   const projects = await listDProjects(designerID);
+    const projects = [];
   return { projects };
 }
-
 
 export default function Designer() {
     const params = new URLSearchParams(window.location.search);
@@ -28,6 +28,8 @@ export default function Designer() {
     React.useEffect(() => {
         redrawCanvas(model, appRef.current);
     }, [model, redraw]);
+
+
       
   const { projects } = useLoaderData();
   return (
