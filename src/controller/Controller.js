@@ -59,6 +59,31 @@ export async function viewProject(projectID) {
   return project;
 }
 
+export async function register(accountType, id, password, name) {
+  let request = {
+    accountType: accountType,
+    name: name,
+    ID: id,
+    password: password,
+  };
+
+  let value = JSON.stringify(request);
+  let data = { body: value };
+  console.log(data);
+
+  const response = await instance.post("/register", data);
+  console.log("/register");
+  console.log(response.data.body);
+  let result = null;
+  if (response.data.statusCode === 200) {
+    result = "true";
+  }
+  else {
+    result = response.data.error;
+  }
+  return result;
+}
+
 export async function createProject(
   projectName,
   projectType,
@@ -80,13 +105,31 @@ export async function createProject(
   let data = { body: value };
   console.log(data);
 
-  instance
-    .post("/createProject", data)
-    .then(function (response) {
-      console.log(response.body);
-      request = response.body;
-    })
-    .catch(function (error) {
-      request = error.body;
-    });
+  const response = await instance.post("/createProject", data);
+  console.log(response.data.body);
+  if (response.data.statusCode !== 200) {
+    alert(response.data.error);
+  }
+}
+
+export async function createPledge(projectID, reward, amount, supporterLimit) {
+  let request = {
+    projectID: projectID,
+    reward: reward,
+    amount: amount,
+    supporterLimit: supporterLimit,
+  };
+
+  let value = JSON.stringify(request);
+  let data = { body: value };
+  console.log(data);
+
+  const response = await instance.get("/createPledge");
+  console.log(response.data.body);
+  if (response.data.statusCode === 200) {
+    request = response.data.body;
+  } else {
+    alert(response.data.error);
+  }
+  return request;
 }

@@ -10,6 +10,7 @@ const instance = axios.create({
 function Root() {
   const [inputUsername, setInputUsername] = useState("");
   const [inputPassword, setInputPassword] = useState("");
+
   const navigate = useNavigate();
 
   const designerLoginHandler = async () => {
@@ -114,41 +115,3 @@ function Root() {
   );
 }
 export default Root;
-
-export function CreateDesigner() {
-  return (
-    <>
-      <h2>$tacksOverflow</h2>
-      <Form method="post">
-        <p>Email:</p>
-        <input type="text"></input>
-        <p>Password:</p>
-        <input type="text"></input>
-        <p>Name:</p>
-        <input type="text"></input>
-        <div>
-          <button type="submit">Create Designer</button>
-        </div>
-      </Form>
-    </>
-  );
-}
-
-export function CreateSupporter() {
-  return (
-    <>
-      <h2>$tacksOverflow</h2>
-      <Form method="post">
-        <p>Email:</p>
-        <input type="text"></input>
-        <p>Password:</p>
-        <input type="text"></input>
-        <p>Name:</p>
-        <input type="text"></input>
-        <div>
-          <button type="submit">Create Supporter</button>
-        </div>
-      </Form>
-    </>
-  );
-}

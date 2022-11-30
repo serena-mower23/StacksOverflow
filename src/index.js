@@ -7,11 +7,13 @@ import reportWebVitals from "./reportWebVitals";
 import Designer from "./Designer";
 import Supporter from "./Supporter";
 import Admin, { loader as adminLoader } from "./Admin";
+import CreateDesigner from "./CreateDesigner";
+import CreateSupporter from "./CreateSupporter";
 import {
   loader as designerLoader,
   action as createAction,
 } from "./Designer";
-import Root, {CreateDesigner, CreateSupporter} from "./Root";
+import Root from "./Root";
 import Project, { loader as projectLoader } from "./Project";
 
 const router = createBrowserRouter([
