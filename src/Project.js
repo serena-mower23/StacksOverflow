@@ -8,6 +8,8 @@ export async function loader() {
   const params = new URLSearchParams(window.location.search);
   const projectID = params.get("projectID");
   const project = await viewProject(projectID);
+  console.log(project);
+  console.log(project.data)
   console.log("MY DUDE 2.0");
   return { project };
 }

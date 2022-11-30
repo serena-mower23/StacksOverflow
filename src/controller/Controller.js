@@ -39,6 +39,7 @@ export async function listProjects() {
 }
 
 export async function viewProject(projectID) {
+    console.log("hello? anyone home?");
   let project = {};
   let request = {
     projectID: projectID,
