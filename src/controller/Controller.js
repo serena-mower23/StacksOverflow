@@ -77,8 +77,7 @@ export async function register(accountType, id, password, name) {
   let result = null;
   if (response.data.statusCode === 200) {
     result = "true";
-  }
-  else {
+  } else {
     result = response.data.error;
   }
   return result;
@@ -112,12 +111,12 @@ export async function createProject(
   }
 }
 
-export async function createPledge(projectID, reward, amount, supporterLimit) {
+export async function createPledge(projectID, maxSupporters, amount, reward) {
   let request = {
     projectID: projectID,
+    maxSupporters: maxSupporters,
+    pledgeAmount: amount,
     reward: reward,
-    amount: amount,
-    supporterLimit: supporterLimit,
   };
 
   let value = JSON.stringify(request);

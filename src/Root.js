@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Link, useNavigate, Form } from "react-router-dom";
 import axios from "axios";
 
-
 const instance = axios.create({
   baseURL: "https://puwud6fni0.execute-api.us-east-1.amazonaws.com/Prod",
 });
