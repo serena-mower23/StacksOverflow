@@ -25,7 +25,7 @@ const router = createBrowserRouter([
     loader: adminLoader,
     children: [
       {
-        path: "projects/:projectId",
+        path: "projects",
         element: <Project />,
         errorElement: <ErrorPage />,
       },

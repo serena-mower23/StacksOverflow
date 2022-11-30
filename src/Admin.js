@@ -16,7 +16,8 @@ export async function loader() {
 
 export default function Admin() {
 
-  const [model, setModel] = React.useState(new Model("Admin"));
+  const { projects } = useLoaderData();
+  const [model, setModel] = React.useState(new Model("Admin", projects));
   const [redraw, forceRedraw] = React.useState(0);
 
   const appRef = React.useRef(null); // Later need to be able to refer to App
@@ -24,19 +25,21 @@ export default function Admin() {
   React.useEffect(() => {
       redrawCanvas(model, appRef.current);
   }, [model, redraw]);
-  const { projects } = useLoaderData();
+
+
+
   return (
     <>
         <div id="sidebar">
         <h2>List of Projects</h2>
         <p>Click to View Project</p>
-        {projects.length ? (
+        {model.model.projects.length ? (
             <ul>
-              {projects.map((project) => (
-                <li key={project.ProjectID}>
-                  <Link to={`projects/${project.ProjectID}`}>
+              {model.model.projects.map((project) => (
+                <li key={project.projectID}>
+                  <Link to={`projects?projectID=${project.projectID}`}>
                       <p>
-                        {project.ProjectName}
+                        {project.projectName}
                       </p>
                   </Link>
                 </li>
