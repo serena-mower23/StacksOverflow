@@ -92,76 +92,84 @@ export default function Designer() {
   return (
     <div className="container">
       <NavBar />
-      <div>
-        <h2>List of Active Projects</h2>
-        {activeProjects.length ? (
-          <ul>
-            {activeProjects.map((project) => (
-              <li key={project.ProjectID}>
-                <Link
-                  to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
-                >
-                  <p>{project.ProjectName}</p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>
-            <i>No Projects</i>
-          </p>
-        )}
-        <h2>List of Inactive Projects</h2>
-        {inactiveProjects.length ? (
-          <ul>
-            {inactiveProjects.map((project) => (
-              <li key={project.ProjectID}>
-                <Link
-                  to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
-                >
-                  <p>{project.ProjectName}</p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>
-            <i>No Projects</i>
-          </p>
-        )}
-      </div>
-      <div>
-      </div>
-      <div id="detail">
-        <p>Project Name:</p>
-        <input
-          type="text"
-          onChange={(e) => setInputName(e.target.value)}
-        ></input>
-        <p>Project Type:</p>
-        <input
-          type="text"
-          onChange={(e) => setInputType(e.target.value)}
-        ></input>
-        <p>Project Story:</p>
-        <input
-          type="text"
-          onChange={(e) => setInputStory(e.target.value)}
-        ></input>
-        <p>Project Goal:</p>
-        <input
-          type="text"
-          onChange={(e) => setInputGoal(e.target.value)}
-        ></input>
-        <p>Deadline:</p>
-        <input
-          type="text"
-          onChange={(e) => setInputDeadline(e.target.value)}
-        ></input>
-        <div>
-          <button onClick={(e) => createProjectHandler()}>
-            Create Project
-          </button>
+      <div className="row">
+        <div className="col-6">
+          <h2>List of Active Projects</h2>
+          {activeProjects.length ? (
+            <ul>
+              {activeProjects.map((project) => (
+                <li key={project.ProjectID}>
+                  <Link
+                    to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
+                  >
+                    <p>{project.ProjectName}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>
+              <i>No Projects</i>
+            </p>
+          )}
+          <h2>List of Inactive Projects</h2>
+          {inactiveProjects.length ? (
+            <ul>
+              {inactiveProjects.map((project) => (
+                <li key={project.ProjectID}>
+                  <Link
+                    to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
+                  >
+                    <p>{project.ProjectName}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>
+              <i>No Projects</i>
+            </p>
+          )}
+        </div>
+        <div className="col-6 text-center">
+          <p>Project Name:</p>
+          <input
+            type="text"
+            onChange={(e) => setInputName(e.target.value)}
+            className="m-1"
+          ></input>
+          <p>Project Type:</p>
+          <input
+            type="text"
+            onChange={(e) => setInputType(e.target.value)}
+            className="m-1"
+          ></input>
+          <p>Project Story:</p>
+          <input
+            type="text"
+            onChange={(e) => setInputStory(e.target.value)}
+            className="m-1"
+          ></input>
+          <p>Project Goal:</p>
+          <input
+            type="text"
+            onChange={(e) => setInputGoal(e.target.value)}
+            className="m-1"
+          ></input>
+          <p>Deadline:</p>
+          <input
+            type="text"
+            onChange={(e) => setInputDeadline(e.target.value)}
+            className="m-1"
+          ></input>
+          <div>
+            <button
+              className="btn btn-primary"
+              onClick={(e) => createProjectHandler()}
+            >
+              Create Project
+            </button>
+          </div>
         </div>
       </div>
     </div>
