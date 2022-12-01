@@ -81,42 +81,68 @@ function Root() {
   return (
     <>
       <div className="container mt-5 d-flex flex-column align-items-center">
-        <h2>$tacksOverflow</h2>
-        <p>Enter your email:</p>
-        <input
-          type="text"
-          value={inputUsername}
-          onChange={(e) => setInputUsername(e.target.value)}
-          className="mb-3 form-control"
-        ></input>
-        <p>Enter your password:</p>
-        <input
-          type="password"
-          value={inputPassword}
-          onChange={(e) => setInputPassword(e.target.value)}
-          className="mb-3 form-control"
-        ></input>
-        <div className="d-grid d-sm-block text-center">
-          <button
-            className="btn btn-primary m-1"
-            onClick={(e) => designerLoginHandler()}
-          >
-            &#129297; Designer Login
-          </button>
-          <button
-            className="btn btn-primary m-1"
-            onClick={(e) => supporterLoginHandler()}
-          >
-            &#128179; Supporter Login
-          </button>
-          <button
-            className="btn btn-primary m-1"
-            onClick={(e) => adminLoginHandler()}
-          >
-            {" "}
-            &#129299; Admin Login
-          </button>
-        </div>
+        <nav className="navbar navbar-expand-lg">
+          <label className=" m-2 h1">
+            &#128184; $tacksOverflow &#128184;
+          </label>
+        </nav>
+        <form className="needs-validation">
+          <div className="mb-3">
+            <label className="form-label" htmlFor="username">
+              Email:
+            </label>
+            <input
+              className="form-control form-control-lg"
+              type="text"
+              name="username"
+              id="username"
+              onChange={(e) => setInputUsername(e.target.value)}
+              required
+            />
+            <div className="invalid-feedback">Please provide a username.</div>
+          </div>
+          <div className="mb-3">
+            <label className="form-label" htmlFor="password">
+              Password:
+            </label>
+            <input
+              className="form-control form-control-lg"
+              type="password"
+              name="password"
+              id="password"
+              onChange={(e) => setInputPassword(e.target.value)}
+              required
+            />
+            <div className="invalid-feedback">Please provide a password.</div>
+          </div>
+          </form>
+          <div className="d-grid d-sm-block text-center">
+            <button
+              type="submit"
+              className="btn btn-primary m-2"
+              onClick={(e) => designerLoginHandler()}
+            >
+              &#129297; Designer Login
+            </button>
+            </div>
+            <div className="d-grid d-sm-block text-center">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              onClick={(e) => supporterLoginHandler()}
+            >
+              &#128179; Supporter Login
+            </button>
+          </div>
+          <div className="d-grid d-sm-block mt-2 text-center">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              onClick={(e) => adminLoginHandler()}
+            >
+              &#129299; Admin Login
+            </button>
+          </div>
         <div className="mt-3">
           <Link to={`/createDesigner`}>
             <p>Create Designer Account</p>
