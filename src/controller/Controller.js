@@ -125,6 +125,27 @@ export async function createPledge(projectID, maxSupporters, amount, reward) {
 
   const response = await instance.post("/createPledge", data);
   console.log("/createPledge");
+  console.log(response.data.statusCode);
+  let res = null;
+  if (response.data.statusCode === 200) {
+    res = "true";
+  } else {
+    res = response.data.error;
+  }
+  return res;
+}
+
+export async function viewTemplates(projectID) {
+  console.log("ARE YOU EVEN HERE");
+  let request = {
+    projectID: projectID,
+  };
+  let value = JSON.stringify(request);
+  let data = { body: value };
+  console.log(data);
+
+  const response = await instance.post("/viewTemplates", data);
+  console.log("/viewTemplates");
   console.log(response);
   let res = null;
   if (response.data.statusCode === 200) {
@@ -135,16 +156,16 @@ export async function createPledge(projectID, maxSupporters, amount, reward) {
   return res;
 }
 
-export async function viewTemplates(projectID) {
+export async function viewTransactions(projectID) {
+  console.log("transaction start");
   let request = {
     projectID: projectID,
   };
   let value = JSON.stringify(request);
   let data = { body: value };
   console.log(data);
-
-  const response = await instance.post("/viewTemplates", data);
-  console.log("/viewTemplates");
+  const response = await instance.post("/viewTransactions", data);
+  console.log("/viewTransactions");
   console.log(response);
   let res = null;
   if (response.data.statusCode === 200) {

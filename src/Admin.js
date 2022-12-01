@@ -1,4 +1,4 @@
-import { Outlet, Link, useLoaderData, Form, redirect } from "react-router-dom";
+import { Outlet, Link, useLoaderData } from "react-router-dom";
 import { listProjects } from "./controller/Controller";
 import React from "react";
 import NavBar from "./NavBar";
@@ -12,10 +12,9 @@ export default function Admin() {
   const { projects } = useLoaderData();
 
   return (
-    <>
-    <NavBar/>
+    <div className="container">
+      <NavBar />
       <div id="sidebar">
-        <h2>$tacksOverflow</h2>
         <h2>List of Projects</h2>
         {projects.length ? (
           <ul>
@@ -36,6 +35,6 @@ export default function Admin() {
       <div id="detail">
         <Outlet />
       </div>
-    </>
+    </div>
   );
 }

@@ -11,9 +11,16 @@ export async function action(
   inputGoal,
   inputDeadline,
   designerID
-) 
-if(inputName && inputType && inputStory && inputGoal && inputDeadline && designerID){
-  {
+) {
+  let result = false;
+  if (
+    inputName &&
+    inputType &&
+    inputStory &&
+    inputGoal &&
+    inputDeadline &&
+    designerID
+  ) {
     await createProject(
       inputName,
       inputType,
@@ -22,28 +29,12 @@ if(inputName && inputType && inputStory && inputGoal && inputDeadline && designe
       inputDeadline,
       designerID
     );
+    result = true;
+  } else {
+    alert("Hey dumb bitch");
   }
+  return result;
 }
-
-export async function loader() {
-  const params = new URLSearchParams(window.location.search);
-  const designerID = params.get("designerID");
-  const projects = await listDesignerProjects(designerID);
-  console.log(projects);
-
-  const activeProjects = [];
-  const inactiveProjects = [];
-
-  for (let i = 0; i < projects.length; i++) {
-    if (projects[i].IsLaunched === 1) {
-      activeProjects.push(projects[i]);
-    } else {
-      inactiveProjects.push(projects[i]);
-    }
-  }
-  return { activeProjects, inactiveProjects };
-}
-
 export default function Designer() {
   const params = new URLSearchParams(window.location.search);
   const designerID = params.get("designerID");
@@ -53,29 +44,65 @@ export default function Designer() {
   const [inputStory, setInputStory] = React.useState("");
   const [inputGoal, setInputGoal] = React.useState("");
   const [inputDeadline, setInputDeadline] = React.useState("");
+  const [activeProjects, setActiveProjects] = React.useState("");
+  const [inactiveProjects, setInactiveProjects] = React.useState("");
   const navigate = useNavigate();
 
-  const { activeProjects, inactiveProjects } = useLoaderData();
+  React.useEffect(() => {
+    loadDataHandler();
+  }, []);
+
+  const loadDataHandler = async () => {
+    const projects = await listDesignerProjects(designerID);
+    console.log(projects);
+
+    const activeProjects = [];
+    const inactiveProjects = [];
+
+    for (let i = 0; i < projects.length; i++) {
+      if (projects[i].IsLaunched === 1) {
+        activeProjects.push(projects[i]);
+      } else {
+        inactiveProjects.push(projects[i]);
+      }
+    }
+    setActiveProjects(activeProjects);
+    setInactiveProjects(inactiveProjects);
+  };
+
+  const refreshPage = () => {
+    navigate(0);
+  };
+
+  const createProjectHandler = async () => {
+    const result = await action(
+      inputName,
+      inputType,
+      inputStory,
+      inputGoal,
+      inputDeadline,
+      designerID
+    );
+
+    if (result) {
+      refreshPage();
+    }
+  };
 
   return (
-    <>
+    <div>
       <NavBar />
-      <div id="sidebar">
-        <h2>$tacksOverflow</h2>
+      <div>
         <h2>List of Active Projects</h2>
         {activeProjects.length ? (
           <ul>
             {activeProjects.map((project) => (
               <li key={project.ProjectID}>
-                <button
-                  onClick={(e) => {
-                    navigate(
-                      `projects?projectID=${project.ProjectID}&designerID=${designerID}`
-                    );
-                  }}
+                <Link
+                  to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
                 >
-                  {project.ProjectName}
-                </button>
+                  <p>{project.ProjectName}</p>
+                </Link>
               </li>
             ))}
           </ul>
@@ -89,15 +116,11 @@ export default function Designer() {
           <ul>
             {inactiveProjects.map((project) => (
               <li key={project.ProjectID}>
-                <button
-                  onClick={(e) => {
-                    navigate(
-                      `projects?projectID=${project.ProjectID}&designerID=${designerID}`
-                    );
-                  }}
+                <Link
+                  to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
                 >
-                  {project.ProjectName}
-                </button>
+                  <p>{project.ProjectName}</p>
+                </Link>
               </li>
             ))}
           </ul>
@@ -107,7 +130,9 @@ export default function Designer() {
           </p>
         )}
       </div>
-      <Outlet />
+      <div>
+        <Outlet />
+      </div>
       <div id="detail">
         <p>Project Name:</p>
         <input
@@ -135,22 +160,11 @@ export default function Designer() {
           onChange={(e) => setInputDeadline(e.target.value)}
         ></input>
         <div>
-          <button
-            onClick={(e) =>
-              action(
-                inputName,
-                inputType,
-                inputStory,
-                inputGoal,
-                inputDeadline,
-                designerID
-              )
-            }
-          >
+          <button onClick={(e) => createProjectHandler()}>
             Create Project
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }

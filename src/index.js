@@ -30,7 +30,6 @@ const router = createBrowserRouter([
         path: "projects",
         element: <Project />,
         errorElement: <ErrorPage />,
-        loader: projectLoader,
       },
     ],
   },
@@ -38,16 +37,14 @@ const router = createBrowserRouter([
     path: "designer",
     element: <Designer />,
     errorElement: <ErrorPage />,
-    loader: designerLoader,
     action: createAction,
     children: [
       {
-        path: "designer/projects",
+        path: "projects",
         element: <Project />,
         errorElement: <ErrorPage />,
-        loader: projectLoader,
       },
-    ]
+    ],
   },
   {
     path: "createPledge",
@@ -59,7 +56,6 @@ const router = createBrowserRouter([
     path: "designer/projects",
     element: <Project />,
     errorElement: <ErrorPage />,
-    loader: projectLoader,
     children: [
       {
         path: "createPledge",
