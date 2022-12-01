@@ -25,6 +25,27 @@ export async function listDesignerProjects(id) {
   return projects;
 }
 
+export async function listSupporterPledges(id) {
+    let pledges = [];
+  
+    let request = {
+      supporterID: id,
+    };
+    let value = JSON.stringify(request);
+  
+    let data = { body: value };
+  
+    const response = await instance.post("/listSupporterPledges", data);
+    console.log("/listSupporterPledges");
+    if (response.data.statusCode === 200) {
+      console.log(response.data.body);
+      pledges = response.data.body;
+    } else {
+      alert(response.data.error);
+    }
+    return pledges;
+  }
+
 export async function listProjects() {
   let projects = [];
   const response = await instance.get("/listProjects");
