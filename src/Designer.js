@@ -54,7 +54,6 @@ export default function Designer() {
 
   const loadDataHandler = async () => {
     const projects = await listDesignerProjects(designerID);
-    console.log(projects);
 
     const activeProjects = [];
     const inactiveProjects = [];
