@@ -8,7 +8,7 @@ export default function NavBar() {
   };
   return (
     <div className="container-fluid">
-      <nav class="navbar navbar-expand-lg bg-light">
+      <nav className="navbar navbar-expand-lg bg-light">
         <div className="container-fluid">
           <label className="navbar-brand m-2 h1">&#128184; $tacksOverflow &#128184;</label>
           <button className="nav-link btn btn-link" onClick={(e) => logoutHandler()}>

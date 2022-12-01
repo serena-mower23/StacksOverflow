@@ -33,7 +33,6 @@ export default function Admin() {
         )}
       </div>
       <div id="detail">
-        <Outlet />
       </div>
     </div>
   );
