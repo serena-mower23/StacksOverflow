@@ -1,24 +1,35 @@
 import React from "react";
 import { viewProject } from "./controller/Controller";
 import { useLoaderData, Outlet, Link, useNavigate } from "react-router-dom";
-import { viewTemplates } from "./controller/Controller";
+import { viewTransactions, viewTemplates } from "./controller/Controller";
 
-export default function Project() {
+export default function ProjectDesigner() {
   const params = new URLSearchParams(window.location.search);
   const projectID = params.get("projectID");
   const designerID = params.get("designerID");
   const [pledges, setPledges] = React.useState("");
   const [project, setProject] = React.useState("");
+  const [transactions, setTransactions] = React.useState("");
   const navigate = useNavigate();
 
   React.useEffect(() => {
     grabPledgeTemplates();
-    loadDataHandler();
+    grabTransactions();
   }, []);
 
   const loadDataHandler = async () => {
     const response = await viewProject(projectID);
     const project = response[0];
+    let moneyRaised = 0;
+    console.log(typeof transactions);
+    // console.log(transactions);
+    for(var i = 0; i < transactions.length; i++){
+      console.log(transactions[i])
+      let amount = transactions[i].Amount
+      moneyRaised += amount;
+      console.log(moneyRaised)
+    }
+    project["MoneyRaised"] = moneyRaised;
     setProject(project);
   };
 
@@ -33,6 +44,13 @@ export default function Project() {
     } else {
       setPledges(response);
     }
+  };
+
+  const grabTransactions = async () => {
+    const response = await viewTransactions(projectID);
+    console.log(response);
+    setTransactions(response);
+    loadDataHandler();
   };
 
   const dashboardHandler = async () => {
