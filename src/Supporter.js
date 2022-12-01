@@ -13,7 +13,7 @@ export default function Supporter() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    loadDataHandler();
+    // loadDataHandler();
   }, []);
 
   const loadDataHandler = async () => {
