@@ -125,10 +125,10 @@ export async function createPledge(projectID, maxSupporters, amount, reward) {
 
   const response = await instance.post("/createPledge", data);
   console.log("/createPledge");
-  console.log(response);
+  console.log(response.data.statusCode);
   let res = null;
   if (response.data.statusCode === 200) {
-    res = response.data.body;
+    res = "true";
   } else {
     res = response.data.error;
   }
@@ -136,6 +136,7 @@ export async function createPledge(projectID, maxSupporters, amount, reward) {
 }
 
 export async function viewTemplates(projectID) {
+  console.log("ARE YOU EVEN HERE");
   let request = {
     projectID: projectID,
   };
