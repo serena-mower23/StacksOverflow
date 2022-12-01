@@ -155,3 +155,23 @@ export async function viewTemplates(projectID) {
   }
   return res;
 }
+
+export async function viewTransactions(projectID) {
+  console.log("transaction start");
+  let request = {
+    projectID: projectID,
+  };
+  let value = JSON.stringify(request);
+  let data = { body: value };
+  console.log(data);
+  const response = await instance.post("/viewTransactions", data);
+  console.log("/viewTransactions");
+  console.log(response);
+  let res = null;
+  if (response.data.statusCode === 200) {
+    res = response.data.body;
+  } else {
+    res = response.data.error;
+  }
+  return res;
+}
