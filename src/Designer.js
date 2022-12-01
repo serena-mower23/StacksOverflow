@@ -2,6 +2,7 @@ import { Outlet, Link, useLoaderData, useNavigate } from "react-router-dom";
 import { listDesignerProjects, createProject } from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
+import NavBar from "./NavBar";
 
 export async function action(
   inputName,
@@ -11,14 +12,27 @@ export async function action(
   inputDeadline,
   designerID
 ) {
-  await createProject(
-    inputName,
-    inputType,
-    inputStory,
-    inputGoal,
-    inputDeadline,
+  if (
+    inputName &&
+    inputType &&
+    inputStory &&
+    inputGoal &&
+    inputDeadline &&
     designerID
-  );
+  ) {
+    {
+      await createProject(
+        inputName,
+        inputType,
+        inputStory,
+        inputGoal,
+        inputDeadline,
+        designerID
+      );
+    }
+  } else {
+    alert("Hey dumb bitch");
+  }
 }
 
 export async function loader() {
@@ -26,12 +40,25 @@ export async function loader() {
   const params = new URLSearchParams(window.location.search);
   const designerID = params.get("designerID");
   const projects = await listDesignerProjects(designerID);
-  return { projects };
+  console.log(projects);
+
+  const activeProjects = [];
+  const inactiveProjects = [];
+
+  for (let i = 0; i < projects.length; i++) {
+    if (projects[i].IsLaunched === 1) {
+      activeProjects.push(projects[i]);
+    } else {
+      inactiveProjects.push(projects[i]);
+    }
+  }
+  return { activeProjects, inactiveProjects };
 }
 
 export default function Designer() {
   const params = new URLSearchParams(window.location.search);
   const designerID = params.get("designerID");
+
   const [inputName, setInputName] = React.useState("");
   const [inputType, setInputType] = React.useState("");
   const [inputStory, setInputStory] = React.useState("");
@@ -39,21 +66,11 @@ export default function Designer() {
   const [inputDeadline, setInputDeadline] = React.useState("");
   const navigate = useNavigate();
 
-  const { projects } = useLoaderData();
+  const { activeProjects, inactiveProjects } = useLoaderData();
 
-  const activeProjects = [];
-  const inactiveProjects = [];
-
-  for (let i = 0; i < projects.length; i++) {
-    console.log(projects[i])
-    if (projects[i].IsLaunched === 1) {
-      activeProjects.push(projects[i]);
-    } else {
-      inactiveProjects.push(projects[i]);
-    }
-  }
   return (
     <>
+      <NavBar />
       <div id="sidebar">
         <h2>$tacksOverflow</h2>
         <h2>List of Active Projects</h2>
@@ -78,7 +95,7 @@ export default function Designer() {
             <i>No Projects</i>
           </p>
         )}
-                <h2>List of Inactive Projects</h2>
+        <h2>List of Inactive Projects</h2>
         {inactiveProjects.length ? (
           <ul>
             {inactiveProjects.map((project) => (
@@ -101,6 +118,7 @@ export default function Designer() {
           </p>
         )}
       </div>
+      <Outlet />
       <div id="detail">
         <p>Project Name:</p>
         <input
