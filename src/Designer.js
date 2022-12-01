@@ -85,7 +85,7 @@ export default function Designer() {
     );
 
     if (result) {
-      // refreshPage();
+      refreshPage();
     }
   };
 
