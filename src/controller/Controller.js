@@ -112,11 +112,20 @@ export async function createProject(
 }
 
 export async function createPledge(projectID, maxSupporters, amount, reward) {
+  let checkedReward = "N/A";
+  let checkedSupporters = 0;
+  if (reward) {
+    checkedReward = reward;
+  }
+  if (maxSupporters) {
+    checkedSupporters = maxSupporters;
+  }
+
   let request = {
     projectID: projectID,
-    maxSupporters: maxSupporters,
+    maxSupporters: checkedSupporters,
     pledgeAmount: amount,
-    reward: reward,
+    reward: checkedReward,
   };
 
   let value = JSON.stringify(request);

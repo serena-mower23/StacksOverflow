@@ -4,14 +4,14 @@ import { useNavigate } from "react-router-dom";
 
 export async function action(
   projectID,
-  inputAmount,
   inputSupporters,
+  inputAmount,
   inputReward
 ) {
   const response = await createPledge(
     projectID,
-    inputAmount,
     inputSupporters,
+    inputAmount,
     inputReward
   );
   console.log(response);
@@ -29,8 +29,8 @@ export default function Pledge() {
   const createPledgeHandler = async () => {
     const response = await action(
       projectID,
-      inputAmount,
       inputSupporters,
+      inputAmount,
       inputReward
     );
     console.log(response);

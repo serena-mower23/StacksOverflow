@@ -12,7 +12,9 @@ import CreateSupporter from "./CreateSupporter";
 import { loader as designerLoader, action as createAction } from "./Designer";
 import Pledge, { action as createPledgeAction } from "./Pledge";
 import Root from "./Root";
-import Project, { loader as projectLoader } from "./Project";
+import ProjectDesigner, { loader as projectLoader } from "./ProjectDesigner";
+import ProjectSupporter from "./ProjectSupporter";
+import ProjectAdmin from "./ProjectAdmin";
 
 const router = createBrowserRouter([
   {
@@ -25,36 +27,21 @@ const router = createBrowserRouter([
     element: <Admin />,
     errorElement: <ErrorPage />,
     loader: adminLoader,
-    children: [
-      {
-        path: "projects",
-        element: <Project />,
-        errorElement: <ErrorPage />,
-      },
-    ],
+  },
+  {
+    path: "admin/projects",
+    element: <ProjectAdmin />,
+    errorElement: <ErrorPage />,
   },
   {
     path: "designer",
     element: <Designer />,
     errorElement: <ErrorPage />,
     action: createAction,
-    children: [
-      {
-        path: "projects",
-        element: <Project />,
-        errorElement: <ErrorPage />,
-      },
-    ],
-  },
-  {
-    path: "createPledge",
-    element: <Pledge />,
-    errorElement: <ErrorPage />,
-    action: createPledgeAction,
   },
   {
     path: "designer/projects",
-    element: <Project />,
+    element: <ProjectDesigner />,
     errorElement: <ErrorPage />,
     children: [
       {
@@ -66,13 +53,19 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: "createPledge",
+    element: <Pledge />,
+    errorElement: <ErrorPage />,
+    action: createPledgeAction,
+  },
+  {
     path: "supporter",
     element: <Supporter />,
     errorElement: <ErrorPage />,
     children: [
       {
         path: "projects",
-        element: <Project />,
+        element: <ProjectSupporter />,
         errorElement: <ErrorPage />,
       },
     ],

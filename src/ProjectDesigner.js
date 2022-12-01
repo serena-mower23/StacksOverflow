@@ -27,7 +27,12 @@ export default function Project() {
     const response = await viewTemplates(projectID);
     console.log("YALL ARE CRAZY");
     console.log(response);
-    setPledges(response);
+    if (response.length < 0) {
+      let pledge = [];
+      setPledges(pledge);
+    } else {
+      setPledges(response);
+    }
   };
 
   const dashboardHandler = async () => {
@@ -39,21 +44,25 @@ export default function Project() {
       <div>
         <button onClick={(e) => dashboardHandler()}>Close Project</button>
         <h1>{project.ProjectName}</h1>
-        <p>{project.ProjectType}</p>
-        <p>{project.ProjectStory}</p>
-        <p>{project.ProjectGoal}</p>
-        <p>{project.MoneyRaised}</p>
-        <p>{project.NumSupporter}</p>
-        <p>{project.Deadline}</p>
+        <p>Project Type: {project.ProjectType}</p>
+        <p>Project Story: {project.ProjectStory}</p>
+        <p>Project Goal: {project.ProjectGoal}</p>
+        <p>Money Raised: {project.MoneyRaised}</p>
+        <p>Number of Supporters: {project.NumSupporter}</p>
+        <p>Project Deadline: {project.Deadline}</p>
         <h4>Pledges</h4>
         <ul>
           {pledges.length ? (
             <ul>
               {pledges.map((pledge) => (
                 <li>
-                  <p>{pledge.MaxSupporters}</p>
-                  <p>{pledge.PledgeAmount}</p>
-                  <p>{pledge.Reward}</p>
+                  {pledge.MaxSupporters !== 0 ? (
+                    <p>Max Supporters: {pledge.MaxSupporters}</p>
+                  ) : (
+                    <p>Max Supporters: No Limit</p>
+                  )}
+                  <p>Pledge Amount: {pledge.PledgeAmount}</p>
+                  <p>Pledge Reward: {pledge.Reward}</p>
                 </li>
               ))}
             </ul>

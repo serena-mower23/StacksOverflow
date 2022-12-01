@@ -1,6 +1,7 @@
 import { register } from "./controller/Controller";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import NavBar from "./NavBar";
 
 export default function CreateDesigner() {
   const [inputNewUsername, setInputUsername] = React.useState("");
@@ -22,9 +23,26 @@ export default function CreateDesigner() {
       alert(result);
     }
   };
+
+  const logoutHandler = async () => {
+    navigate(-1);
+  };
+
   return (
-    <>
-      <h2>$tacksOverflow</h2>
+    <div className="container">
+      <nav className="navbar navbar-expand-lg bg-light">
+        <div className="container-fluid">
+          <label className="navbar-brand m-2 h1">
+            &#128184; $tacksOverflow &#128184;
+          </label>
+          <button
+            className="nav-link btn btn-link"
+            onClick={(e) => logoutHandler()}
+          >
+            Go back to login
+          </button>
+        </div>
+      </nav>
       <div id="detail">
         <p>Email:</p>
         <input
@@ -47,6 +65,6 @@ export default function CreateDesigner() {
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }

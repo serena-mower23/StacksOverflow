@@ -90,7 +90,7 @@ export default function Designer() {
   };
 
   return (
-    <div>
+    <div className="container">
       <NavBar />
       <div>
         <h2>List of Active Projects</h2>
@@ -131,7 +131,6 @@ export default function Designer() {
         )}
       </div>
       <div>
-        <Outlet />
       </div>
       <div id="detail">
         <p>Project Name:</p>
