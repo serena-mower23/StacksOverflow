@@ -12,6 +12,7 @@ export async function action(
   inputDeadline,
   designerID
 ) {
+  let result = false;
   if (
     inputName &&
     inputType &&
@@ -20,40 +21,20 @@ export async function action(
     inputDeadline &&
     designerID
   ) {
-    {
-      await createProject(
-        inputName,
-        inputType,
-        inputStory,
-        inputGoal,
-        inputDeadline,
-        designerID
-      );
-    }
+    await createProject(
+      inputName,
+      inputType,
+      inputStory,
+      inputGoal,
+      inputDeadline,
+      designerID
+    );
+    result = true;
   } else {
     alert("Hey dumb bitch");
   }
+  return result;
 }
-
-export async function loader() {
-  const params = new URLSearchParams(window.location.search);
-  const designerID = params.get("designerID");
-  const projects = await listDesignerProjects(designerID);
-  console.log(projects);
-
-  const activeProjects = [];
-  const inactiveProjects = [];
-
-  for (let i = 0; i < projects.length; i++) {
-    if (projects[i].IsLaunched === 1) {
-      activeProjects.push(projects[i]);
-    } else {
-      inactiveProjects.push(projects[i]);
-    }
-  }
-  return { activeProjects, inactiveProjects };
-}
-
 export default function Designer() {
   const params = new URLSearchParams(window.location.search);
   const designerID = params.get("designerID");
@@ -63,9 +44,50 @@ export default function Designer() {
   const [inputStory, setInputStory] = React.useState("");
   const [inputGoal, setInputGoal] = React.useState("");
   const [inputDeadline, setInputDeadline] = React.useState("");
+  const [activeProjects, setActiveProjects] = React.useState("");
+  const [inactiveProjects, setInactiveProjects] = React.useState("");
   const navigate = useNavigate();
 
-  const { activeProjects, inactiveProjects } = useLoaderData();
+  React.useEffect(() => {
+    loadDataHandler();
+  }, []);
+
+  const loadDataHandler = async () => {
+    const projects = await listDesignerProjects(designerID);
+    console.log(projects);
+
+    const activeProjects = [];
+    const inactiveProjects = [];
+
+    for (let i = 0; i < projects.length; i++) {
+      if (projects[i].IsLaunched === 1) {
+        activeProjects.push(projects[i]);
+      } else {
+        inactiveProjects.push(projects[i]);
+      }
+    }
+    setActiveProjects(activeProjects);
+    setInactiveProjects(inactiveProjects);
+  };
+
+  const refreshPage = () => {
+    navigate(0);
+  };
+
+  const createProjectHandler = async () => {
+    const result = await action(
+      inputName,
+      inputType,
+      inputStory,
+      inputGoal,
+      inputDeadline,
+      designerID
+    );
+
+    if (result) {
+      refreshPage();
+    }
+  };
 
   return (
     <div>
@@ -138,18 +160,7 @@ export default function Designer() {
           onChange={(e) => setInputDeadline(e.target.value)}
         ></input>
         <div>
-          <button
-            onClick={(e) =>
-              action(
-                inputName,
-                inputType,
-                inputStory,
-                inputGoal,
-                inputDeadline,
-                designerID
-              )
-            }
-          >
+          <button onClick={(e) => createProjectHandler()}>
             Create Project
           </button>
         </div>

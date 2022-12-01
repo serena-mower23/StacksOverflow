@@ -136,6 +136,7 @@ export async function createPledge(projectID, maxSupporters, amount, reward) {
 }
 
 export async function viewTemplates(projectID) {
+  console.log("ARE YOU EVEN HERE");
   let request = {
     projectID: projectID,
   };
