@@ -35,7 +35,7 @@ export default function Pledge() {
     );
     console.log(response);
 
-    if (response.data.statusCode === 200) {
+    if (response === "true") {
       navigate(-1);
     } else {
       alert("Cry");
