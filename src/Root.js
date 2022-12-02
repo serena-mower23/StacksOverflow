@@ -22,6 +22,7 @@ function Root() {
 
     let data = { body: value };
 
+    console.log("/login");
     const response = await instance.post("/login", data);
     if (response.data.statusCode === 200) {
       navigate(`/designer?designerID=${inputUsername}`);

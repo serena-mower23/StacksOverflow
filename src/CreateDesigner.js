@@ -76,7 +76,7 @@ export default function CreateDesigner() {
           </label>
           <input
             className="form-control form-control-lg"
-            type="password"
+            type="text"
             onChange={(e) => setInputName(e.target.value)}
             required
           />

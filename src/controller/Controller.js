@@ -14,8 +14,9 @@ export async function listDesignerProjects(id) {
 
   let data = { body: value };
 
-  const response = await instance.post("/listDesignerProjects", data);
   console.log("/listDesignerProjects");
+  const response = await instance.post("/listDesignerProjects", data);
+
   if (response.data.statusCode === 200) {
     console.log(response.data.body);
     projects = response.data.body;
@@ -26,25 +27,25 @@ export async function listDesignerProjects(id) {
 }
 
 export async function listSupporterPledges(id) {
-    let pledges = [];
-  
-    let request = {
-      supporterID: id,
-    };
-    let value = JSON.stringify(request);
-  
-    let data = { body: value };
-  
-    const response = await instance.post("/listSupporterPledges", data);
-    console.log("/listSupporterPledges");
-    if (response.data.statusCode === 200) {
-      console.log(response.data.body);
-      pledges = response.data.body;
-    } else {
-      alert(response.data.error);
-    }
-    return pledges;
+  let pledges = [];
+
+  let request = {
+    supporterID: id,
+  };
+  let value = JSON.stringify(request);
+
+  let data = { body: value };
+  console.log("/listSupporterPledges");
+  const response = await instance.post("/listSupporterPledges", data);
+
+  if (response.data.statusCode === 200) {
+    console.log(response.data.body);
+    pledges = response.data.body;
+  } else {
+    alert(response.data.error);
   }
+  return pledges;
+}
 
 export async function listProjects() {
   let projects = [];
@@ -124,6 +125,7 @@ export async function createProject(
 
   const response = await instance.post("/createProject", data);
   console.log("/createProject");
+  console.log(response);
   console.log(response.data.body);
   return response;
 }
