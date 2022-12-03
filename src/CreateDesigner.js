@@ -83,12 +83,14 @@ export default function CreateDesigner() {
           <div className="invalid-feedback">Please provide a password.</div>
         </div>
       </form>
+      <div className="d-grid d-sm-block text-center">
       <button
         className="btn btn-primary"
         onClick={(e) => createDesignerHandler()}
       >
         Create Designer &#129297;
       </button>
+      </div>
       </div>
     </div>
   );

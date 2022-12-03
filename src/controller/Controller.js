@@ -151,9 +151,10 @@ export async function createPledge(projectID, maxSupporters, amount, reward) {
   let data = { body: value };
   console.log(data);
 
-  const response = await instance.post("/createPledge", data);
   console.log("/createPledge");
+  const response = await instance.post("/createPledge", data);
   console.log(response.data.statusCode);
+
   let res = null;
   if (response.data.statusCode === 200) {
     res = "true";
@@ -170,8 +171,9 @@ export async function viewTemplates(projectID) {
   let value = JSON.stringify(request);
   let data = { body: value };
 
-  const response = await instance.post("/viewTemplates", data);
   console.log("/viewTemplates");
+  const response = await instance.post("/viewTemplates", data);
+
   let res = null;
   if (response.data.statusCode === 200) {
     res = response.data.body;
@@ -187,8 +189,10 @@ export async function viewTransactions(projectID) {
   };
   let value = JSON.stringify(request);
   let data = { body: value };
-  const response = await instance.post("/viewTransactions", data);
+
   console.log("/viewTransactions");
+  const response = await instance.post("/viewTransactions", data);
+
   let res = null;
   if (response.data.statusCode === 200) {
     console.log(response.data.body);
@@ -197,4 +201,41 @@ export async function viewTransactions(projectID) {
     res = response.data.error;
   }
   return res;
+}
+
+export async function getFunds(supporterID) {
+  let request = {
+    supporterID: supporterID,
+  };
+
+  let value = JSON.stringify(request);
+  let data = { body: value };
+  console.log("/getFunds");
+  const response = await instance.post("/getFunds", data);
+
+  if (response.data.statusCode === 200) {
+    console.log(response.data.body);
+    return response.data.body;
+  } else {
+    return "error";
+  }
+}
+
+export async function updateFunds(supporterID, amount) {
+  let request = {
+    supporterID: supporterID,
+    amount: amount
+  };
+
+  let value = JSON.stringify(request);
+  let data = { body: value };
+  console.log("/updateFunds");
+  const response = await instance.post("/updateFunds", data);
+
+  if (response.data.statusCode === 200) {
+    console.log(response.data.body);
+    return response.data.body;
+  } else {
+    return "error";
+  }
 }
