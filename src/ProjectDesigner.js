@@ -1,6 +1,6 @@
 import React from "react";
 import { viewProject } from "./controller/Controller";
-import { useLoaderData, Outlet, Link, useNavigate } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import { viewTransactions, viewTemplates, deletePledge } from "./controller/Controller";
 
 export default function ProjectDesigner() {
@@ -27,6 +27,10 @@ export default function ProjectDesigner() {
     }
     project["MoneyRaised"] = moneyRaised;
     setProject(project);
+  };
+
+  const refreshPage = () => {
+    navigate(0);
   };
 
   const grabPledgeTemplates = async () => {
