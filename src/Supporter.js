@@ -3,9 +3,11 @@ import {
   listSupporterPledges,
   getFunds,
   updateFunds,
+  listProjects,
 } from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
+import Select from "react-select";
 
 export default function Supporter() {
   const params = new URLSearchParams(window.location.search);
@@ -16,8 +18,10 @@ export default function Supporter() {
   const [funds, setFunds] = React.useState("");
   const [fundAmount, setFundAmount] = React.useState("");
   const navigate = useNavigate();
+  const [projects, setProjects] = React.useState("");
 
   React.useEffect(() => {
+    loadProjectsHandler();
     // loadTransactionsHandler();
     // loadFundsHandler();
   }, []);
@@ -43,6 +47,23 @@ export default function Supporter() {
     const response = await getFunds(supporterID);
 
     setFunds(response.funds);
+  };
+
+  const loadProjectsHandler = async () => {
+    const response = await listProjects();
+
+    let returnedProjects = [];
+    for (let i = 0; i < response.length; i++) {
+      let project = {};
+      project["value"] = response[i].ProjectID;
+      project["label"] = response[i].ProjectName;
+      project["type"] = response[i].ProjectType;
+      returnedProjects.push(project);
+      setProjects(returnedProjects);
+    }
+    console.log(returnedProjects);
+    console.log("asfadsf");
+    console.log(projects);
   };
 
   const addFunds = async () => {
@@ -95,7 +116,7 @@ export default function Supporter() {
       </div>
       <div className="m-5 row">
         <div className="col-4">
-          <label>Search</label>
+          <Select projects={projects} />
         </div>
         <div className="col-4">
           <h2>List of Pledges</h2>
@@ -118,24 +139,24 @@ export default function Supporter() {
           )}
         </div>
         <div className="col-4">
-        <h2>List of Direct Supports</h2>
-        {directSupports.length ? (
-          <ul>
-            {directSupports.map((dS) => (
-              <li>
-                <Link
-                  to={`projects?projectID=${dS.ProjectID}&supporterID=${supporterID}`}
-                >
-                  <p>{dS.ProjectName}</p>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>
-            <i>No Direct Supports</i>
-          </p>
-        )}
+          <h2>List of Direct Supports</h2>
+          {directSupports.length ? (
+            <ul>
+              {directSupports.map((dS) => (
+                <li>
+                  <Link
+                    to={`projects?projectID=${dS.ProjectID}&supporterID=${supporterID}`}
+                  >
+                    <p>{dS.ProjectName}</p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>
+              <i>No Direct Supports</i>
+            </p>
+          )}
         </div>
       </div>
     </div>
