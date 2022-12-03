@@ -1,7 +1,6 @@
 import { register } from "./controller/Controller";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import NavBar from "./NavBar";
 
 export default function CreateSupporter() {
   const [inputNewUsername, setInputUsername] = React.useState("");
