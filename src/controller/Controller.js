@@ -257,3 +257,22 @@ export async function deleteProject(projectID) {
   }
   return res;
 }
+
+export async function launchProject(projectID) {
+  let request = {
+    projectID: projectID
+  }
+
+  let value = JSON.stringify(request);
+  let data = { body: value };
+  console.log("/launchProject");
+  const response = await instance.post("/launchProject", data);
+
+  let res = null;
+  if (response.data.statusCode === 200) {
+    res = "true";
+  } else {
+    res = response.data.error;
+  }
+  return res;
+}

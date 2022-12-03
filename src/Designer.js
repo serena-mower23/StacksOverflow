@@ -1,5 +1,5 @@
 import { Outlet, Link, useLoaderData, useNavigate } from "react-router-dom";
-import { listDesignerProjects, createProject, deleteProject } from "./controller/Controller";
+import { listDesignerProjects, createProject, deleteProject, launchProject } from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
 
@@ -100,6 +100,14 @@ export default function Designer() {
     }
   }
 
+  const launchProjectHandler = async (projectID) => {
+    const response = await launchProject(projectID);
+
+    if (response) {
+      refreshPage();
+    }
+  }
+
   return (
     <div className="container">
       <div className="container d-flex flex-column mt-2 align-items-center">
@@ -144,6 +152,7 @@ export default function Designer() {
                   >
                     <p>{project.ProjectName}</p>
                   </Link>
+                  <button className="btn btn-sm btn-success" onClick={(e) => launchProjectHandler(project.ProjectID)}>Launch</button>
                   <button className="btn btn-sm btn-danger" onClick={(e) => deleteProjectHandler(project.ProjectID)}>Delete</button>
                   </div>
                 </li>
