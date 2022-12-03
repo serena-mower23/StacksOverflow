@@ -88,9 +88,11 @@ export default function Designer() {
     );
 
     if (result) {
-      // refreshPage();
+      refreshPage();
     }
   };
+
+  // const deleteProjectHandler
 
   return (
     <div className="container">
@@ -117,6 +119,7 @@ export default function Designer() {
                   >
                     <p>{project.ProjectName}</p>
                   </Link>
+                  <button className="btn btn-danger">Delete Project</button>
                 </li>
               ))}
             </ul>
@@ -130,11 +133,14 @@ export default function Designer() {
             <ul>
               {inactiveProjects.map((project) => (
                 <li key={project.ProjectID}>
+                  <div className="container-fluid">
                   <Link
                     to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
                   >
                     <p>{project.ProjectName}</p>
                   </Link>
+                  <button className="btn btn-sm btn-danger">Delete</button>
+                  </div>
                 </li>
               ))}
             </ul>
