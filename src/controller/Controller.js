@@ -276,3 +276,22 @@ export async function launchProject(projectID) {
   }
   return res;
 }
+
+export async function deletePledge(templateID) {
+  let request = {
+    templateID: templateID
+  }
+
+  let value = JSON.stringify(request);
+  let data = { body: value };
+  console.log("/deletePledge");
+  const response = await instance.post("/deletePledge", data);
+
+  let res = null;
+  if (response.data.statusCode === 200) {
+    res = "true";
+  } else {
+    res = response.data.error;
+  }
+  return res;
+}

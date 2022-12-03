@@ -1,7 +1,7 @@
 import React from "react";
 import { viewProject } from "./controller/Controller";
 import { useLoaderData, Outlet, Link, useNavigate } from "react-router-dom";
-import { viewTransactions, viewTemplates } from "./controller/Controller";
+import { viewTransactions, viewTemplates, deletePledge } from "./controller/Controller";
 
 export default function ProjectDesigner() {
   const params = new URLSearchParams(window.location.search);
@@ -49,6 +49,14 @@ export default function ProjectDesigner() {
     navigate(-1);
   };
 
+  const deletePledgeHandler = async (templateID) => {
+    const response = await deletePledge(templateID);
+
+    if (response) {
+      refreshPage();
+    }
+  }
+
   return (
     <>
       <div>
@@ -73,6 +81,7 @@ export default function ProjectDesigner() {
                   )}
                   <p>Pledge Amount: {pledge.PledgeAmount}</p>
                   <p>Pledge Reward: {pledge.Reward}</p>
+                  <button className="btn btn-sm btn-danger" onClick={(e) => deletePledgeHandler(pledge.TemplateID)}>Delete</button>
                 </li>
               ))}
             </ul>
