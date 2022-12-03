@@ -94,7 +94,10 @@ export default function Supporter() {
         </nav>
       </div>
       <div className="m-5 row">
-        <div className="col-6">
+        <div className="col-4">
+          <label>Search</label>
+        </div>
+        <div className="col-4">
           <h2>List of Pledges</h2>
           {claims.length ? (
             <ul>
@@ -113,24 +116,26 @@ export default function Supporter() {
               <i>No Claims</i>
             </p>
           )}
-          <h2>List of Direct Supports</h2>
-          {directSupports.length ? (
-            <ul>
-              {directSupports.map((dS) => (
-                <li>
-                  <Link
-                    to={`projects?projectID=${dS.ProjectID}&supporterID=${supporterID}`}
-                  >
-                    <p>{dS.ProjectName}</p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>
-              <i>No Direct Supports</i>
-            </p>
-          )}
+        </div>
+        <div className="col-4">
+        <h2>List of Direct Supports</h2>
+        {directSupports.length ? (
+          <ul>
+            {directSupports.map((dS) => (
+              <li>
+                <Link
+                  to={`projects?projectID=${dS.ProjectID}&supporterID=${supporterID}`}
+                >
+                  <p>{dS.ProjectName}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>
+            <i>No Direct Supports</i>
+          </p>
+        )}
         </div>
       </div>
     </div>

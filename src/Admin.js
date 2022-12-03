@@ -7,8 +7,6 @@ export async function loader() {
   return { projects };
 }
 
-
-
 export default function Admin() {
   const { projects } = useLoaderData();
   const navigate = useNavigate();
