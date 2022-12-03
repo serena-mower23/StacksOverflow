@@ -29,43 +29,64 @@ export default function CreateSupporter() {
   };
 
   return (
-    <div className="container">
-      <nav className="navbar navbar-expand-lg bg-light">
-        <div className="container-fluid">
-          <label className="navbar-brand m-2 h1">
-            &#128184; $tacksOverflow &#128184;
-          </label>
+    <div className="container d-flex flex-column mt-2 align-items-center">
+      <nav className="navbar navbar-expand-lg">
+        <label className="m-2 h1">
+          &#128184; $tacksOverflow &#128184;
+        </label>
           <button
             className="nav-link btn btn-link"
             onClick={(e) => logoutHandler()}
           >
             Go back to login
           </button>
-        </div>
       </nav>
-      <h2>$tacksOverflow</h2>
-      <div id="detail">
-        <p>Email:</p>
-        <input
-          type="text"
-          onChange={(e) => setInputUsername(e.target.value)}
-        ></input>
-        <p>Password:</p>
-        <input
-          type="text"
-          onChange={(e) => setInputPassword(e.target.value)}
-        ></input>
-        <p>Name:</p>
-        <input
-          type="text"
-          onChange={(e) => setInputName(e.target.value)}
-        ></input>
-        <div>
-          <button onClick={(e) => createSupporterHandler()}>
-            Create Supporter
+      <h2>Create Supporter Account</h2>
+      <form className="needs-validation">
+          <div className="mb-3">
+            <label className="form-label" htmlFor="username">
+              Email:
+            </label>
+            <input
+              className="form-control form-control-lg"
+              type="text"
+              name="username"
+              id="username"
+              onChange={(e) => setInputUsername(e.target.value)}
+              required
+            />
+            <div className="invalid-feedback">Please provide a username.</div>
+          </div>
+          <div className="mb-3">
+            <label className="form-label" htmlFor="password">
+              Password:
+            </label>
+            <input
+              className="form-control form-control-lg"
+              type="password"
+              name="password"
+              id="password"
+              onChange={(e) => setInputPassword(e.target.value)}
+              required
+            />
+            <div className="invalid-feedback">Please provide a password.</div>
+          </div>
+          <div className="mb-3">
+            <label className="form-label" htmlFor="password">
+              Name
+            </label>
+            <input
+              className="form-control form-control-lg"
+              type="text"
+              onChange={(e) => setInputName(e.target.value)}
+              required
+            />
+            <div className="invalid-feedback">Please provide a password.</div>
+          </div>
+        </form>
+          <button className="btn btn-primary" onClick={(e) => createSupporterHandler()}>
+            Create Supporter &#128179;
           </button>
-        </div>
-      </div>
     </div>
   );
 }

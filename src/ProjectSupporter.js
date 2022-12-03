@@ -21,23 +21,16 @@ export default function ProjectSupporter() {
     const response = await viewProject(projectID);
     const project = response[0];
     let moneyRaised = 0;
-    console.log(typeof transactions);
-    // console.log(transactions);
     for (var i = 0; i < transactions.length; i++) {
-      console.log(transactions[i]);
       let amount = transactions[i].Amount;
       moneyRaised += amount;
-      console.log(moneyRaised);
     }
     project["MoneyRaised"] = moneyRaised;
     setProject(project);
   };
 
   const grabPledgeTemplates = async () => {
-    console.log("I WANT YOU TO WORK");
     const response = await viewTemplates(projectID);
-    console.log("YALL ARE CRAZY");
-    console.log(response);
     if (response.length < 0) {
       let pledge = [];
       setPledges(pledge);
@@ -48,7 +41,6 @@ export default function ProjectSupporter() {
 
   const grabTransactions = async () => {
     const response = await viewTransactions(projectID);
-    console.log(response);
     setTransactions(response);
     loadDataHandler();
   };

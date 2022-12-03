@@ -14,7 +14,6 @@ export async function action(
     inputAmount,
     inputReward
   );
-  console.log(response);
   return response;
 }
 
@@ -33,7 +32,6 @@ export default function Pledge() {
       inputAmount,
       inputReward
     );
-    console.log(response);
 
     if (response === "true") {
       navigate(-1);
