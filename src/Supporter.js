@@ -94,7 +94,7 @@ export default function Supporter() {
                   onChange={(e) => setFundAmount(e.target.value)}
                 />
                 <button className="btn btn-primary" onClick={(e) => addFunds()}>
-                  Add Funds
+                  &#128176; Add Funds
                 </button>
               </div>
               <div className="col">
