@@ -248,6 +248,7 @@ export async function deleteProject(projectID) {
   let data = { body: value };
   console.log("/deleteProject");
   const response = await instance.post("/deleteProject", data);
+  console.log(response);
 
   let res = null;
   if (response.data.statusCode === 200) {
@@ -294,4 +295,8 @@ export async function deletePledge(templateID) {
     res = response.data.error;
   }
   return res;
+}
+
+export async function searchProjects(search) {
+  
 }

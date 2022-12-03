@@ -62,13 +62,11 @@ const router = createBrowserRouter([
     path: "supporter",
     element: <Supporter />,
     errorElement: <ErrorPage />,
-    children: [
-      {
-        path: "projects",
-        element: <ProjectSupporter />,
-        errorElement: <ErrorPage />,
-      },
-    ],
+  },
+  {
+    path: "supporter/projects",
+    element: <ProjectSupporter />,
+    errorElement: <ErrorPage />,
   },
   {
     path: "createDesigner",

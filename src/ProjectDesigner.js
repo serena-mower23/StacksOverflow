@@ -64,7 +64,7 @@ export default function ProjectDesigner() {
   return (
     <>
       <div>
-        <button onClick={(e) => dashboardHandler()}>Close Project</button>
+        <button onClick={(e) => dashboardHandler()} className="btn btn-primary">Close Project</button>
         <h1>{project.ProjectName}</h1>
         <p>Project Type: {project.ProjectType}</p>
         <p>Project Story: {project.ProjectStory}</p>
@@ -85,7 +85,9 @@ export default function ProjectDesigner() {
                   )}
                   <p>Pledge Amount: {pledge.PledgeAmount}</p>
                   <p>Pledge Reward: {pledge.Reward}</p>
+                  {project.IsLaunched === 0 ? (
                   <button className="btn btn-sm btn-danger" onClick={(e) => deletePledgeHandler(pledge.TemplateID)}>Delete</button>
+                  ) : (<p></p>)}
                 </li>
               ))}
             </ul>
@@ -100,7 +102,7 @@ export default function ProjectDesigner() {
         <Link
           to={`/createPledge?projectID=${[projectID]}&designerID=${designerID}`}
         >
-          <p>Create New Pledge</p>
+          <button className="btn btn-primary">Create New Pledge</button>
         </Link>
       </div>
       <Outlet />
