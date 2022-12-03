@@ -13,9 +13,6 @@ function Root() {
   const navigate = useNavigate();
 
   const designerLoginHandler = async () => {
-    console.log(inputUsername);
-    console.log(inputPassword);
-
     let request = {
       accountType: "Designers",
       email: inputUsername,
@@ -24,8 +21,8 @@ function Root() {
     let value = JSON.stringify(request);
 
     let data = { body: value };
-    console.log(data);
 
+    console.log("/login");
     const response = await instance.post("/login", data);
     if (response.data.statusCode === 200) {
       navigate(`/designer?designerID=${inputUsername}`);
@@ -35,9 +32,6 @@ function Root() {
   };
 
   const supporterLoginHandler = async () => {
-    console.log(inputUsername);
-    console.log(inputPassword);
-
     let request = {
       accountType: "Supporters",
       email: inputUsername,
@@ -46,7 +40,6 @@ function Root() {
     let value = JSON.stringify(request);
 
     let data = { body: value };
-    console.log(data);
 
     const response = await instance.post("/login", data);
     if (response.data.statusCode === 200) {
@@ -57,9 +50,6 @@ function Root() {
   };
 
   const adminLoginHandler = async () => {
-    console.log(inputUsername);
-    console.log(inputPassword);
-
     let request = {
       accountType: "Admins",
       email: inputUsername,
@@ -68,7 +58,6 @@ function Root() {
     let value = JSON.stringify(request);
 
     let data = { body: value };
-    console.log(data);
 
     const response = await instance.post("/login", data);
     if (response.data.statusCode === 200) {
@@ -82,9 +71,7 @@ function Root() {
     <>
       <div className="container mt-5 d-flex flex-column align-items-center">
         <nav className="navbar navbar-expand-lg">
-          <label className=" m-2 h1">
-            &#128184; $tacksOverflow &#128184;
-          </label>
+          <label className=" m-2 h1">&#128184; $tacksOverflow &#128184;</label>
         </nav>
         <form className="needs-validation">
           <div className="mb-3">
@@ -115,34 +102,34 @@ function Root() {
             />
             <div className="invalid-feedback">Please provide a password.</div>
           </div>
-          </form>
-          <div className="d-grid d-sm-block text-center">
-            <button
-              type="submit"
-              className="btn btn-primary m-2"
-              onClick={(e) => designerLoginHandler()}
-            >
-              &#129297; Designer Login
-            </button>
-            </div>
-            <div className="d-grid d-sm-block text-center">
-            <button
-              type="submit"
-              className="btn btn-primary"
-              onClick={(e) => supporterLoginHandler()}
-            >
-              &#128179; Supporter Login
-            </button>
-          </div>
-          <div className="d-grid d-sm-block mt-2 text-center">
-            <button
-              type="submit"
-              className="btn btn-primary"
-              onClick={(e) => adminLoginHandler()}
-            >
-              &#129299; Admin Login
-            </button>
-          </div>
+        </form>
+        <div className="d-grid d-sm-block text-center">
+          <button
+            type="submit"
+            className="btn btn-primary m-2"
+            onClick={(e) => designerLoginHandler()}
+          >
+            &#129297; Designer Login
+          </button>
+        </div>
+        <div className="d-grid d-sm-block text-center">
+          <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={(e) => supporterLoginHandler()}
+          >
+            &#128179; Supporter Login
+          </button>
+        </div>
+        <div className="d-grid d-sm-block mt-2 text-center">
+          <button
+            type="submit"
+            className="btn btn-primary"
+            onClick={(e) => adminLoginHandler()}
+          >
+            &#129299; Admin Login
+          </button>
+        </div>
         <div className="mt-3">
           <Link to={`/createDesigner`}>
             <p>Create Designer Account</p>
