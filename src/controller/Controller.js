@@ -153,7 +153,6 @@ export async function createPledge(projectID, maxSupporters, amount, reward) {
 
   console.log("/createPledge");
   const response = await instance.post("/createPledge", data);
-  console.log(response.data.statusCode);
 
   let res = null;
   if (response.data.statusCode === 200) {
@@ -238,4 +237,23 @@ export async function updateFunds(supporterID, amount) {
   } else {
     return "error";
   }
+}
+
+export async function deleteProject(projectID) {
+  let request = {
+    projectID: projectID
+  }
+
+  let value = JSON.stringify(request);
+  let data = { body: value };
+  console.log("/deleteProject");
+  const response = await instance.post("/deleteProject", data);
+
+  let res = null;
+  if (response.data.statusCode === 200) {
+    res = "true";
+  } else {
+    res = response.data.error;
+  }
+  return res;
 }
