@@ -2,7 +2,6 @@ import { Outlet, Link, useLoaderData, useNavigate } from "react-router-dom";
 import { listDesignerProjects, createProject } from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
-import NavBar from "./NavBar";
 
 export async function action(
   inputName,
@@ -35,6 +34,7 @@ export async function action(
   }
   return result;
 }
+
 export default function Designer() {
   const params = new URLSearchParams(window.location.search);
   const designerID = params.get("designerID");
@@ -73,6 +73,10 @@ export default function Designer() {
     navigate(0);
   };
 
+  const logoutHandler = async () => {
+    navigate("/");
+  };
+
   const createProjectHandler = async () => {
     const result = await action(
       inputName,
@@ -84,13 +88,25 @@ export default function Designer() {
     );
 
     if (result) {
-      // refreshPage();
+      refreshPage();
     }
   };
 
+  // const deleteProjectHandler
+
   return (
     <div className="container">
-      <NavBar />
+      <div className="container d-flex flex-column mt-2 align-items-center">
+        <nav className="navbar navbar-expand-lg">
+          <label className="m-2 h1">&#128184; $tacksOverflow &#128184;</label>
+          <button
+            className="nav-link btn btn-link"
+            onClick={(e) => logoutHandler()}
+          >
+            Log out
+          </button>
+        </nav>
+      </div>
       <div className="row">
         <div className="col-6">
           <h2>List of Active Projects</h2>
@@ -103,6 +119,7 @@ export default function Designer() {
                   >
                     <p>{project.ProjectName}</p>
                   </Link>
+                  <button className="btn btn-danger">Delete Project</button>
                 </li>
               ))}
             </ul>
@@ -116,11 +133,14 @@ export default function Designer() {
             <ul>
               {inactiveProjects.map((project) => (
                 <li key={project.ProjectID}>
+                  <div className="container-fluid">
                   <Link
                     to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
                   >
                     <p>{project.ProjectName}</p>
                   </Link>
+                  <button className="btn btn-sm btn-danger">Delete</button>
+                  </div>
                 </li>
               ))}
             </ul>

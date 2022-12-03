@@ -3,10 +3,11 @@ import {
   listSupporterPledges,
   getFunds,
   updateFunds,
+  listProjects,
 } from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
-import NavBar from "./NavBar";
+import Select from "react-select";
 
 export default function Supporter() {
   const params = new URLSearchParams(window.location.search);
@@ -17,8 +18,10 @@ export default function Supporter() {
   const [funds, setFunds] = React.useState("");
   const [fundAmount, setFundAmount] = React.useState("");
   const navigate = useNavigate();
+  const [projects, setProjects] = React.useState("");
 
   React.useEffect(() => {
+    loadProjectsHandler();
     // loadTransactionsHandler();
     // loadFundsHandler();
   }, []);
@@ -44,6 +47,23 @@ export default function Supporter() {
     const response = await getFunds(supporterID);
 
     setFunds(response.funds);
+  };
+
+  const loadProjectsHandler = async () => {
+    const response = await listProjects();
+
+    let returnedProjects = [];
+    for (let i = 0; i < response.length; i++) {
+      let project = {};
+      project["value"] = response[i].ProjectID;
+      project["label"] = response[i].ProjectName;
+      project["type"] = response[i].ProjectType;
+      returnedProjects.push(project);
+      setProjects(returnedProjects);
+    }
+    console.log(returnedProjects);
+    console.log("asfadsf");
+    console.log(projects);
   };
 
   const addFunds = async () => {
@@ -95,7 +115,10 @@ export default function Supporter() {
         </nav>
       </div>
       <div className="m-5 row">
-        <div className="col-6">
+        <div className="col-4">
+          <Select projects={projects} />
+        </div>
+        <div className="col-4">
           <h2>List of Pledges</h2>
           {claims.length ? (
             <ul>
@@ -114,6 +137,8 @@ export default function Supporter() {
               <i>No Claims</i>
             </p>
           )}
+        </div>
+        <div className="col-4">
           <h2>List of Direct Supports</h2>
           {directSupports.length ? (
             <ul>
