@@ -6,7 +6,6 @@ import {
 } from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
-import NavBar from "./NavBar";
 
 export default function Supporter() {
   const params = new URLSearchParams(window.location.search);

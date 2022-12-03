@@ -2,7 +2,6 @@ import { Outlet, Link, useLoaderData, useNavigate } from "react-router-dom";
 import { listDesignerProjects, createProject } from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
-import NavBar from "./NavBar";
 
 export async function action(
   inputName,
@@ -35,6 +34,7 @@ export async function action(
   }
   return result;
 }
+
 export default function Designer() {
   const params = new URLSearchParams(window.location.search);
   const designerID = params.get("designerID");
@@ -73,6 +73,10 @@ export default function Designer() {
     navigate(0);
   };
 
+  const logoutHandler = async () => {
+    navigate("/");
+  };
+
   const createProjectHandler = async () => {
     const result = await action(
       inputName,
@@ -90,7 +94,17 @@ export default function Designer() {
 
   return (
     <div className="container">
-      <NavBar />
+      <div className="container d-flex flex-column mt-2 align-items-center">
+        <nav className="navbar navbar-expand-lg">
+          <label className="m-2 h1">&#128184; $tacksOverflow &#128184;</label>
+          <button
+            className="nav-link btn btn-link"
+            onClick={(e) => logoutHandler()}
+          >
+            Log out
+          </button>
+        </nav>
+      </div>
       <div className="row">
         <div className="col-6">
           <h2>List of Active Projects</h2>
