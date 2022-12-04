@@ -66,7 +66,7 @@ export default function Pledge() {
         onChange={(e) => setInputReward(e.target.value)}
       ></input>
       <div>
-        <button onClick={(e) => createPledgeHandler()}>Create Pledge</button>
+        <button className="btn btn-primary" onClick={(e) => createPledgeHandler()}>Create Pledge</button>
       </div>
     </div>
   );

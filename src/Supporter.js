@@ -1,6 +1,6 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import {
-  listSupporterPledges,
+  viewSupporterTransactions,
   getFunds,
   updateFunds,
   listProjects,
@@ -24,12 +24,12 @@ export default function Supporter() {
 
   React.useEffect(() => {
     loadProjectsHandler();
-    // loadTransactionsHandler();
+    loadTransactionsHandler();
     // loadFundsHandler();
   }, []);
 
   const loadTransactionsHandler = async () => {
-    const response = await listSupporterPledges(supporterID);
+    const response = await viewSupporterTransactions(supporterID);
 
     let claims = [];
     let directSupports = [];
