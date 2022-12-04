@@ -26,7 +26,7 @@ export async function listDesignerProjects(id) {
   return projects;
 }
 
-export async function listSupporterPledges(id) {
+export async function viewSupporterTransactions(id) {
   let pledges = [];
 
   let request = {
@@ -35,14 +35,16 @@ export async function listSupporterPledges(id) {
   let value = JSON.stringify(request);
 
   let data = { body: value };
-  console.log("/listSupporterPledges");
-  const response = await instance.post("/listSupporterPledges", data);
+  console.log("/viewSupporterTransactions");
+  const response = await instance.post("/viewSupporterTransactions", data);
+  console.log("ASLKDFJGAS");
+  console.log(response)
 
   if (response.data.statusCode === 200) {
     console.log(response.data.body);
     pledges = response.data.body;
   } else {
-    alert(response.data.error);
+    // alert("response.data.error");
   }
   return pledges;
 }
@@ -248,6 +250,7 @@ export async function deleteProject(projectID) {
   let data = { body: value };
   console.log("/deleteProject");
   const response = await instance.post("/deleteProject", data);
+  console.log(response);
 
   let res = null;
   if (response.data.statusCode === 200) {
@@ -294,4 +297,8 @@ export async function deletePledge(templateID) {
     res = response.data.error;
   }
   return res;
+}
+
+export async function searchProjects(search) {
+  
 }

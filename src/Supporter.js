@@ -1,9 +1,10 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import {
-  listSupporterPledges,
+  viewSupporterTransactions,
   getFunds,
   updateFunds,
   listProjects,
+  searchProjects,
 } from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
@@ -17,23 +18,24 @@ export default function Supporter() {
   const [directSupports, setDirectSupports] = React.useState("");
   const [funds, setFunds] = React.useState("");
   const [fundAmount, setFundAmount] = React.useState("");
+  const [search, setSearch] = React.useState("");
   const navigate = useNavigate();
   const [projects, setProjects] = React.useState("");
 
   React.useEffect(() => {
     loadProjectsHandler();
-    // loadTransactionsHandler();
+    loadTransactionsHandler();
     // loadFundsHandler();
   }, []);
 
   const loadTransactionsHandler = async () => {
-    const response = await listSupporterPledges(supporterID);
+    const response = await viewSupporterTransactions(supporterID);
 
     let claims = [];
     let directSupports = [];
 
     for (let i = 0; i < response.length; i++) {
-      if (response[i].TransactionID === undefined) {
+      if (response[i].TemplateID === "N/A") {
         directSupports.push(response[i]);
       } else {
         claims.push(response[i]);
@@ -51,19 +53,9 @@ export default function Supporter() {
 
   const loadProjectsHandler = async () => {
     const response = await listProjects();
-
-    let returnedProjects = [];
-    for (let i = 0; i < response.length; i++) {
-      let project = {};
-      project["value"] = response[i].ProjectID;
-      project["label"] = response[i].ProjectName;
-      project["type"] = response[i].ProjectType;
-      returnedProjects.push(project);
-      setProjects(returnedProjects);
-    }
-    console.log(returnedProjects);
-    console.log("asfadsf");
-    console.log(projects);
+    setProjects(response);
+    console.log("response");
+    console.log(response);
   };
 
   const addFunds = async () => {
@@ -77,6 +69,10 @@ export default function Supporter() {
 
   const logoutHandler = async () => {
     navigate("/");
+  };
+
+  const searchHandler = async () => {
+    const response = await searchProjects(search);
   };
 
   return (
@@ -116,8 +112,32 @@ export default function Supporter() {
       </div>
       <div className="m-5 row">
         <div className="col-4">
-          <Select projects={projects} />
+          <input
+            type="text"
+            placeholder="Search Projects..."
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <button className="btn btn-primary" onClick={(e) => searchHandler()}>
+            Search
+          </button>
         </div>
+        {projects.length ? (
+          <ul>
+            {projects.map((project) => (
+              <li key={project.ProjectID}>
+                <Link
+                  to={`projects?projectID=${project.ProjectID}&supporterID=${supporterID}`}
+                >
+                  <p>{project.ProjectName}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>
+            <i>No projects</i>
+          </p>
+        )}
         <div className="col-4">
           <h2>List of Pledges</h2>
           {claims.length ? (
@@ -127,7 +147,7 @@ export default function Supporter() {
                   <Link
                     to={`projects?projectID=${claim.ProjectID}&supporterID=${supporterID}`}
                   >
-                    <p>{claim.ProjectName}</p>
+                    <p>View Project: {claim.ProjectName}</p>
                   </Link>
                 </li>
               ))}
@@ -147,7 +167,7 @@ export default function Supporter() {
                   <Link
                     to={`projects?projectID=${dS.ProjectID}&supporterID=${supporterID}`}
                   >
-                    <p>{dS.ProjectName}</p>
+                    <p>View Project: {dS.ProjectName}</p>
                   </Link>
                 </li>
               ))}
