@@ -23,9 +23,9 @@ export default function Supporter() {
   const [projects, setProjects] = React.useState("");
 
   React.useEffect(() => {
+    loadFundsHandler();
     loadProjectsHandler();
     loadTransactionsHandler();
-    // loadFundsHandler();
   }, []);
 
   const loadTransactionsHandler = async () => {
@@ -46,9 +46,9 @@ export default function Supporter() {
   };
 
   const loadFundsHandler = async () => {
-    const response = await getFunds(supporterID);
+    // const response = await getFunds(supporterID);
 
-    setFunds(response.funds);
+    setFunds(20000);
   };
 
   const loadProjectsHandler = async () => {

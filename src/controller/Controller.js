@@ -26,16 +26,17 @@ export async function listDesignerProjects(id) {
   return projects;
 }
 
-export async function viewSupporterTransactions(id) {
+export async function viewSupporterTransactions(supporterID) {
   let pledges = [];
 
   let request = {
-    supporterID: id,
+    supporterID: supporterID,
   };
   let value = JSON.stringify(request);
 
   let data = { body: value };
   console.log("/viewSupporterTransactions");
+  console.log(data);
   const response = await instance.post("/viewSupporterTransactions", data);
   console.log("ASLKDFJGAS");
   console.log(response)

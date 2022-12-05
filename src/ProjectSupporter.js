@@ -6,6 +6,7 @@ import {
   updateFunds,
   getFunds,
   viewProject,
+  viewSupporterTransactions,
 } from "./controller/Controller";
 
 export default function ProjectSupporter() {
@@ -15,7 +16,8 @@ export default function ProjectSupporter() {
   const [pledges, setPledges] = React.useState("");
   const [project, setProject] = React.useState("");
   const [claims, setClaims] = React.useState("");
-  const [directSupport, setDirectSupportAmount] = React.useState("");
+  const [directSupport, setDS] = React.useState("");
+  const [directSupportAmount, setDirectSupportAmount] = React.useState("");
   const [transactions, setTransactions] = React.useState("");
   const [funds, setFunds] = React.useState("");
   const [fundAmount, setFundAmount] = React.useState("");
@@ -24,7 +26,8 @@ export default function ProjectSupporter() {
   React.useEffect(() => {
     grabPledgeTemplates();
     grabProjectTransactions();
-    // loadFundsHandler();
+    grabClaimedPledges();
+    loadFundsHandler();
   }, []);
 
   const logoutHandler = async () => {
@@ -59,6 +62,22 @@ export default function ProjectSupporter() {
     loadDataHandler();
   };
 
+  const grabClaimedPledges = async () => {
+    const response = await viewSupporterTransactions(supporterID);
+    let currentClaims = [];
+    let currentDS = 0;
+
+    for (let i = 0; i < response.length; i++) {
+      if (response[i].TemplateID === "N/A") {
+        currentDS += response[i].Amount;
+      } else {
+        currentClaims.push(response[i]);
+      }
+    }
+    setClaims(currentClaims);
+    setDS(currentDS);
+  };
+
   const refreshPage = () => {
     navigate(0);
   };
@@ -69,9 +88,9 @@ export default function ProjectSupporter() {
   };
 
   const loadFundsHandler = async () => {
-    const response = await getFunds(supporterID);
+    // const response = await getFunds(supporterID);
 
-    setFunds(response.funds);
+    setFunds(20000);
   };
 
   const claimPledge = async (templateID, pledgeAmount) => {
@@ -90,7 +109,7 @@ export default function ProjectSupporter() {
   };
 
   const directSupportHandler = async () => {
-    if (directSupport > funds) {
+    if (directSupportAmount > funds) {
       alert("You do not have enough funds to make that direct support.");
     } else {
       const response = await claimPledge(supporterID, "N/A");
@@ -101,7 +120,7 @@ export default function ProjectSupporter() {
   };
 
   return (
-    <>
+    <div className="container">
       <div className="mt-2">
         <nav className="navbar navbar-expand-lg">
           <div className="container align-items-center">
@@ -135,82 +154,89 @@ export default function ProjectSupporter() {
           </div>
         </nav>
       </div>
-      <div>
-        <button className="btn btn-primary" onClick={(e) => dashboardHandler()}>
-          Close Project
-        </button>
-        <h1>{project.ProjectName}</h1>
-        <p>Project Type: {project.ProjectType}</p>
-        <p>Project Story: {project.ProjectStory}</p>
-        <p>Project Goal: {project.ProjectGoal}</p>
-        <p>Money Raised: {project.MoneyRaised}</p>
-        <p>Number of Supporters: {project.NumSupporter}</p>
-        <p>Project Deadline: {project.Deadline}</p>
-        <h4>Pledges</h4>
-        <div>
-          <ul>
-            {pledges.length ? (
+      <div className="container">
+        <div className="row">
+          <div className="col">
+            <button
+              className="btn btn-primary"
+              onClick={(e) => dashboardHandler()}
+            >
+              Close Project
+            </button>
+            <h1>{project.ProjectName}</h1>
+            <p>Project Type: {project.ProjectType}</p>
+            <p>Project Story: {project.ProjectStory}</p>
+            <p>Project Goal: {project.ProjectGoal}</p>
+            <p>Money Raised: {project.MoneyRaised}</p>
+            <p>Number of Supporters: {project.NumSupporter}</p>
+            <p>Project Deadline: {project.Deadline}</p>
+            <h4>Pledges</h4>
+            <div>
               <ul>
-                {pledges.map((pledge) => (
-                  <li>
-                    {pledge.MaxSupporters !== 0 ? (
-                      <p>Max Supporters: {pledge.MaxSupporters}</p>
-                    ) : (
-                      <p>Max Supporters: No Limit</p>
-                    )}
-                    <p>Pledge Amount: {pledge.PledgeAmount}</p>
-                    <p>Pledge Reward: {pledge.Reward}</p>
-                    <button
-                      className="btn btn-primary"
-                      onClick={(e) =>
-                        claimPledge(pledge.TemplateID, pledge.PledgeAmount)
-                      }
-                    >
-                      Claim Pledge
-                    </button>
-                  </li>
-                ))}
+                {pledges.length ? (
+                  <ul>
+                    {pledges.map((pledge) => (
+                      <li>
+                        <p>Pledge #{pledge.TemplateID}</p>
+                        {pledge.MaxSupporters !== 0 ? (
+                          <p>Max Supporters: {pledge.MaxSupporters}</p>
+                        ) : (
+                          <p>Max Supporters: No Limit</p>
+                        )}
+                        <p>Pledge Amount: {pledge.PledgeAmount}</p>
+                        <p>Pledge Reward: {pledge.Reward}</p>
+                        <button
+                          className="btn btn-primary"
+                          onClick={(e) =>
+                            claimPledge(pledge.TemplateID, pledge.PledgeAmount)
+                          }
+                        >
+                          Claim Pledge
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>
+                    <i>No Pledges</i>
+                  </p>
+                )}
               </ul>
-            ) : (
-              <p>
-                <i>No Pledges</i>
-              </p>
-            )}
-          </ul>
-        </div>
-        <div>
-          <h4>Make a Direct Support</h4>
-          <input
-            type="text"
-            onChange={(e) => setDirectSupportAmount(e.target.value)}
-          />
-          <button
-            className="btn btn-primary"
-            onClick={(e) => directSupportHandler()}
-          >
-            &#128176; Direct Support
-          </button>
-        </div>
-        <div>
-          <h4>Claimed Pledges</h4>
-          {claims.length ? (
-            <ul>
-              {claims.map((claim) => (
-                <li>
-                  <p>Pledge #{claim.TemplateID}</p>
-                  <p>Pledge Amount: {claim.PledgeAmount}</p>
-                  <p>Pledge Reward: {claim.Reward}</p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>
-              <i>No Claimed Pledges</i>
-            </p>
-          )}
+            </div>
+            <div className="col">
+              <h4>Make a Direct Support</h4>
+              <input
+                type="text"
+                onChange={(e) => setDirectSupportAmount(e.target.value)}
+              />
+              <button
+                className="btn btn-primary"
+                onClick={(e) => directSupportHandler()}
+              >
+                &#128176; Direct Support
+              </button>
+            </div>
+            <div>
+              <h4>Claimed Pledges</h4>
+              {claims.length ? (
+                <ul>
+                  {claims.map((claim) => (
+                    <li>
+                      <p>Pledge #{claim.TemplateID}</p>
+                      <p>Pledge Amount: {claim.PledgeAmount}</p>
+                      <p>Pledge Reward: {claim.Reward}</p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>
+                  <i>No Claimed Pledges</i>
+                </p>
+              )}
+            </div>
+          </div>
         </div>
       </div>
-      <Outlet />
-    </>
+    </div>
   );
 }

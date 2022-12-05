@@ -46,6 +46,9 @@ export default function Designer() {
   const designerID = params.get("designerID");
 
   const genres = [
+    { value: "Art", label: "Art" },
+    { value: "Fashion", label: "Fashion" },
+    { value: "Food", label: "Food" },
     { value: "Game", label: "Game" },
     { value: "Movie", label: "Movie" },
     { value: "Music", label: "Music" },
