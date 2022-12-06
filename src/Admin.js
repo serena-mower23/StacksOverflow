@@ -1,5 +1,5 @@
 import { Outlet, Link, useLoaderData, useNavigate } from "react-router-dom";
-import { listProjects } from "./controller/Controller";
+import { listProjects, deleteProject } from "./controller/Controller";
 import React from "react";
 
 export async function loader() {
@@ -10,6 +10,18 @@ export async function loader() {
 export default function Admin() {
   const { projects } = useLoaderData();
   const navigate = useNavigate();
+
+  const deleteProjectHandler = async (projectID) => {
+    const response = await deleteProject(projectID);
+
+    if (response) {
+      refreshPage();
+    }
+  };
+
+  const refreshPage = () => {
+    navigate(0);
+  };
 
   const logoutHandler = async () => {
     navigate("/");
@@ -37,6 +49,12 @@ export default function Admin() {
                 <Link to={`projects?projectID=${project.ProjectID}`}>
                   <p>{project.ProjectName}</p>
                 </Link>
+                <button
+                  className="btn btn-sm btn-danger"
+                  onClick={(e) => deleteProjectHandler(project.ProjectID)}
+                >
+                  Delete
+                </button>
               </li>
             ))}
           </ul>

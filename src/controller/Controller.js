@@ -30,7 +30,6 @@ export async function listDesignerProjects(id) {
   const response = await instance.post("/listDesignerProjects", data);
 
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     projects = response.data.body;
   } else {
     alert(response.data.error);
@@ -38,23 +37,22 @@ export async function listDesignerProjects(id) {
   return projects;
 }
 
-export async function listSupporterPledges(id) {
+export async function viewSupporterTransactions(supporterID) {
   let pledges = [];
 
   let request = {
-    supporterID: id,
+    supporterID: supporterID,
   };
   let value = JSON.stringify(request);
 
   let data = { body: value };
-  console.log("/listSupporterPledges");
-  const response = await instance.post("/listSupporterPledges", data);
+  console.log("/viewSupporterTransactions");
+  const response = await instance.post("/viewSupporterTransactions", data);
 
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     pledges = response.data.body;
   } else {
-    alert(response.data.error);
+    alert("response.data.error");
   }
   return pledges;
 }
@@ -64,7 +62,6 @@ export async function listProjects() {
   const response = await instance.get("/listProjects");
   console.log("/listProjects");
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     projects = response.data.body;
   } else {
     alert(response.data.error);
@@ -84,7 +81,6 @@ export async function viewProject(projectID) {
   const response = await instance.post("/viewProject", data);
   console.log("/viewProject");
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     project = response.data.body;
   } else {
     alert(response.data.error);
@@ -133,12 +129,9 @@ export async function createProject(
 
   let value = JSON.stringify(request);
   let data = { body: value };
-  console.log(data);
 
   const response = await instance.post("/createProject", data);
   console.log("/createProject");
-  console.log(response);
-  console.log(response.data.body);
   return response;
 }
 
@@ -161,7 +154,6 @@ export async function createPledge(projectID, maxSupporters, amount, reward) {
 
   let value = JSON.stringify(request);
   let data = { body: value };
-  console.log(data);
 
   console.log("/createPledge");
   const response = await instance.post("/createPledge", data);
@@ -206,7 +198,6 @@ export async function viewTransactions(projectID) {
 
   let res = null;
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     res = response.data.body;
   } else {
     res = response.data.error;
@@ -222,10 +213,9 @@ export async function getFunds(supporterID) {
   let value = JSON.stringify(request);
   let data = { body: value };
   console.log("/getFunds");
-  const response = await instance.post("/getFunds", data);
+  const response = await instance.post("/getFund", data);
 
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     return response.data.body;
   } else {
     return "error";
@@ -235,26 +225,24 @@ export async function getFunds(supporterID) {
 export async function updateFunds(supporterID, amount) {
   let request = {
     supporterID: supporterID,
-    amount: amount
+    fund: amount,
   };
 
   let value = JSON.stringify(request);
   let data = { body: value };
-  console.log("/updateFunds");
-  const response = await instance.post("/updateFunds", data);
-
+  console.log("/addFunds");
+  const response = await instance.post("/addFund", data);
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
-    return response.data.body;
+    return "true";
   } else {
-    return "error";
+    return response.data.error;
   }
 }
 
 export async function deleteProject(projectID) {
   let request = {
-    projectID: projectID
-  }
+    projectID: projectID,
+  };
 
   let value = JSON.stringify(request);
   let data = { body: value };
@@ -272,8 +260,8 @@ export async function deleteProject(projectID) {
 
 export async function launchProject(projectID) {
   let request = {
-    projectID: projectID
-  }
+    projectID: projectID,
+  };
 
   let value = JSON.stringify(request);
   let data = { body: value };
@@ -291,8 +279,8 @@ export async function launchProject(projectID) {
 
 export async function deletePledge(templateID) {
   let request = {
-    templateID: templateID
-  }
+    templateID: templateID,
+  };
 
   let value = JSON.stringify(request);
   let data = { body: value };
@@ -308,7 +296,7 @@ export async function deletePledge(templateID) {
   return res;
 }
 
-export default () => {
+export async search () => {
   const [isClearable, setIsClearable] = useState(true);
   const [isSearchable, setIsSearchable] = useState(true);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -370,3 +358,72 @@ export default () => {
     </>
   );
 };
+
+export async function searchProjects(search) {}
+
+export async function createTransaction(
+  projectID,
+  templateID,
+  supporterID,
+  amount
+) {
+  let request = {
+    projectID: projectID,
+    templateID: templateID,
+    supporterID: supporterID,
+    amount: amount,
+  };
+
+  let value = JSON.stringify(request);
+  let data = { body: value };
+  console.log("/createTransaction");
+  const response = await instance.post("/createTransaction", data);
+  let res = null;
+  if (response.data.statusCode === 200) {
+    res = "true";
+  } else {
+    res = response.data.error;
+  }
+  return res;
+}
+
+export async function viewSupporterTemplate(templateID) {
+  let request = {
+    templateID: templateID,
+  };
+
+  let value = JSON.stringify(request);
+  let data = { body: value };
+  console.log("/viewTemplateSupporter");
+  const response = await instance.post("/viewTemplateSupporter", data);
+
+  let res = null;
+  if (response.data.statusCode === 200) {
+    res = response.data.body;
+  } else {
+    res = response.data.error;
+  }
+  return res;
+}
+
+export async function login(accountType, username, password) {
+  let request = {
+    accountType: accountType,
+    email: username,
+    password: password,
+  };
+  let value = JSON.stringify(request);
+
+  let data = { body: value };
+
+  console.log("/login");
+  const response = await instance.post("/login", data);
+  let res = null;
+  if (response.data.statusCode === 200) {
+    res = "true";
+  } else {
+    res = response.data.error;
+  }
+  return res;
+}
+
