@@ -1,11 +1,7 @@
 import React from "react";
 import { viewProject } from "./controller/Controller";
 import { Outlet, Link, useNavigate } from "react-router-dom";
-import {
-  viewTransactions,
-  viewTemplates,
-  deletePledge,
-} from "./controller/Controller";
+import { viewTransactions, viewTemplates, deletePledge } from "./controller/Controller";
 
 export default function ProjectDesigner() {
   const params = new URLSearchParams(window.location.search);
@@ -63,14 +59,12 @@ export default function ProjectDesigner() {
     if (response) {
       refreshPage();
     }
-  };
+  }
 
   return (
     <>
       <div>
-        <button onClick={(e) => dashboardHandler()} className="btn btn-primary">
-          Close Project
-        </button>
+        <button onClick={(e) => dashboardHandler()} className="btn btn-primary">Close Project</button>
         <h1>{project.ProjectName}</h1>
         <p>Project Type: {project.ProjectType}</p>
         <p>Project Story: {project.ProjectStory}</p>
@@ -92,15 +86,8 @@ export default function ProjectDesigner() {
                   <p>Pledge Amount: {pledge.PledgeAmount}</p>
                   <p>Pledge Reward: {pledge.Reward}</p>
                   {project.IsLaunched === 0 ? (
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={(e) => deletePledgeHandler(pledge.TemplateID)}
-                    >
-                      Delete
-                    </button>
-                  ) : (
-                    <p></p>
-                  )}
+                  <button className="btn btn-sm btn-danger" onClick={(e) => deletePledgeHandler(pledge.TemplateID)}>Delete</button>
+                  ) : (<p></p>)}
                 </li>
               ))}
             </ul>
@@ -112,18 +99,14 @@ export default function ProjectDesigner() {
         </ul>
       </div>
       {project.IsLaunched === 0 ? (
-        <div>
-          <Link
-            to={`/createPledge?projectID=${[
-              projectID,
-            ]}&designerID=${designerID}`}
-          >
-            <button className="btn btn-primary">Create New Pledge</button>
-          </Link>
-        </div>
-      ) : (
-        <p></p>
-      )}
+              <div>
+              <Link
+                to={`/createPledge?projectID=${[projectID]}&designerID=${designerID}`}
+              >
+                <button className="btn btn-primary">Create New Pledge</button>
+              </Link>
+            </div>
+      ) : (<p></p>)}
       <Outlet />
     </>
   );
