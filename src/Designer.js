@@ -47,7 +47,7 @@ export default function Designer() {
 
   const genres = [
     { value: "Art", label: "Art" },
-    { value: "Education", label: "Education"},
+    { value: "Education", label: "Education" },
     { value: "Fashion", label: "Fashion" },
     { value: "Food", label: "Food" },
     { value: "Game", label: "Game" },

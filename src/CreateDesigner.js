@@ -39,57 +39,57 @@ export default function CreateDesigner() {
         </button>
       </nav>
       <div className="align-items-center">
-      <h2 className="text-center">Create Designer Account</h2>
-      <form className="needs-validation">
-        <div className="mb-3">
-          <label className="form-label" htmlFor="username">
-            Email:
-          </label>
-          <input
-            className="form-control form-control-lg"
-            type="text"
-            name="username"
-            id="username"
-            onChange={(e) => setInputUsername(e.target.value)}
-            required
-          />
-          <div className="invalid-feedback">Please provide a username.</div>
+        <h2 className="text-center">Create Designer Account</h2>
+        <form className="needs-validation">
+          <div className="mb-3">
+            <label className="form-label" htmlFor="username">
+              Email:
+            </label>
+            <input
+              className="form-control form-control-lg"
+              type="text"
+              name="username"
+              id="username"
+              onChange={(e) => setInputUsername(e.target.value)}
+              required
+            />
+            <div className="invalid-feedback">Please provide a username.</div>
+          </div>
+          <div className="mb-3">
+            <label className="form-label" htmlFor="password">
+              Password:
+            </label>
+            <input
+              className="form-control form-control-lg"
+              type="password"
+              name="password"
+              id="password"
+              onChange={(e) => setInputPassword(e.target.value)}
+              required
+            />
+            <div className="invalid-feedback">Please provide a password.</div>
+          </div>
+          <div className="mb-3">
+            <label className="form-label" htmlFor="password">
+              Name
+            </label>
+            <input
+              className="form-control form-control-lg"
+              type="text"
+              onChange={(e) => setInputName(e.target.value)}
+              required
+            />
+            <div className="invalid-feedback">Please provide a password.</div>
+          </div>
+        </form>
+        <div className="d-grid d-sm-block text-center">
+          <button
+            className="btn btn-primary"
+            onClick={(e) => createDesignerHandler()}
+          >
+            Create Designer &#129297;
+          </button>
         </div>
-        <div className="mb-3">
-          <label className="form-label" htmlFor="password">
-            Password:
-          </label>
-          <input
-            className="form-control form-control-lg"
-            type="password"
-            name="password"
-            id="password"
-            onChange={(e) => setInputPassword(e.target.value)}
-            required
-          />
-          <div className="invalid-feedback">Please provide a password.</div>
-        </div>
-        <div className="mb-3">
-          <label className="form-label" htmlFor="password">
-            Name
-          </label>
-          <input
-            className="form-control form-control-lg"
-            type="text"
-            onChange={(e) => setInputName(e.target.value)}
-            required
-          />
-          <div className="invalid-feedback">Please provide a password.</div>
-        </div>
-      </form>
-      <div className="d-grid d-sm-block text-center">
-      <button
-        className="btn btn-primary"
-        onClick={(e) => createDesignerHandler()}
-      >
-        Create Designer &#129297;
-      </button>
-      </div>
       </div>
     </div>
   );

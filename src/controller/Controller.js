@@ -18,7 +18,6 @@ export async function listDesignerProjects(id) {
   const response = await instance.post("/listDesignerProjects", data);
 
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     projects = response.data.body;
   } else {
     alert(response.data.error);
@@ -36,16 +35,12 @@ export async function viewSupporterTransactions(supporterID) {
 
   let data = { body: value };
   console.log("/viewSupporterTransactions");
-  console.log(data);
   const response = await instance.post("/viewSupporterTransactions", data);
-  console.log("ASLKDFJGAS");
-  console.log(response)
 
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     pledges = response.data.body;
   } else {
-    // alert("response.data.error");
+    alert("response.data.error");
   }
   return pledges;
 }
@@ -55,7 +50,6 @@ export async function listProjects() {
   const response = await instance.get("/listProjects");
   console.log("/listProjects");
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     projects = response.data.body;
   } else {
     alert(response.data.error);
@@ -75,7 +69,6 @@ export async function viewProject(projectID) {
   const response = await instance.post("/viewProject", data);
   console.log("/viewProject");
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     project = response.data.body;
   } else {
     alert(response.data.error);
@@ -124,12 +117,9 @@ export async function createProject(
 
   let value = JSON.stringify(request);
   let data = { body: value };
-  console.log(data);
 
   const response = await instance.post("/createProject", data);
   console.log("/createProject");
-  console.log(response);
-  console.log(response.data.body);
   return response;
 }
 
@@ -152,7 +142,6 @@ export async function createPledge(projectID, maxSupporters, amount, reward) {
 
   let value = JSON.stringify(request);
   let data = { body: value };
-  console.log(data);
 
   console.log("/createPledge");
   const response = await instance.post("/createPledge", data);
@@ -197,7 +186,6 @@ export async function viewTransactions(projectID) {
 
   let res = null;
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     res = response.data.body;
   } else {
     res = response.data.error;
@@ -216,7 +204,6 @@ export async function getFunds(supporterID) {
   const response = await instance.post("/getFunds", data);
 
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     return response.data.body;
   } else {
     return "error";
@@ -226,7 +213,7 @@ export async function getFunds(supporterID) {
 export async function updateFunds(supporterID, amount) {
   let request = {
     supporterID: supporterID,
-    amount: amount
+    amount: amount,
   };
 
   let value = JSON.stringify(request);
@@ -235,7 +222,6 @@ export async function updateFunds(supporterID, amount) {
   const response = await instance.post("/updateFunds", data);
 
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     return response.data.body;
   } else {
     return "error";
@@ -244,14 +230,13 @@ export async function updateFunds(supporterID, amount) {
 
 export async function deleteProject(projectID) {
   let request = {
-    projectID: projectID
-  }
+    projectID: projectID,
+  };
 
   let value = JSON.stringify(request);
   let data = { body: value };
   console.log("/deleteProject");
   const response = await instance.post("/deleteProject", data);
-  console.log(response);
 
   let res = null;
   if (response.data.statusCode === 200) {
@@ -264,8 +249,8 @@ export async function deleteProject(projectID) {
 
 export async function launchProject(projectID) {
   let request = {
-    projectID: projectID
-  }
+    projectID: projectID,
+  };
 
   let value = JSON.stringify(request);
   let data = { body: value };
@@ -283,8 +268,8 @@ export async function launchProject(projectID) {
 
 export async function deletePledge(templateID) {
   let request = {
-    templateID: templateID
-  }
+    templateID: templateID,
+  };
 
   let value = JSON.stringify(request);
   let data = { body: value };
@@ -300,25 +285,25 @@ export async function deletePledge(templateID) {
   return res;
 }
 
-export async function searchProjects(search) {
-  
-}
+export async function searchProjects(search) {}
 
-export async function createTransaction(projectID, templateID, supporterID, amount) {
+export async function createTransaction(
+  projectID,
+  templateID,
+  supporterID,
+  amount
+) {
   let request = {
     projectID: projectID,
     templateID: templateID,
     supporterID: supporterID,
-    amount: amount
-  }
+    amount: amount,
+  };
 
   let value = JSON.stringify(request);
-  let data = { body: value};
-  console.log("DATA");
-  console.log(data);
+  let data = { body: value };
   console.log("/createTransaction");
   const response = await instance.post("/createTransaction", data);
-  console.log(response);
   let res = null;
   if (response.data.statusCode === 200) {
     res = "true";
@@ -330,18 +315,16 @@ export async function createTransaction(projectID, templateID, supporterID, amou
 
 export async function viewSupporterTemplate(templateID) {
   let request = {
-    templateID: templateID
-  }
+    templateID: templateID,
+  };
 
   let value = JSON.stringify(request);
-  let data = { body: value};
+  let data = { body: value };
   console.log("/viewTemplateSupporter");
-  const response = await instance.post("/viewTemplateSupporter", data); 
-  console.log(response);
-  
+  const response = await instance.post("/viewTemplateSupporter", data);
+
   let res = null;
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     res = response.data.body;
   } else {
     res = response.data.error;

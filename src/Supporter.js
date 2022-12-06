@@ -153,7 +153,7 @@ export default function Supporter() {
                   <Link
                     to={`projects?projectID=${claim.ProjectID}&supporterID=${supporterID}`}
                   >
-                  Plege #{claim.TemplateID}
+                    Plege #{claim.TemplateID}
                   </Link>
                 </li>
               ))}
@@ -170,10 +170,12 @@ export default function Supporter() {
             <ul>
               {directSupports.map((dS) => (
                 <li>
+                  <p>TransactionID: {dS.TransactionID}</p>
+                  <p>Amount: {dS.Amount}</p>
                   <Link
                     to={`projects?projectID=${dS.ProjectID}&supporterID=${supporterID}`}
                   >
-                    <p>View Project: {dS.ProjectName}</p>
+                    <p>View Project</p>
                   </Link>
                 </li>
               ))}

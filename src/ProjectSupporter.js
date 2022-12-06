@@ -63,9 +63,9 @@ export default function ProjectSupporter() {
   const getReward = async (templateID) => {
     const response = await viewSupporterTemplate(templateID);
 
-    let reward = response[0].Reward
+    let reward = response[0].Reward;
     return reward;
-  }
+  };
 
   const grabProjectTransactions = async () => {
     const response = await viewTransactions(projectID);
@@ -87,8 +87,6 @@ export default function ProjectSupporter() {
       } else if (response[i].ProjectID === projectID) {
         const reward = await getReward(response[i].TemplateID);
         response[i]["Reward"] = reward;
-        console.log("please lord");
-        console.log(response[i]);
         currentClaims.push(response[i]);
       }
     }
