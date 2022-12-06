@@ -3,6 +3,18 @@ import axios from "axios";
 const instance = axios.create({
   baseURL: "https://puwud6fni0.execute-api.us-east-1.amazonaws.com/Prod",
 });
+const options = [
+  { value: 'game', label: 'Game' },
+  { value: 'movie', label: 'Movie' },
+  { value: 'toy', label: 'Toy' },
+  { value: 'music', label: 'Music' },
+  { value: 'tech', label: 'Tech' },
+  { value: 'fashion', label: 'Fashion' },
+  { value: 'food', label: 'Food' },
+  { value: 'art', label: 'Art' },
+  { value: 'education', label: 'Education'},
+  { value: 'other', label: 'Other' }
+]
 
 export async function listDesignerProjects(id) {
   let projects = [];
@@ -18,7 +30,6 @@ export async function listDesignerProjects(id) {
   const response = await instance.post("/listDesignerProjects", data);
 
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     projects = response.data.body;
   } else {
     alert(response.data.error);
@@ -26,23 +37,22 @@ export async function listDesignerProjects(id) {
   return projects;
 }
 
-export async function listSupporterPledges(id) {
+export async function viewSupporterTransactions(supporterID) {
   let pledges = [];
 
   let request = {
-    supporterID: id,
+    supporterID: supporterID,
   };
   let value = JSON.stringify(request);
 
   let data = { body: value };
-  console.log("/listSupporterPledges");
-  const response = await instance.post("/listSupporterPledges", data);
+  console.log("/viewSupporterTransactions");
+  const response = await instance.post("/viewSupporterTransactions", data);
 
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     pledges = response.data.body;
   } else {
-    alert(response.data.error);
+    alert("response.data.error");
   }
   return pledges;
 }
@@ -52,7 +62,6 @@ export async function listProjects() {
   const response = await instance.get("/listProjects");
   console.log("/listProjects");
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     projects = response.data.body;
   } else {
     alert(response.data.error);
@@ -72,7 +81,6 @@ export async function viewProject(projectID) {
   const response = await instance.post("/viewProject", data);
   console.log("/viewProject");
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     project = response.data.body;
   } else {
     alert(response.data.error);
@@ -121,12 +129,9 @@ export async function createProject(
 
   let value = JSON.stringify(request);
   let data = { body: value };
-  console.log(data);
 
   const response = await instance.post("/createProject", data);
   console.log("/createProject");
-  console.log(response);
-  console.log(response.data.body);
   return response;
 }
 
@@ -149,7 +154,6 @@ export async function createPledge(projectID, maxSupporters, amount, reward) {
 
   let value = JSON.stringify(request);
   let data = { body: value };
-  console.log(data);
 
   console.log("/createPledge");
   const response = await instance.post("/createPledge", data);
@@ -194,7 +198,6 @@ export async function viewTransactions(projectID) {
 
   let res = null;
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     res = response.data.body;
   } else {
     res = response.data.error;
@@ -210,10 +213,9 @@ export async function getFunds(supporterID) {
   let value = JSON.stringify(request);
   let data = { body: value };
   console.log("/getFunds");
-  const response = await instance.post("/getFunds", data);
+  const response = await instance.post("/getFund", data);
 
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
     return response.data.body;
   } else {
     return "error";
@@ -223,26 +225,24 @@ export async function getFunds(supporterID) {
 export async function updateFunds(supporterID, amount) {
   let request = {
     supporterID: supporterID,
-    amount: amount
+    fund: amount,
   };
 
   let value = JSON.stringify(request);
   let data = { body: value };
-  console.log("/updateFunds");
-  const response = await instance.post("/updateFunds", data);
-
+  console.log("/addFunds");
+  const response = await instance.post("/addFund", data);
   if (response.data.statusCode === 200) {
-    console.log(response.data.body);
-    return response.data.body;
+    return "true";
   } else {
-    return "error";
+    return response.data.error;
   }
 }
 
 export async function deleteProject(projectID) {
   let request = {
-    projectID: projectID
-  }
+    projectID: projectID,
+  };
 
   let value = JSON.stringify(request);
   let data = { body: value };
@@ -260,8 +260,8 @@ export async function deleteProject(projectID) {
 
 export async function launchProject(projectID) {
   let request = {
-    projectID: projectID
-  }
+    projectID: projectID,
+  };
 
   let value = JSON.stringify(request);
   let data = { body: value };
@@ -279,8 +279,8 @@ export async function launchProject(projectID) {
 
 export async function deletePledge(templateID) {
   let request = {
-    templateID: templateID
-  }
+    templateID: templateID,
+  };
 
   let value = JSON.stringify(request);
   let data = { body: value };
@@ -295,3 +295,135 @@ export async function deletePledge(templateID) {
   }
   return res;
 }
+
+export async search () => {
+  const [isClearable, setIsClearable] = useState(true);
+  const [isSearchable, setIsSearchable] = useState(true);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRtl, setIsRtl] = useState(false);
+
+  return (
+    <>
+      <Select
+        className="basic-single"
+        classNamePrefix="select"
+        defaultValue={options[0]}
+        isDisabled={isDisabled}
+        isLoading={isLoading}
+        isClearable={isClearable}
+        isRtl={isRtl}
+        isSearchable={isSearchable}
+        name="color"
+        options={options}
+      />
+
+      <div
+        style={{
+          color: 'hsl(0, 0%, 40%)',
+          display: 'inline-block',
+          fontSize: 12,
+          fontStyle: 'italic',
+          marginTop: '1em',
+        }}
+      >
+        <Checkbox
+          checked={isClearable}
+          onChange={() => setIsClearable((state) => !state)}
+        >
+          Clearable
+        </Checkbox>
+        <Checkbox
+          checked={isSearchable}
+          onChange={() => setIsSearchable((state) => !state)}
+        >
+          Searchable
+        </Checkbox>
+        <Checkbox
+          checked={isDisabled}
+          onChange={() => setIsDisabled((state) => !state)}
+        >
+          Disabled
+        </Checkbox>
+        <Checkbox
+          checked={isLoading}
+          onChange={() => setIsLoading((state) => !state)}
+        >
+          Loading
+        </Checkbox>
+        <Checkbox checked={isRtl} onChange={() => setIsRtl((state) => !state)}>
+          RTL
+        </Checkbox>
+      </div>
+    </>
+  );
+};
+
+export async function searchProjects(search) {}
+
+export async function createTransaction(
+  projectID,
+  templateID,
+  supporterID,
+  amount
+) {
+  let request = {
+    projectID: projectID,
+    templateID: templateID,
+    supporterID: supporterID,
+    amount: amount,
+  };
+
+  let value = JSON.stringify(request);
+  let data = { body: value };
+  console.log("/createTransaction");
+  const response = await instance.post("/createTransaction", data);
+  let res = null;
+  if (response.data.statusCode === 200) {
+    res = "true";
+  } else {
+    res = response.data.error;
+  }
+  return res;
+}
+
+export async function viewSupporterTemplate(templateID) {
+  let request = {
+    templateID: templateID,
+  };
+
+  let value = JSON.stringify(request);
+  let data = { body: value };
+  console.log("/viewTemplateSupporter");
+  const response = await instance.post("/viewTemplateSupporter", data);
+
+  let res = null;
+  if (response.data.statusCode === 200) {
+    res = response.data.body;
+  } else {
+    res = response.data.error;
+  }
+  return res;
+}
+
+export async function login(accountType, username, password) {
+  let request = {
+    accountType: accountType,
+    email: username,
+    password: password,
+  };
+  let value = JSON.stringify(request);
+
+  let data = { body: value };
+
+  console.log("/login");
+  const response = await instance.post("/login", data);
+  let res = null;
+  if (response.data.statusCode === 200) {
+    res = "true";
+  } else {
+    res = response.data.error;
+  }
+  return res;
+}
+

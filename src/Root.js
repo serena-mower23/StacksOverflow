@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate, Form } from "react-router-dom";
 import axios from "axios";
-
+import { login } from "./controller/Controller";
 const instance = axios.create({
   baseURL: "https://puwud6fni0.execute-api.us-east-1.amazonaws.com/Prod",
 });
@@ -13,39 +13,20 @@ function Root() {
   const navigate = useNavigate();
 
   const designerLoginHandler = async () => {
-    let request = {
-      accountType: "Designers",
-      email: inputUsername,
-      password: inputPassword,
-    };
-    let value = JSON.stringify(request);
-
-    let data = { body: value };
-
-    console.log("/login");
-    const response = await instance.post("/login", data);
-    if (response.data.statusCode === 200) {
+    const response = await login("Designers", inputUsername, inputPassword);
+    if (response === "true") {
       navigate(`/designer?designerID=${inputUsername}`);
     } else {
-      alert(response.data.error);
+      alert(response);
     }
   };
 
   const supporterLoginHandler = async () => {
-    let request = {
-      accountType: "Supporters",
-      email: inputUsername,
-      password: inputPassword,
-    };
-    let value = JSON.stringify(request);
-
-    let data = { body: value };
-
-    const response = await instance.post("/login", data);
-    if (response.data.statusCode === 200) {
+    const response = await login("Supporters", inputUsername, inputPassword);
+    if (response === "true") {
       navigate(`/supporter?supporterID=${inputUsername}`);
     } else {
-      alert(response.data.error);
+      alert(response);
     }
   };
 

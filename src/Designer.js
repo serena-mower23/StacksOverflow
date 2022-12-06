@@ -1,7 +1,13 @@
 import { Outlet, Link, useLoaderData, useNavigate } from "react-router-dom";
-import { listDesignerProjects, createProject, deleteProject, launchProject } from "./controller/Controller";
+import {
+  listDesignerProjects,
+  createProject,
+  deleteProject,
+  launchProject,
+} from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
+import Select from "react-select";
 
 export async function action(
   inputName,
@@ -38,6 +44,19 @@ export async function action(
 export default function Designer() {
   const params = new URLSearchParams(window.location.search);
   const designerID = params.get("designerID");
+
+  const genres = [
+    { value: "Art", label: "Art" },
+    { value: "Education", label: "Education" },
+    { value: "Fashion", label: "Fashion" },
+    { value: "Food", label: "Food" },
+    { value: "Game", label: "Game" },
+    { value: "Movie", label: "Movie" },
+    { value: "Music", label: "Music" },
+    { value: "Toy", label: "Toy" },
+    { value: "Techology", label: "Technology" },
+    { value: "Other", label: "Other" },
+  ];
 
   const [inputName, setInputName] = React.useState("");
   const [inputType, setInputType] = React.useState("");
@@ -98,7 +117,7 @@ export default function Designer() {
     if (response) {
       refreshPage();
     }
-  }
+  };
 
   const launchProjectHandler = async (projectID) => {
     const response = await launchProject(projectID);
@@ -106,7 +125,7 @@ export default function Designer() {
     if (response) {
       refreshPage();
     }
-  }
+  };
 
   return (
     <div className="container">
@@ -147,13 +166,23 @@ export default function Designer() {
               {inactiveProjects.map((project) => (
                 <li key={project.ProjectID}>
                   <div className="container-fluid">
-                  <Link
-                    to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
-                  >
-                    <p>{project.ProjectName}</p>
-                  </Link>
-                  <button className="btn btn-sm btn-success" onClick={(e) => launchProjectHandler(project.ProjectID)}>Launch</button>
-                  <button className="btn btn-sm btn-danger" onClick={(e) => deleteProjectHandler(project.ProjectID)}>Delete</button>
+                    <Link
+                      to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
+                    >
+                      <p>{project.ProjectName}</p>
+                    </Link>
+                    <button
+                      className="btn btn-sm btn-success"
+                      onClick={(e) => launchProjectHandler(project.ProjectID)}
+                    >
+                      Launch
+                    </button>
+                    <button
+                      className="btn btn-sm btn-danger"
+                      onClick={(e) => deleteProjectHandler(project.ProjectID)}
+                    >
+                      Delete
+                    </button>
                   </div>
                 </li>
               ))}
@@ -164,38 +193,38 @@ export default function Designer() {
             </p>
           )}
         </div>
-        <div className="col-6 text-center">
-          <p>Project Name:</p>
+        <div className="col-4 text-center">
+          <p className="mb-1">Project Name:</p>
           <input
             type="text"
             onChange={(e) => setInputName(e.target.value)}
             className="m-1"
           ></input>
-          <p>Project Type:</p>
-          <input
-            type="text"
-            onChange={(e) => setInputType(e.target.value)}
-            className="m-1"
-          ></input>
-          <p>Project Story:</p>
+          <p className="m-1">Project Type:</p>
+          <Select
+            options={genres}
+            isSearchable={false}
+            onChange={(e) => setInputType(e.value)}
+          />
+          <p className="m-1">Project Story:</p>
           <input
             type="text"
             onChange={(e) => setInputStory(e.target.value)}
             className="m-1"
           ></input>
-          <p>Project Goal:</p>
+          <p className="m-1">Project Goal:</p>
           <input
             type="text"
             onChange={(e) => setInputGoal(e.target.value)}
             className="m-1"
           ></input>
-          <p>Deadline:</p>
+          <p className="m-1">Deadline:</p>
           <input
             type="text"
             onChange={(e) => setInputDeadline(e.target.value)}
             className="m-1"
           ></input>
-          <div>
+          <div className="m-1">
             <button
               className="btn btn-primary"
               onClick={(e) => createProjectHandler()}
