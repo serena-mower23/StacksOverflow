@@ -47,9 +47,6 @@ export default function Supporter() {
 
   const loadFundsHandler = async () => {
     const response = await getFunds(supporterID);
-    console.log("HELLO BITCH");
-    console.log(response);
-
     setFunds(response);
   };
 
@@ -64,9 +61,14 @@ export default function Supporter() {
     setProjects(activeProjects);
   };
 
+  
   const addFunds = async () => {
     const response = await updateFunds(supporterID, fundAmount);
-    setFunds(response.funds);
+    if (response === "true") {
+      const response2 = await getFunds(supporterID);
+      setFunds(response2);
+      refreshPage();
+    }
   };
 
   const refreshPage = () => {

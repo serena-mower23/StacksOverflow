@@ -201,7 +201,7 @@ export async function getFunds(supporterID) {
   let value = JSON.stringify(request);
   let data = { body: value };
   console.log("/getFunds");
-  const response = await instance.post("/getFunds", data);
+  const response = await instance.post("/getFund", data);
 
   if (response.data.statusCode === 200) {
     return response.data.body;
@@ -213,18 +213,17 @@ export async function getFunds(supporterID) {
 export async function updateFunds(supporterID, amount) {
   let request = {
     supporterID: supporterID,
-    amount: amount,
+    fund: amount,
   };
 
   let value = JSON.stringify(request);
   let data = { body: value };
-  console.log("/updateFunds");
-  const response = await instance.post("/updateFunds", data);
-
+  console.log("/addFunds");
+  const response = await instance.post("/addFund", data);
   if (response.data.statusCode === 200) {
-    return response.data.body;
+    return "true";
   } else {
-    return "error";
+    return response.data.error;
   }
 }
 
@@ -326,6 +325,27 @@ export async function viewSupporterTemplate(templateID) {
   let res = null;
   if (response.data.statusCode === 200) {
     res = response.data.body;
+  } else {
+    res = response.data.error;
+  }
+  return res;
+}
+
+export async function login(accountType, username, password) {
+  let request = {
+    accountType: accountType,
+    email: username,
+    password: password,
+  };
+  let value = JSON.stringify(request);
+
+  let data = { body: value };
+
+  console.log("/login");
+  const response = await instance.post("/login", data);
+  let res = null;
+  if (response.data.statusCode === 200) {
+    res = "true";
   } else {
     res = response.data.error;
   }

@@ -100,13 +100,16 @@ export default function ProjectSupporter() {
 
   const addFunds = async () => {
     const response = await updateFunds(supporterID, fundAmount);
-    setFunds(response.funds);
+    if (response === "true") {
+      const response2 = await getFunds(supporterID);
+      setFunds(response2);
+      refreshPage();
+    }
   };
 
   const loadFundsHandler = async () => {
-    // const response = await getFunds(supporterID);
-
-    setFunds(20000);
+    const response = await getFunds(supporterID);
+    setFunds(response);
   };
 
   const createTransactionHandler = async () => {
@@ -122,6 +125,22 @@ export default function ProjectSupporter() {
       if (response === "true") {
         const newFunds = funds - selected.pledgeAmount;
         setFunds(newFunds);
+        refreshPage();
+      }
+    }
+  };
+
+  const directSupportHandler = async () => {
+    if (directSupportAmount > funds) {
+      alert("You do not have enough funds to support this amount.");
+    } else {
+      const response = await createTransaction(
+        projectID,
+        "N/A",
+        supporterID,
+        directSupportAmount
+      );
+      if (response === "true") {
         refreshPage();
       }
     }
@@ -197,7 +216,6 @@ export default function ProjectSupporter() {
                   <ul>
                     {pledges.map((pledge) => (
                       <li>
-                        <p>Pledge #{pledge.TemplateID}</p>
                         {pledge.MaxSupporters !== 0 ? (
                           <p>Max Supporters: {pledge.MaxSupporters}</p>
                         ) : (
@@ -232,7 +250,7 @@ export default function ProjectSupporter() {
             >
               Claim Pledge
             </button>
-            {/* <div className="col">
+            <div className="col">
               <h4>Make a Direct Support</h4>
               <input
                 type="text"
@@ -244,14 +262,13 @@ export default function ProjectSupporter() {
               >
                 &#128176; Direct Support
               </button>
-            </div> */}
+            </div>
             <div>
               <h4>Claimed Pledges</h4>
               {claims.length ? (
                 <ul>
                   {claims.map((claim) => (
                     <li>
-                      <p>Pledge #{claim.TemplateID}</p>
                       <p>Pledge Amount: {claim.Amount}</p>
                       <p>Pledge Reward: {claim.Reward}</p>
                     </li>
@@ -263,16 +280,16 @@ export default function ProjectSupporter() {
                 </p>
               )}
             </div>
-            {/* <div>
+            <div>
               <h4>Direct Support Amount</h4>
               {directSupport > 0 ? (
-                <p>${directSupport}</p>
+                <p>You have directly supported ${directSupport} to this project.</p>
               ) : (
                 <p>
                   <i>You haven't directly supported this project.</i>
                 </p>
               )}
-            </div> */}
+            </div>
           </div>
         </div>
       </div>
