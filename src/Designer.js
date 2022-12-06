@@ -46,6 +46,10 @@ export default function Designer() {
   const designerID = params.get("designerID");
 
   const genres = [
+    { value: "Art", label: "Art" },
+    { value: "Education", label: "Education" },
+    { value: "Fashion", label: "Fashion" },
+    { value: "Food", label: "Food" },
     { value: "Game", label: "Game" },
     { value: "Movie", label: "Movie" },
     { value: "Music", label: "Music" },
@@ -198,7 +202,6 @@ export default function Designer() {
           ></input>
           <p className="m-1">Project Type:</p>
           <Select
-            defaultValue={genres[0]}
             options={genres}
             isSearchable={false}
             onChange={(e) => setInputType(e.value)}

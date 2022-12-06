@@ -23,9 +23,9 @@ export default function Supporter() {
   const [projects, setProjects] = React.useState("");
 
   React.useEffect(() => {
+    loadFundsHandler();
     loadProjectsHandler();
     loadTransactionsHandler();
-    // loadFundsHandler();
   }, []);
 
   const loadTransactionsHandler = async () => {
@@ -47,20 +47,28 @@ export default function Supporter() {
 
   const loadFundsHandler = async () => {
     const response = await getFunds(supporterID);
-
-    setFunds(response.funds);
+    setFunds(response);
   };
 
   const loadProjectsHandler = async () => {
     const response = await listProjects();
-    setProjects(response);
-    console.log("response");
-    console.log(response);
+    let activeProjects = [];
+    for (let i = 0; i < response.length; i++) {
+      if (response[i].IsLaunched === 1) {
+        activeProjects.push(response[i]);
+      }
+    }
+    setProjects(activeProjects);
   };
 
+  
   const addFunds = async () => {
     const response = await updateFunds(supporterID, fundAmount);
-    setFunds(response.funds);
+    if (response === "true") {
+      const response2 = await getFunds(supporterID);
+      setFunds(response2);
+      refreshPage();
+    }
   };
 
   const refreshPage = () => {
@@ -147,7 +155,7 @@ export default function Supporter() {
                   <Link
                     to={`projects?projectID=${claim.ProjectID}&supporterID=${supporterID}`}
                   >
-                    <p>View Project: {claim.ProjectName}</p>
+                    Plege #{claim.TemplateID}
                   </Link>
                 </li>
               ))}
@@ -164,10 +172,12 @@ export default function Supporter() {
             <ul>
               {directSupports.map((dS) => (
                 <li>
+                  <p>TransactionID: {dS.TransactionID}</p>
+                  <p>Amount: {dS.Amount}</p>
                   <Link
                     to={`projects?projectID=${dS.ProjectID}&supporterID=${supporterID}`}
                   >
-                    <p>View Project: {dS.ProjectName}</p>
+                    <p>View Project</p>
                   </Link>
                 </li>
               ))}
