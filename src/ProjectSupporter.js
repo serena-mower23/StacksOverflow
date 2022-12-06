@@ -7,6 +7,8 @@ import {
   getFunds,
   viewProject,
   viewSupporterTransactions,
+  createTransaction,
+  viewSupporterTemplate,
 } from "./controller/Controller";
 
 export default function ProjectSupporter() {
@@ -15,6 +17,7 @@ export default function ProjectSupporter() {
   const supporterID = params.get("supporterID");
   const [pledges, setPledges] = React.useState("");
   const [project, setProject] = React.useState("");
+  const [selected, setSelected] = React.useState("");
   const [claims, setClaims] = React.useState("");
   const [directSupport, setDS] = React.useState("");
   const [directSupportAmount, setDirectSupportAmount] = React.useState("");
@@ -24,6 +27,7 @@ export default function ProjectSupporter() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
+    loadDataHandler();
     grabPledgeTemplates();
     grabProjectTransactions();
     grabClaimedPledges();
@@ -56,6 +60,13 @@ export default function ProjectSupporter() {
     }
   };
 
+  const getReward = async (templateID) => {
+    const response = await viewSupporterTemplate(templateID);
+
+    let reward = response[0].Reward
+    return reward;
+  }
+
   const grabProjectTransactions = async () => {
     const response = await viewTransactions(projectID);
     setTransactions(response);
@@ -68,9 +79,16 @@ export default function ProjectSupporter() {
     let currentDS = 0;
 
     for (let i = 0; i < response.length; i++) {
-      if (response[i].TemplateID === "N/A") {
+      if (
+        response[i].ProjectID === projectID &&
+        response[i].TemplateID === "N/A"
+      ) {
         currentDS += response[i].Amount;
-      } else {
+      } else if (response[i].ProjectID === projectID) {
+        const reward = await getReward(response[i].TemplateID);
+        response[i]["Reward"] = reward;
+        console.log("please lord");
+        console.log(response[i]);
         currentClaims.push(response[i]);
       }
     }
@@ -93,30 +111,34 @@ export default function ProjectSupporter() {
     setFunds(20000);
   };
 
-  const claimPledge = async (templateID, pledgeAmount) => {
-    if (pledgeAmount > funds) {
-      alert("You do not have enough funds to claim the pledge.");
+  const createTransactionHandler = async () => {
+    if (selected.pledgeAmount > funds) {
+      alert("You do not have enough funds to claim the pledge(s).");
     } else {
-      const response = await claimPledge(supporterID, templateID);
-      if (response) {
+      const response = await createTransaction(
+        projectID,
+        selected.templateID,
+        supporterID,
+        selected.pledgeAmount
+      );
+      if (response === "true") {
+        const newFunds = funds - selected.pledgeAmount;
+        setFunds(newFunds);
         refreshPage();
       }
     }
+  };
+
+  const selectedHandler = async (templateID, pledgeAmount) => {
+    let newSelected = {
+      templateID: templateID,
+      pledgeAmount: pledgeAmount,
+    };
+    setSelected(newSelected);
   };
 
   const dashboardHandler = async () => {
     navigate(-1);
-  };
-
-  const directSupportHandler = async () => {
-    if (directSupportAmount > funds) {
-      alert("You do not have enough funds to make that direct support.");
-    } else {
-      const response = await claimPledge(supporterID, "N/A");
-      if (response) {
-        refreshPage();
-      }
-    }
   };
 
   return (
@@ -185,14 +207,17 @@ export default function ProjectSupporter() {
                         )}
                         <p>Pledge Amount: {pledge.PledgeAmount}</p>
                         <p>Pledge Reward: {pledge.Reward}</p>
-                        <button
-                          className="btn btn-primary"
-                          onClick={(e) =>
-                            claimPledge(pledge.TemplateID, pledge.PledgeAmount)
+                        <input
+                          class="form-check-input mt-0"
+                          type="radio"
+                          value=""
+                          onChange={() =>
+                            selectedHandler(
+                              pledge.TemplateID,
+                              pledge.PledgeAmount
+                            )
                           }
-                        >
-                          Claim Pledge
-                        </button>
+                        />
                       </li>
                     ))}
                   </ul>
@@ -203,7 +228,13 @@ export default function ProjectSupporter() {
                 )}
               </ul>
             </div>
-            <div className="col">
+            <button
+              className="btn btn-primary"
+              onClick={() => createTransactionHandler()}
+            >
+              Claim Pledge
+            </button>
+            {/* <div className="col">
               <h4>Make a Direct Support</h4>
               <input
                 type="text"
@@ -215,7 +246,7 @@ export default function ProjectSupporter() {
               >
                 &#128176; Direct Support
               </button>
-            </div>
+            </div> */}
             <div>
               <h4>Claimed Pledges</h4>
               {claims.length ? (
@@ -223,7 +254,7 @@ export default function ProjectSupporter() {
                   {claims.map((claim) => (
                     <li>
                       <p>Pledge #{claim.TemplateID}</p>
-                      <p>Pledge Amount: {claim.PledgeAmount}</p>
+                      <p>Pledge Amount: {claim.Amount}</p>
                       <p>Pledge Reward: {claim.Reward}</p>
                     </li>
                   ))}
@@ -234,6 +265,16 @@ export default function ProjectSupporter() {
                 </p>
               )}
             </div>
+            {/* <div>
+              <h4>Direct Support Amount</h4>
+              {directSupport > 0 ? (
+                <p>${directSupport}</p>
+              ) : (
+                <p>
+                  <i>You haven't directly supported this project.</i>
+                </p>
+              )}
+            </div> */}
           </div>
         </div>
       </div>

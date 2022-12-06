@@ -303,3 +303,48 @@ export async function deletePledge(templateID) {
 export async function searchProjects(search) {
   
 }
+
+export async function createTransaction(projectID, templateID, supporterID, amount) {
+  let request = {
+    projectID: projectID,
+    templateID: templateID,
+    supporterID: supporterID,
+    amount: amount
+  }
+
+  let value = JSON.stringify(request);
+  let data = { body: value};
+  console.log("DATA");
+  console.log(data);
+  console.log("/createTransaction");
+  const response = await instance.post("/createTransaction", data);
+  console.log(response);
+  let res = null;
+  if (response.data.statusCode === 200) {
+    res = "true";
+  } else {
+    res = response.data.error;
+  }
+  return res;
+}
+
+export async function viewSupporterTemplate(templateID) {
+  let request = {
+    templateID: templateID
+  }
+
+  let value = JSON.stringify(request);
+  let data = { body: value};
+  console.log("/viewTemplateSupporter");
+  const response = await instance.post("/viewTemplateSupporter", data); 
+  console.log(response);
+  
+  let res = null;
+  if (response.data.statusCode === 200) {
+    console.log(response.data.body);
+    res = response.data.body;
+  } else {
+    res = response.data.error;
+  }
+  return res;
+}

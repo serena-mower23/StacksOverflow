@@ -47,6 +47,7 @@ export default function Designer() {
 
   const genres = [
     { value: "Art", label: "Art" },
+    { value: "Education", label: "Education"},
     { value: "Fashion", label: "Fashion" },
     { value: "Food", label: "Food" },
     { value: "Game", label: "Game" },
@@ -201,7 +202,6 @@ export default function Designer() {
           ></input>
           <p className="m-1">Project Type:</p>
           <Select
-            defaultValue={genres[0]}
             options={genres}
             isSearchable={false}
             onChange={(e) => setInputType(e.value)}

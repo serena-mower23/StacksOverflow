@@ -46,16 +46,22 @@ export default function Supporter() {
   };
 
   const loadFundsHandler = async () => {
-    // const response = await getFunds(supporterID);
+    const response = await getFunds(supporterID);
+    console.log("HELLO BITCH");
+    console.log(response);
 
-    setFunds(20000);
+    setFunds(response);
   };
 
   const loadProjectsHandler = async () => {
     const response = await listProjects();
-    setProjects(response);
-    console.log("response");
-    console.log(response);
+    let activeProjects = [];
+    for (let i = 0; i < response.length; i++) {
+      if (response[i].IsLaunched === 1) {
+        activeProjects.push(response[i]);
+      }
+    }
+    setProjects(activeProjects);
   };
 
   const addFunds = async () => {
@@ -147,7 +153,7 @@ export default function Supporter() {
                   <Link
                     to={`projects?projectID=${claim.ProjectID}&supporterID=${supporterID}`}
                   >
-                    <p>View Project: {claim.ProjectName}</p>
+                  Plege #{claim.TemplateID}
                   </Link>
                 </li>
               ))}
