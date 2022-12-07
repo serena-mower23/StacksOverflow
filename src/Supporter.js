@@ -155,11 +155,11 @@ export default function Supporter() {
       <div className="m-5 row">
         <div className="col-4">
           <h2>Search Projects</h2>
-          <input
+          {/* <input
             type="text"
             placeholder="Search Projects..."
             onChange={(e) => setSearch(e.target.value)}
-          />
+          /> */}
           <Select
             isSearchable={false}
             options={genres}

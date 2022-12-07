@@ -9,6 +9,9 @@ import {
   viewSupporterTransactions,
   createTransaction,
   viewSupporterTemplate,
+  getDesignerInfo,
+  getSupporterInfo
+
 } from "./controller/Controller";
 
 export default function ProjectSupporter() {
@@ -17,6 +20,8 @@ export default function ProjectSupporter() {
   const supporterID = params.get("supporterID");
   const [pledges, setPledges] = React.useState("");
   const [project, setProject] = React.useState("");
+  const [designerName, setDesignerName] = React.useState("");
+  const [supporterName, setSupporterName] = React.useState("");
   const [selected, setSelected] = React.useState("");
   const [claims, setClaims] = React.useState("");
   const [directSupport, setDS] = React.useState("");
@@ -27,19 +32,21 @@ export default function ProjectSupporter() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    loadDataHandler();
     grabPledgeTemplates();
     grabProjectTransactions();
     grabClaimedPledges();
+    // loadSupporterInfo();
     loadFundsHandler();
+    // getDesignerName();
   }, []);
 
   const logoutHandler = async () => {
     navigate("/");
   };
 
-  const loadDataHandler = async () => {
+  const loadMoneyRaisedHandler = async () => {
     const response = await viewProject(projectID);
+    console.log("");
     const project = response[0];
     let moneyRaised = 0;
     for (var i = 0; i < transactions.length; i++) {
@@ -60,6 +67,17 @@ export default function ProjectSupporter() {
     }
   };
 
+  const getDesignerName = async () => {
+    const response = await getDesignerInfo(project.DesingerID);
+    setDesignerName(response);
+  }
+
+  const loadSupporterInfo = async () => {
+    const response = await getSupporterInfo(project.DesingerID);
+    setSupporterName(response.SupporterName);
+    setFunds(response.Funds);
+  }
+
   const getReward = async (templateID) => {
     const response = await viewSupporterTemplate(templateID);
 
@@ -70,7 +88,7 @@ export default function ProjectSupporter() {
   const grabProjectTransactions = async () => {
     const response = await viewTransactions(projectID);
     setTransactions(response);
-    loadDataHandler();
+    loadMoneyRaisedHandler();
   };
 
   const grabClaimedPledges = async () => {
@@ -178,7 +196,7 @@ export default function ProjectSupporter() {
               </div>
               <div className="col">
                 <label className="m-2 h1">
-                  &#128184; $tacksOverflow &#128184;
+                  Welcome to &#128184; $tacksOverflow &#128184; {supporterName}
                 </label>
               </div>
               <div className="col">
@@ -203,12 +221,12 @@ export default function ProjectSupporter() {
               Close Project
             </button>
             <h1>{project.ProjectName}</h1>
+            <p>Project Designer: {designerName}</p>
             <p>Project Type: {project.ProjectType}</p>
             <p>Project Story: {project.ProjectStory}</p>
-            <p>Project Goal: {project.ProjectGoal}</p>
-            <p>Money Raised: {project.MoneyRaised}</p>
+            <p>Money Raised: ${project.MoneyRaised}/${project.ProjectGoal}</p>
             <p>Number of Supporters: {project.NumSupporter}</p>
-            <p>Project Deadline: {project.Deadline}</p>
+            <p>Project Deadline: {new Date(project.Deadline).toLocaleDateString()}</p>
             <h4>Pledges</h4>
             <div>
               <ul>
