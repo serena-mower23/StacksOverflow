@@ -102,7 +102,7 @@ export default function Designer() {
       inputType,
       inputStory,
       inputGoal,
-      inputDeadline,
+      new Date(inputDeadline),
       designerID
     );
 

@@ -70,8 +70,8 @@ export default function ProjectDesigner() {
         <p>Project Story: {project.ProjectStory}</p>
         <p>Project Goal: {project.ProjectGoal}</p>
         <p>Money Raised: {project.MoneyRaised}</p>
-        <p>Number of Supporters: {project.NumSupporter}</p>
-        <p>Project Deadline: {project.Deadline}</p>
+        <p>Number of Supporters: {project.NumSupporters}</p>
+        <p>Project Deadline: {new Date(project.Deadline).toLocaleDateString()}</p>
         <h4>Pledges</h4>
         <ul>
           {pledges.length ? (
