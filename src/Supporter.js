@@ -102,13 +102,6 @@ export default function Supporter() {
       }
     }
 
-    // for (let k = 0; k < search.length; k++) {
-    //   for (let j = 0; j < projects.length; j++) {
-    //     if (projects[j].ProjectType === search[k]) {
-    //       listProjects.push(projects[j]);
-    //     }
-    //   }
-    // }
     setSearchedProjects(listProjects);
   };
 
@@ -120,9 +113,9 @@ export default function Supporter() {
     navigate("/");
   };
 
-  const searchHandler = async () => {
-    const response = await searchProjects(search);
-  };
+  // const searchHandler = async () => {
+  //   const response = await searchProjects(search);
+  // };
 
   return (
     <div>

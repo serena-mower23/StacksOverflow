@@ -20,9 +20,11 @@ export default function ProjectDesigner() {
   const loadDataHandler = async () => {
     const response = await viewProject(projectID);
     const project = response[0];
+
     let moneyRaised = 0;
-    for (var i = 0; i < transactions.length; i++) {
+    for (let i = 0; i < transactions.length; i++) {
       let amount = transactions[i].Amount;
+      console.log(amount)
       moneyRaised += amount;
     }
     project["MoneyRaised"] = moneyRaised;
