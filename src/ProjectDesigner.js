@@ -23,7 +23,7 @@ export default function ProjectDesigner() {
     grabPledgeTemplates();
     grabTransactions();
     loadMoneyRaisedHandler();
-    // getDesignerName();
+    getDesignerName();
   }, []);
 
   const loadMoneyRaisedHandler = async () => {
@@ -57,12 +57,12 @@ export default function ProjectDesigner() {
   };
 
   const getDesignerName = async () => {
-    const response = await getDesignerInfo(project.DesingerID);
+    const response = await getDesignerInfo(project.DesignerID);
     setDesignerName(response);
   };
 
   const getSupporterName = async () => {
-    const response = await getSupporterInfo(project.DesingerID);
+    const response = await getSupporterInfo(project.DesignerID);
   };
 
   const grabTransactions = async () => {
@@ -88,27 +88,21 @@ export default function ProjectDesigner() {
 
   return (
     <div className="container">
-      <div className="mt-2">
-        <nav className="navbar navbar-expand-lg">
-          <div className="container align-items-center">
-            <div className="row">
-              <div className="col">
-                <label className="m-2 h1">
-                  Welcome to &#128184; $tacksOverflow &#128184; {designerName}
-                </label>
-              </div>
-              <div className="col">
-                <button
-                  className="nav-link btn btn-link"
-                  onClick={(e) => logoutHandler()}
-                >
-                  Log out
-                </button>
-              </div>
-            </div>
+      <nav className="navbar navbar-expand-lg mt-2">
+        <div className="container align-items-center">
+          <div className="col-11">
+            <label className="m-2 h1">&#128184; $tacksOverflow &#128184;</label>
           </div>
-        </nav>
-      </div>
+          <div className="col-3">
+            <button
+              className="nav-link btn btn-link"
+              onClick={(e) => logoutHandler()}
+            >
+              Log out
+            </button>
+          </div>
+        </div>
+      </nav>
       <div>
         <button onClick={(e) => dashboardHandler()} className="btn btn-primary">
           Close Project

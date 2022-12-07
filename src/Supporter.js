@@ -76,6 +76,8 @@ export default function Supporter() {
 
   const loadProjectsHandler = async () => {
     const response = await listProjects();
+    console.log("Hello???");
+    console.log(response)
     let activeProjects = [];
     for (let i = 0; i < response.length; i++) {
       if (response[i].IsLaunched === 1) {

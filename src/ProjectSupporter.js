@@ -25,35 +25,19 @@ export default function ProjectSupporter() {
   const [claims, setClaims] = React.useState("");
   const [directSupport, setDS] = React.useState("");
   const [directSupportAmount, setDirectSupportAmount] = React.useState("");
-  const [transactions, setTransactions] = React.useState("");
   const [funds, setFunds] = React.useState("");
   const [fundAmount, setFundAmount] = React.useState("");
   const navigate = useNavigate();
 
   React.useEffect(() => {
     grabPledgeTemplates();
-    grabProjectTransactions();
+    grabProjectInformation();
     grabClaimedPledges();
-    // loadSupporterInfo();
-    loadFundsHandler();
-    // getDesignerName();
+    loadSupporterInfo();
   }, []);
 
   const logoutHandler = async () => {
     navigate("/");
-  };
-
-  const loadMoneyRaisedHandler = async () => {
-    const response = await viewProject(projectID);
-    console.log("");
-    const project = response[0];
-    let moneyRaised = 0;
-    for (var i = 0; i < transactions.length; i++) {
-      let amount = transactions[i].Amount;
-      moneyRaised += amount;
-    }
-    project["MoneyRaised"] = moneyRaised;
-    setProject(project);
   };
 
   const grabPledgeTemplates = async () => {
@@ -67,13 +51,15 @@ export default function ProjectSupporter() {
   };
 
   const getDesignerName = async () => {
-    const response = await getDesignerInfo(project.DesingerID);
+    console.log("SAFUSADFDS")
+    console.log(project)
+    const response = await getDesignerInfo(project.DesignerID);
     setDesignerName(response);
   };
 
   const loadSupporterInfo = async () => {
-    const response = await getSupporterInfo(project.DesingerID);
-    setSupporterName(response.SupporterName);
+    const response = await getSupporterInfo(supporterID);
+    setSupporterName(response.Name);
     setFunds(response.Funds);
   };
 
@@ -84,10 +70,11 @@ export default function ProjectSupporter() {
     return reward;
   };
 
-  const grabProjectTransactions = async () => {
-    const response = await viewTransactions(projectID);
-    setTransactions(response);
-    loadMoneyRaisedHandler();
+  const grabProjectInformation = async () => {
+    const response1 = await viewProject(projectID);
+    const project = response1[0];
+    setProject(project);
+    getDesignerName();
   };
 
   const grabClaimedPledges = async () => {
@@ -122,11 +109,6 @@ export default function ProjectSupporter() {
       setFunds(response2);
       refreshPage();
     }
-  };
-
-  const loadFundsHandler = async () => {
-    const response = await getFunds(supporterID);
-    setFunds(response);
   };
 
   const createTransactionHandler = async () => {
@@ -177,39 +159,33 @@ export default function ProjectSupporter() {
 
   return (
     <div className="container">
-      <div className="mt-2">
-        <nav className="navbar navbar-expand-lg">
-          <div className="container align-items-center">
-            <div className="row">
-              <div className="col">
-                <label>Funds: ${funds}</label>
-              </div>
-              <div className="col">
-                <input
-                  type="text"
-                  onChange={(e) => setFundAmount(e.target.value)}
-                />
-                <button className="btn btn-primary" onClick={(e) => addFunds()}>
-                  &#128176; Add Funds
-                </button>
-              </div>
-              <div className="col">
-                <label className="m-2 h1">
-                  Welcome to &#128184; $tacksOverflow &#128184; {supporterName}
-                </label>
-              </div>
-              <div className="col">
-                <button
-                  className="nav-link btn btn-link"
-                  onClick={(e) => logoutHandler()}
-                >
-                  Log out
-                </button>
-              </div>
-            </div>
+      <nav className="navbar navbar-expand-lg mt-2">
+        <div className="container align-items-center">
+          <div className="col-2">
+            <label>Funds: ${funds}</label>
           </div>
-        </nav>
-      </div>
+          <div className="col-5">
+            <input
+              type="text"
+              onChange={(e) => setFundAmount(e.target.value)}
+            />
+            <button className="btn btn-primary" onClick={(e) => addFunds()}>
+              &#128176; Add Funds
+            </button>
+          </div>
+          <div className="col-11">
+            <label className="m-2 h1">&#128184; $tacksOverflow &#128184;</label>
+          </div>
+          <div className="col-3">
+            <button
+              className="nav-link btn btn-link"
+              onClick={(e) => logoutHandler()}
+            >
+              Log out
+            </button>
+          </div>
+        </div>
+      </nav>
       <div className="container">
         <div className="row">
           <div className="col">
@@ -226,7 +202,7 @@ export default function ProjectSupporter() {
             <p>
               Money Raised: ${project.MoneyRaised}/${project.ProjectGoal}
             </p>
-            <p>Number of Supporters: {project.NumSupporter}</p>
+            <p>Number of Supporters: {project.NumSupporters}</p>
             <p>
               Project Deadline:{" "}
               {new Date(project.Deadline).toLocaleDateString()}

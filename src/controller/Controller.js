@@ -364,16 +364,16 @@ export async function login(accountType, username, password) {
   return res;
 }
 
-export async function getDesignerInfo(projectID) {
+export async function getDesignerInfo(designerID) {
   let request = {
-    projectID: projectID,
+    designerID: designerID,
   };
 
   let value = JSON.stringify(request);
   let data = { body: value };
 
   console.log("/getDesignerInfo");
-  const response = await instance.post("/getDesignerInfo", data);
+  const response = await instance.post("/getDesignerInformation", data);
   let res = null;
   if (response.data.statusCode === 200) {
     res = response.data.body;
@@ -392,7 +392,7 @@ export async function getSupporterInfo(supporterID) {
   let data = { body: value };
 
   console.log("/getSupporterInfo");
-  const response = await instance.post("/getSupporterInfo", data);
+  const response = await instance.post("/getSupporterInformation", data);
   let res = null;
   if (response.data.statusCode === 200) {
     res = response.data.body;
