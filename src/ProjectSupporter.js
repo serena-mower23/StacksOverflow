@@ -9,6 +9,8 @@ import {
   viewSupporterTransactions,
   createTransaction,
   viewSupporterTemplate,
+  getDesignerInfo,
+  getSupporterInfo,
 } from "./controller/Controller";
 
 export default function ProjectSupporter() {
@@ -17,37 +19,25 @@ export default function ProjectSupporter() {
   const supporterID = params.get("supporterID");
   const [pledges, setPledges] = React.useState("");
   const [project, setProject] = React.useState("");
+  const [designerName, setDesignerName] = React.useState("");
+  const [supporterName, setSupporterName] = React.useState("");
   const [selected, setSelected] = React.useState("");
   const [claims, setClaims] = React.useState("");
   const [directSupport, setDS] = React.useState("");
   const [directSupportAmount, setDirectSupportAmount] = React.useState("");
-  const [transactions, setTransactions] = React.useState("");
   const [funds, setFunds] = React.useState("");
   const [fundAmount, setFundAmount] = React.useState("");
   const navigate = useNavigate();
 
   React.useEffect(() => {
-    loadDataHandler();
     grabPledgeTemplates();
-    grabProjectTransactions();
+    grabProjectInformation();
     grabClaimedPledges();
-    loadFundsHandler();
+    loadSupporterInfo();
   }, []);
 
   const logoutHandler = async () => {
     navigate("/");
-  };
-
-  const loadDataHandler = async () => {
-    const response = await viewProject(projectID);
-    const project = response[0];
-    let moneyRaised = 0;
-    for (var i = 0; i < transactions.length; i++) {
-      let amount = transactions[i].Amount;
-      moneyRaised += amount;
-    }
-    project["MoneyRaised"] = moneyRaised;
-    setProject(project);
   };
 
   const grabPledgeTemplates = async () => {
@@ -60,6 +50,19 @@ export default function ProjectSupporter() {
     }
   };
 
+  const getDesignerName = async () => {
+    console.log("SAFUSADFDS")
+    console.log(project)
+    const response = await getDesignerInfo(project.DesignerID);
+    setDesignerName(response);
+  };
+
+  const loadSupporterInfo = async () => {
+    const response = await getSupporterInfo(supporterID);
+    setSupporterName(response.Name);
+    setFunds(response.Funds);
+  };
+
   const getReward = async (templateID) => {
     const response = await viewSupporterTemplate(templateID);
 
@@ -67,10 +70,11 @@ export default function ProjectSupporter() {
     return reward;
   };
 
-  const grabProjectTransactions = async () => {
-    const response = await viewTransactions(projectID);
-    setTransactions(response);
-    loadDataHandler();
+  const grabProjectInformation = async () => {
+    const response1 = await viewProject(projectID);
+    const project = response1[0];
+    setProject(project);
+    getDesignerName();
   };
 
   const grabClaimedPledges = async () => {
@@ -105,11 +109,6 @@ export default function ProjectSupporter() {
       setFunds(response2);
       refreshPage();
     }
-  };
-
-  const loadFundsHandler = async () => {
-    const response = await getFunds(supporterID);
-    setFunds(response);
   };
 
   const createTransactionHandler = async () => {
@@ -160,39 +159,33 @@ export default function ProjectSupporter() {
 
   return (
     <div className="container">
-      <div className="mt-2">
-        <nav className="navbar navbar-expand-lg">
-          <div className="container align-items-center">
-            <div className="row">
-              <div className="col">
-                <label>Funds: ${funds}</label>
-              </div>
-              <div className="col">
-                <input
-                  type="text"
-                  onChange={(e) => setFundAmount(e.target.value)}
-                />
-                <button className="btn btn-primary" onClick={(e) => addFunds()}>
-                  &#128176; Add Funds
-                </button>
-              </div>
-              <div className="col">
-                <label className="m-2 h1">
-                  &#128184; $tacksOverflow &#128184;
-                </label>
-              </div>
-              <div className="col">
-                <button
-                  className="nav-link btn btn-link"
-                  onClick={(e) => logoutHandler()}
-                >
-                  Log out
-                </button>
-              </div>
-            </div>
+      <nav className="navbar navbar-expand-lg mt-2">
+        <div className="container align-items-center">
+          <div className="col-2">
+            <label>Funds: ${funds}</label>
           </div>
-        </nav>
-      </div>
+          <div className="col-5">
+            <input
+              type="text"
+              onChange={(e) => setFundAmount(e.target.value)}
+            />
+            <button className="btn btn-primary" onClick={(e) => addFunds()}>
+              &#128176; Add Funds
+            </button>
+          </div>
+          <div className="col-11">
+            <label className="m-2 h1">&#128184; $tacksOverflow &#128184;</label>
+          </div>
+          <div className="col-3">
+            <button
+              className="nav-link btn btn-link"
+              onClick={(e) => logoutHandler()}
+            >
+              Log out
+            </button>
+          </div>
+        </div>
+      </nav>
       <div className="container">
         <div className="row">
           <div className="col">
@@ -203,12 +196,17 @@ export default function ProjectSupporter() {
               Close Project
             </button>
             <h1>{project.ProjectName}</h1>
+            <p>Project Designer: {designerName}</p>
             <p>Project Type: {project.ProjectType}</p>
             <p>Project Story: {project.ProjectStory}</p>
-            <p>Project Goal: {project.ProjectGoal}</p>
-            <p>Money Raised: {project.MoneyRaised}</p>
-            <p>Number of Supporters: {project.NumSupporter}</p>
-            <p>Project Deadline: {project.Deadline}</p>
+            <p>
+              Money Raised: ${project.MoneyRaised}/${project.ProjectGoal}
+            </p>
+            <p>Number of Supporters: {project.NumSupporters}</p>
+            <p>
+              Project Deadline:{" "}
+              {new Date(project.Deadline).toLocaleDateString()}
+            </p>
             <h4>Pledges</h4>
             <div>
               <ul>
@@ -283,7 +281,9 @@ export default function ProjectSupporter() {
             <div>
               <h4>Direct Support Amount</h4>
               {directSupport > 0 ? (
-                <p>You have directly supported ${directSupport} to this project.</p>
+                <p>
+                  You have directly supported ${directSupport} to this project.
+                </p>
               ) : (
                 <p>
                   <i>You haven't directly supported this project.</i>
@@ -296,5 +296,3 @@ export default function ProjectSupporter() {
     </div>
   );
 }
-
-

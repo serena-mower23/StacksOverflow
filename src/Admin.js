@@ -27,6 +27,8 @@ export default function Admin() {
     navigate("/");
   };
 
+  const reapProjectHandler = async () => {};
+
   return (
     <div className="container">
       <div className="container d-flex flex-column mt-2 align-items-center">
@@ -64,7 +66,14 @@ export default function Admin() {
           </p>
         )}
       </div>
-      <div id="detail"></div>
+      <div>
+        <button
+          className="btn btn-warning"
+          onClick={() => reapProjectHandler()}
+        >
+          Reap Projects
+        </button>
+      </div>
     </div>
   );
 }
