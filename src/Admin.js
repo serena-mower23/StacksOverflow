@@ -27,9 +27,7 @@ export default function Admin() {
     navigate("/");
   };
 
-  const reapProjectHandler = async () => {
-    
-  }
+  const reapProjectHandler = async () => {};
 
   return (
     <div className="container">
@@ -69,7 +67,12 @@ export default function Admin() {
         )}
       </div>
       <div>
-        <button className="btn btn-warning" onClick={() => reapProjectHandler()}>Reap Projects</button>
+        <button
+          className="btn btn-warning"
+          onClick={() => reapProjectHandler()}
+        >
+          Reap Projects
+        </button>
       </div>
     </div>
   );

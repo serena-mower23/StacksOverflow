@@ -10,8 +10,7 @@ import {
   createTransaction,
   viewSupporterTemplate,
   getDesignerInfo,
-  getSupporterInfo
-
+  getSupporterInfo,
 } from "./controller/Controller";
 
 export default function ProjectSupporter() {
@@ -70,13 +69,13 @@ export default function ProjectSupporter() {
   const getDesignerName = async () => {
     const response = await getDesignerInfo(project.DesingerID);
     setDesignerName(response);
-  }
+  };
 
   const loadSupporterInfo = async () => {
     const response = await getSupporterInfo(project.DesingerID);
     setSupporterName(response.SupporterName);
     setFunds(response.Funds);
-  }
+  };
 
   const getReward = async (templateID) => {
     const response = await viewSupporterTemplate(templateID);
@@ -224,9 +223,14 @@ export default function ProjectSupporter() {
             <p>Project Designer: {designerName}</p>
             <p>Project Type: {project.ProjectType}</p>
             <p>Project Story: {project.ProjectStory}</p>
-            <p>Money Raised: ${project.MoneyRaised}/${project.ProjectGoal}</p>
+            <p>
+              Money Raised: ${project.MoneyRaised}/${project.ProjectGoal}
+            </p>
             <p>Number of Supporters: {project.NumSupporter}</p>
-            <p>Project Deadline: {new Date(project.Deadline).toLocaleDateString()}</p>
+            <p>
+              Project Deadline:{" "}
+              {new Date(project.Deadline).toLocaleDateString()}
+            </p>
             <h4>Pledges</h4>
             <div>
               <ul>
@@ -301,7 +305,9 @@ export default function ProjectSupporter() {
             <div>
               <h4>Direct Support Amount</h4>
               {directSupport > 0 ? (
-                <p>You have directly supported ${directSupport} to this project.</p>
+                <p>
+                  You have directly supported ${directSupport} to this project.
+                </p>
               ) : (
                 <p>
                   <i>You haven't directly supported this project.</i>
@@ -314,5 +320,3 @@ export default function ProjectSupporter() {
     </div>
   );
 }
-
-

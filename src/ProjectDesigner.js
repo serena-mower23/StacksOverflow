@@ -5,8 +5,8 @@ import {
   viewTransactions,
   viewTemplates,
   deletePledge,
-  getDesignerInfo, 
-  getSupporterInfo
+  getDesignerInfo,
+  getSupporterInfo,
 } from "./controller/Controller";
 
 export default function ProjectDesigner() {
@@ -59,11 +59,11 @@ export default function ProjectDesigner() {
   const getDesignerName = async () => {
     const response = await getDesignerInfo(project.DesingerID);
     setDesignerName(response);
-  }
+  };
 
   const getSupporterName = async () => {
     const response = await getSupporterInfo(project.DesingerID);
-  }
+  };
 
   const grabTransactions = async () => {
     const response = await viewTransactions(projectID);
@@ -116,7 +116,9 @@ export default function ProjectDesigner() {
         <h1>{project.ProjectName}</h1>
         <p>Project Type: {project.ProjectType}</p>
         <p>Project Story: {project.ProjectStory}</p>
-        <p>Money Raised: ${project.MoneyRaised} / ${project.ProjectGoal}</p>
+        <p>
+          Money Raised: ${project.MoneyRaised} / ${project.ProjectGoal}
+        </p>
         <p>Number of Supporters: {project.NumSupporters}</p>
         <p>
           Project Deadline: {new Date(project.Deadline).toLocaleDateString()}

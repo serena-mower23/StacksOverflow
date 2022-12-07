@@ -4,17 +4,17 @@ const instance = axios.create({
   baseURL: "https://puwud6fni0.execute-api.us-east-1.amazonaws.com/Prod",
 });
 const options = [
-  { value: 'game', label: 'Game' },
-  { value: 'movie', label: 'Movie' },
-  { value: 'toy', label: 'Toy' },
-  { value: 'music', label: 'Music' },
-  { value: 'tech', label: 'Tech' },
-  { value: 'fashion', label: 'Fashion' },
-  { value: 'food', label: 'Food' },
-  { value: 'art', label: 'Art' },
-  { value: 'education', label: 'Education'},
-  { value: 'other', label: 'Other' }
-]
+  { value: "game", label: "Game" },
+  { value: "movie", label: "Movie" },
+  { value: "toy", label: "Toy" },
+  { value: "music", label: "Music" },
+  { value: "tech", label: "Tech" },
+  { value: "fashion", label: "Fashion" },
+  { value: "food", label: "Food" },
+  { value: "art", label: "Art" },
+  { value: "education", label: "Education" },
+  { value: "other", label: "Other" },
+];
 
 export async function listDesignerProjects(id) {
   let projects = [];
@@ -366,11 +366,11 @@ export async function login(accountType, username, password) {
 
 export async function getDesignerInfo(projectID) {
   let request = {
-    projectID: projectID
-  }
+    projectID: projectID,
+  };
 
   let value = JSON.stringify(request);
-  let data = { body: value};
+  let data = { body: value };
 
   console.log("/getDesignerInfo");
   const response = await instance.post("/getDesignerInfo", data);
@@ -385,11 +385,11 @@ export async function getDesignerInfo(projectID) {
 
 export async function getSupporterInfo(supporterID) {
   let request = {
-    supporterID: supporterID
-  }
+    supporterID: supporterID,
+  };
 
   let value = JSON.stringify(request);
-  let data = { body: value};
+  let data = { body: value };
 
   console.log("/getSupporterInfo");
   const response = await instance.post("/getSupporterInfo", data);
