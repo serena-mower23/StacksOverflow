@@ -401,3 +401,15 @@ export async function getSupporterInfo(supporterID) {
   }
   return res;
 }
+
+export async function getSortedProjects() {
+  console.log("/sortProjects");
+  const response = await instance.post("/sortProjects");
+  let res = null;
+  if (response.data.statusCode === 200) {
+    res = response.data.body;
+  } else {
+    res = response.data.error;
+  }
+  return res;
+}

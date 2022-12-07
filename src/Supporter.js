@@ -5,6 +5,7 @@ import {
   updateFunds,
   listProjects,
   searchProjects,
+  getSortedProjects,
 } from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
@@ -19,15 +20,24 @@ export default function Supporter() {
   const [funds, setFunds] = React.useState("");
   const [fundAmount, setFundAmount] = React.useState("");
   const [search, setSearch] = React.useState("");
-  const navigate = useNavigate();
   const [projects, setProjects] = React.useState("");
   const [searchedProjects, setSearchedProjects] = React.useState("");
+  const [isSorted, setIsSorted] = React.useState("");
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     loadFundsHandler();
     loadProjectsHandler();
     loadTransactionsHandler();
   }, []);
+
+  React.useEffect(() => {
+    if (isSorted === true) {
+      sortProjectsHandler();
+    } else {
+      loadProjectsHandler();
+    }
+  }, [isSorted]);
 
   const genres = [
     { value: "Art", label: "Art" },
@@ -113,107 +123,84 @@ export default function Supporter() {
     navigate("/");
   };
 
+  const sortProjectsHandler = async () => {
+    const response = await getSortedProjects();
+    let activeProjects = [];
+    for (let i = 0; i < response.length; i++) {
+      if (response[i].IsLaunched === 1) {
+        activeProjects.push(response[i]);
+      }
+    }
+    setProjects(activeProjects);
+  };
+
   // const searchHandler = async () => {
   //   const response = await searchProjects(search);
   // };
 
   return (
     <div>
-      <div className="mt-2">
-        <nav className="navbar navbar-expand-lg">
-          <div className="container align-items-center">
-            <div className="row">
-              <div className="col">
-                <label>Funds: ${funds}</label>
-              </div>
-              <div className="col">
-                <input
-                  type="text"
-                  onChange={(e) => setFundAmount(e.target.value)}
-                />
-                <button className="btn btn-primary" onClick={(e) => addFunds()}>
-                  &#128176; Add Funds
-                </button>
-              </div>
-              <div className="col">
-                <label className="m-2 h1">
-                  &#128184; $tacksOverflow &#128184;
-                </label>
-              </div>
-              <div className="col">
-                <button
-                  className="nav-link btn btn-link"
-                  onClick={(e) => logoutHandler()}
-                >
-                  Log out
-                </button>
-              </div>
-            </div>
+      <nav className="navbar navbar-expand-lg mt-2">
+        <div className="container align-items-center">
+          <div className="col-2">
+            <label>Funds: ${funds}</label>
           </div>
-        </nav>
-      </div>
-      <div className="m-5 row">
-        <div className="col-4">
+          <div className="col-5">
+            <input
+              type="text"
+              onChange={(e) => setFundAmount(e.target.value)}
+            />
+            <button className="btn btn-primary" onClick={(e) => addFunds()}>
+              &#128176; Add Funds
+            </button>
+          </div>
+          <div className="col-11">
+            <label className="m-2 h1">&#128184; $tacksOverflow &#128184;</label>
+          </div>
+          <div className="col-3">
+            <button
+              className="nav-link btn btn-link"
+              onClick={(e) => logoutHandler()}
+            >
+              Log out
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <div className="row justify-content-evenly">
+        <div className="col-5">
           <h2>Search Projects</h2>
           {/* <input
             type="text"
             placeholder="Search Projects..."
             onChange={(e) => setSearch(e.target.value)}
           /> */}
-          <Select
-            isSearchable={false}
-            options={genres}
-            onChange={(e) => genreHandler(e.value)}
-          />
-          <button
-            className="btn btn-primary"
-            onClick={(e) => genreSearchHandler()}
-          >
-            Search By Genre
-          </button>
+          <div className="row">
+            <div className="col-8">
+              <Select
+                isSearchable={false}
+                options={genres}
+                onChange={(e) => genreHandler(e.value)}
+              />
+              <button
+                className="btn btn-primary"
+                onClick={(e) => genreSearchHandler()}
+              >
+                Search By Genre
+              </button>
+            </div>
+            <div className="col-6">
+              <label>Sort Projects:</label>
+              <input
+                type="checkbox"
+                checked={isSorted}
+                onChange={() => setIsSorted((state) => !state)}
+              />
+            </div>
+          </div>
         </div>
-        {search === "" ? (
-          <>
-            {projects.length ? (
-              <ul>
-                {projects.map((project) => (
-                  <li key={project.ProjectID}>
-                    <Link
-                      to={`projects?projectID=${project.ProjectID}&supporterID=${supporterID}`}
-                    >
-                      <p>{project.ProjectName}</p>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>
-                <i>No projects</i>
-              </p>
-            )}
-          </>
-        ) : (
-          <>
-            {searchedProjects.length ? (
-              <ul>
-                {searchedProjects.map((project) => (
-                  <li key={project.ProjectID}>
-                    <Link
-                      to={`projects?projectID=${project.ProjectID}&supporterID=${supporterID}`}
-                    >
-                      <p>{project.ProjectName}</p>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>
-                <i>No projects</i>
-              </p>
-            )}
-          </>
-        )}
-        <div className="col-4">
+        <div className="col-3">
           <h2>List of Pledges</h2>
           {claims.length ? (
             <ul>
@@ -233,7 +220,7 @@ export default function Supporter() {
             </p>
           )}
         </div>
-        <div className="col-4">
+        <div className="col-3">
           <h2>List of Direct Supports</h2>
           {directSupports.length ? (
             <ul>
@@ -253,6 +240,51 @@ export default function Supporter() {
             <p>
               <i>No Direct Supports</i>
             </p>
+          )}
+        </div>
+      </div>
+      <div className="m-5 row">
+        <div className="col-4">
+          {search === "" ? (
+            <>
+              {projects.length ? (
+                <ul>
+                  {projects.map((project) => (
+                    <li key={project.ProjectID}>
+                      <Link
+                        to={`projects?projectID=${project.ProjectID}&supporterID=${supporterID}`}
+                      >
+                        <p>{project.ProjectName}</p>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>
+                  <i>No projects</i>
+                </p>
+              )}
+            </>
+          ) : (
+            <>
+              {searchedProjects.length ? (
+                <ul>
+                  {searchedProjects.map((project) => (
+                    <li key={project.ProjectID}>
+                      <Link
+                        to={`projects?projectID=${project.ProjectID}&supporterID=${supporterID}`}
+                      >
+                        <p>{project.ProjectName}</p>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>
+                  <i>No projects</i>
+                </p>
+              )}
+            </>
           )}
         </div>
       </div>
