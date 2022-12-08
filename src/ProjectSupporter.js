@@ -33,7 +33,6 @@ export default function ProjectSupporter() {
     grabPledgeTemplates();
     grabProjectInformation();
     grabClaimedPledges();
-    loadSupporterInfo();
   }, []);
 
   const logoutHandler = async () => {
@@ -53,14 +52,7 @@ export default function ProjectSupporter() {
   const getDesignerName = async () => {
     console.log("SAFUSADFDS")
     console.log(project)
-    const response = await getDesignerInfo(project.DesignerID);
-    setDesignerName(response);
-  };
 
-  const loadSupporterInfo = async () => {
-    const response = await getSupporterInfo(supporterID);
-    setSupporterName(response.Name);
-    setFunds(response.Funds);
   };
 
   const getReward = async (templateID) => {
@@ -71,10 +63,15 @@ export default function ProjectSupporter() {
   };
 
   const grabProjectInformation = async () => {
-    const response1 = await viewProject(projectID);
-    const project = response1[0];
+    const response = await viewProject(projectID);
+    const project = response[0];
     setProject(project);
-    getDesignerName();
+    const response2 = await getDesignerInfo(project.DesignerID);
+    let name = response2[0].Name
+    setDesignerName(name)
+    const response3 = await getSupporterInfo(supporterID);
+    setSupporterName(response3[0].Name);
+    setFunds(response3[0].Funds);
   };
 
   const grabClaimedPledges = async () => {
@@ -158,7 +155,7 @@ export default function ProjectSupporter() {
   };
 
   return (
-    <div className="container">
+    <div>
       <nav className="navbar navbar-expand-lg mt-2">
         <div className="container align-items-center">
           <div className="col-2">
