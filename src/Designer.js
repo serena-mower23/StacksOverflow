@@ -129,17 +129,21 @@ export default function Designer() {
 
   return (
     <div className="container">
-      <div className="container d-flex flex-column mt-2 align-items-center">
-        <nav className="navbar navbar-expand-lg">
-          <label className="m-2 h1">&#128184; $tacksOverflow &#128184;</label>
-          <button
-            className="nav-link btn btn-link"
-            onClick={(e) => logoutHandler()}
-          >
-            Log out
-          </button>
-        </nav>
-      </div>
+      <nav className="navbar navbar-expand-lg mt-2">
+        <div className="container align-items-center">
+          <div className="col-11">
+            <label className="m-2 h1">&#128184; $tacksOverflow &#128184;</label>
+          </div>
+          <div className="col-3">
+            <button
+              className="nav-link btn btn-link"
+              onClick={(e) => logoutHandler()}
+            >
+              Log out
+            </button>
+          </div>
+        </div>
+      </nav>
       <div className="row">
         <div className="col-6">
           <h2>List of Active Projects</h2>

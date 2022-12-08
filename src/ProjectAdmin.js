@@ -49,8 +49,27 @@ export default function ProjectAdmin() {
     navigate(-1);
   };
 
+  const logoutHandler = async () => {
+    navigate("/");
+  };
+
   return (
-    <>
+    <div className="container">
+      <nav className="navbar navbar-expand-lg mt-2">
+        <div className="container align-items-center">
+          <div className="col-11">
+            <label className="m-2 h1">&#128184; $tacksOverflow &#128184;</label>
+          </div>
+          <div className="col-3">
+            <button
+              className="nav-link btn btn-link"
+              onClick={(e) => logoutHandler()}
+            >
+              Log out
+            </button>
+          </div>
+        </div>
+      </nav>
       <div>
         <button onClick={(e) => dashboardHandler()}>Close Project</button>
         <h1>{project.ProjectName}</h1>
@@ -84,6 +103,6 @@ export default function ProjectAdmin() {
         </ul>
       </div>
       <Outlet />
-    </>
+    </div>
   );
 }

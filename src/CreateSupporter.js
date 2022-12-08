@@ -29,14 +29,20 @@ export default function CreateSupporter() {
 
   return (
     <div className="container d-flex flex-column mt-2 align-items-center">
-      <nav className="navbar navbar-expand-lg">
-        <label className="m-2 h1">&#128184; $tacksOverflow &#128184;</label>
-        <button
-          className="nav-link btn btn-link"
-          onClick={(e) => logoutHandler()}
-        >
-          Go back to login
-        </button>
+      <nav className="navbar navbar-expand-lg mt-2">
+        <div className="container align-items-center">
+          <div className="col-11">
+            <label className="m-2 h1">&#128184; $tacksOverflow &#128184;</label>
+          </div>
+          <div className="col-3">
+            <button
+              className="nav-link btn btn-link"
+              onClick={(e) => logoutHandler()}
+            >
+              Go back to login
+            </button>
+          </div>
+        </div>
       </nav>
       <h2>Create Supporter Account</h2>
       <form className="needs-validation">
