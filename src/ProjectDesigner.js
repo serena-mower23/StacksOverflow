@@ -7,6 +7,7 @@ import {
   deletePledge,
   getDesignerInfo,
   getSupporterInfo,
+  viewSupporterTemplate,
 } from "./controller/Controller";
 
 export default function ProjectDesigner() {
@@ -56,10 +57,23 @@ export default function ProjectDesigner() {
     let supporters = [];
     for (let i = 0; i < response.length; i++) {
       const supporter = await getSupporterInfo(response[i].SupporterID);
-      const info = {
-        supporterName: supporter[0].Name,
-        amount: response[i].Amount,
-      };
+      let info = {};
+      if (response[i].TemplateID !== "N/A") {
+        const response2 = await viewSupporterTemplate(response[i].TemplateID);
+        console.log("sdfsa");
+        console.log(response2);
+        info = {
+          supporterName: supporter[0].Name,
+          amount: response[i].Amount,
+          reward: response2[0].Reward,
+        };
+      } else {
+        info = {
+          supporterName: supporter[0].Name,
+          amount: response[i].Amount,
+          reward: "Direct Support",
+        };
+      }
       supporters.push(info);
     }
     setTransactions(supporters);
@@ -98,15 +112,11 @@ export default function ProjectDesigner() {
           </div>
         </div>
       </nav>
-      <button
-            onClick={(e) => dashboardHandler()}
-            className="btn btn-primary"
-          >
-            Close Project
-          </button>
+      <button onClick={(e) => dashboardHandler()} className="btn btn-primary">
+        Close Project
+      </button>
       <div className="row">
         <div className="col-4">
-
           <h1>{project.ProjectName}</h1>
           <p>Project Type: {project.ProjectType}</p>
           <p>Project Story: {project.ProjectStory}</p>
@@ -170,6 +180,11 @@ export default function ProjectDesigner() {
                     {transactions.map((transaction) => (
                       <li>
                         <p>Supporter Name: {transaction.supporterName}</p>
+                        {transaction.reward === "Direct Support" ? (
+                          <p>Direct Support</p>
+                        ) : (
+                          <p>Pledge: {transaction.reward}</p>
+                        )}
                         <p>Amount Supported: {transaction.amount}</p>
                       </li>
                     ))}
