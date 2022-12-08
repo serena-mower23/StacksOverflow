@@ -1,10 +1,10 @@
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import {
   viewSupporterTransactions,
-  getFunds,
   updateFunds,
   listProjects,
   searchProjects,
+  getSupporterInfo,
   getSortedProjects,
 } from "./controller/Controller";
 import React from "react";
@@ -23,6 +23,7 @@ export default function Supporter() {
   const [projects, setProjects] = React.useState("");
   const [searchedProjects, setSearchedProjects] = React.useState("");
   const [isSorted, setIsSorted] = React.useState("");
+  const [supporterName, setSupporterName] = React.useState("");
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -70,8 +71,9 @@ export default function Supporter() {
   };
 
   const loadFundsHandler = async () => {
-    const response = await getFunds(supporterID);
-    setFunds(response);
+    const response = await getSupporterInfo(supporterID);
+    setSupporterName(response[0].Name);
+    setFunds(response[0].Funds)
   };
 
   const loadProjectsHandler = async () => {
@@ -90,8 +92,8 @@ export default function Supporter() {
   const addFunds = async () => {
     const response = await updateFunds(supporterID, fundAmount);
     if (response === "true") {
-      const response2 = await getFunds(supporterID);
-      setFunds(response2);
+      const response2 = await getSupporterInfo(supporterID);
+      setFunds(response2[0].Funds)
       refreshPage();
     }
   };

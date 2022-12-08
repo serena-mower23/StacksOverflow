@@ -96,18 +96,34 @@ export default function Designer() {
     navigate("/");
   };
 
-  const createProjectHandler = async () => {
-    const result = await action(
-      inputName,
-      inputType,
-      inputStory,
-      inputGoal,
-      new Date(inputDeadline),
-      designerID
-    );
+  function checkDate(date) {
+    const today = new Date();
 
-    if (result) {
-      refreshPage();
+    let result;
+    if (date < today) {
+      result = false;
+    } else {
+      result = true;
+    }
+    return result;
+  }
+
+  const createProjectHandler = async () => {
+    const check = checkDate(inputDeadline);
+    if (check) {
+      const result = await action(
+        inputName,
+        inputType,
+        inputStory,
+        inputGoal,
+        new Date(inputDeadline),
+        designerID
+      );
+      if (result) {
+        refreshPage();
+      }
+    } else {
+      alert("The deadline is before today.");
     }
   };
 

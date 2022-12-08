@@ -205,23 +205,6 @@ export async function viewTransactions(projectID) {
   return res;
 }
 
-export async function getFunds(supporterID) {
-  let request = {
-    supporterID: supporterID,
-  };
-
-  let value = JSON.stringify(request);
-  let data = { body: value };
-  console.log("/getFunds");
-  const response = await instance.post("/getFund", data);
-
-  if (response.data.statusCode === 200) {
-    return response.data.body;
-  } else {
-    return "error";
-  }
-}
-
 export async function updateFunds(supporterID, amount) {
   let request = {
     supporterID: supporterID,

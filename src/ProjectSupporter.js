@@ -4,7 +4,6 @@ import {
   viewTransactions,
   viewTemplates,
   updateFunds,
-  getFunds,
   viewProject,
   viewSupporterTransactions,
   createTransaction,
@@ -102,8 +101,8 @@ export default function ProjectSupporter() {
   const addFunds = async () => {
     const response = await updateFunds(supporterID, fundAmount);
     if (response === "true") {
-      const response2 = await getFunds(supporterID);
-      setFunds(response2);
+      const response2 = await getSupporterInfo(supporterID);
+      setFunds(response2[0].Funds);
       refreshPage();
     }
   };
