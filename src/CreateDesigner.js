@@ -46,7 +46,6 @@ export default function CreateDesigner() {
       </nav>
       <div className="align-items-center">
         <h2 className="text-center">Create Designer Account</h2>
-        <form className="needs-validation">
           <div className="mb-3">
             <label className="form-label" htmlFor="username">
               Email:
@@ -87,7 +86,6 @@ export default function CreateDesigner() {
             />
             <div className="invalid-feedback">Please provide a password.</div>
           </div>
-        </form>
         <div className="d-grid d-sm-block text-center">
           <button
             className="btn btn-primary"

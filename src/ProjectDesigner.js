@@ -8,6 +8,8 @@ import {
   getDesignerInfo,
   getSupporterInfo,
   viewSupporterTemplate,
+  launchProject,
+  deleteProject,
 } from "./controller/Controller";
 
 export default function ProjectDesigner() {
@@ -44,12 +46,17 @@ export default function ProjectDesigner() {
   const grabProjectInformation = async () => {
     const response = await viewProject(projectID);
     const project = await response[0];
+    const currentDate = project.Deadline
+    const newDate = currentDate.substring(0,12) + "6" + currentDate.substring(13);
+    const date = new Date(newDate);
+    project["Deadline"] = date;
     setProject(project);
   };
 
   const getDesignerName = async () => {
     const response = await getDesignerInfo(designerID);
-    setDesignerName(response);
+    console.log(response[0]);
+    setDesignerName(response[0].Name);
   };
 
   const grabTransactions = async () => {
@@ -95,6 +102,22 @@ export default function ProjectDesigner() {
     }
   };
 
+  const launchProjectHandler = async (projectID) => {
+    const response = await launchProject(projectID);
+
+    if (response === "true") {
+      navigate(-1);
+    }
+  };
+
+  const deleteProjectHandler = async (projectID) => {
+    const response = await deleteProject(projectID);  
+
+    if (response === "true") {
+      navigate(-1);
+    }
+  };
+
   return (
     <div className="container">
       <nav className="navbar navbar-expand-lg mt-2">
@@ -118,6 +141,7 @@ export default function ProjectDesigner() {
       <div className="row">
         <div className="col-4">
           <h1>{project.ProjectName}</h1>
+          <p>Project Designer: {designerName}</p>
           <p>Project Type: {project.ProjectType}</p>
           <p>Project Story: {project.ProjectStory}</p>
           <p>
@@ -125,18 +149,22 @@ export default function ProjectDesigner() {
           </p>
           <p>Number of Supporters: {project.NumSupporters}</p>
           <p>
-            Project Deadline: {new Date(project.Deadline).toLocaleDateString()}
+            Project Deadline: {new Date(project.Deadline - 5).toLocaleDateString()}
+            {/* Project Deadline: {project.Deadline} */}
           </p>
           <h4>Pledges</h4>
           <ul>
             {pledges.length ? (
               <ul>
                 {pledges.map((pledge) => (
-                  <li>
+                  <li key={pledge.TemplateID}>
                     {pledge.MaxSupporters !== 0 ? (
-                      <p>Max Supporters: {pledge.MaxSupporters}</p>
+                      <p>
+                        Supporters: {pledge.NumSupporters} /{" "}
+                        {pledge.MaxSupporters}
+                      </p>
                     ) : (
-                      <p>Max Supporters: No Limit</p>
+                      <p>Supporters: {pledge.NumSupporters} / No Limit</p>
                     )}
                     <p>Pledge Amount: {pledge.PledgeAmount}</p>
                     <p>Pledge Reward: {pledge.Reward}</p>
@@ -145,7 +173,7 @@ export default function ProjectDesigner() {
                         className="btn btn-sm btn-danger"
                         onClick={(e) => deletePledgeHandler(pledge.TemplateID)}
                       >
-                        Delete
+                        Delete Pledge
                       </button>
                     ) : (
                       <p></p>
@@ -170,6 +198,18 @@ export default function ProjectDesigner() {
               >
                 <button className="btn btn-primary">Create New Pledge</button>
               </Link>
+              <button
+                className="btn btn-success"
+                onClick={() => launchProjectHandler(project.ProjectID)}
+              >
+                Launch Project
+              </button>
+              <button
+                className="btn btn-danger"
+                onClick={() => deleteProjectHandler(project.ProjectID)}
+              >
+                Delete Project
+              </button>
             </div>
           ) : (
             <div>
@@ -178,7 +218,7 @@ export default function ProjectDesigner() {
                 {transactions.length ? (
                   <ul>
                     {transactions.map((transaction) => (
-                      <li>
+                      <li key={transaction.amount}>
                         <p>Supporter Name: {transaction.supporterName}</p>
                         {transaction.reward === "Direct Support" ? (
                           <p>Direct Support</p>

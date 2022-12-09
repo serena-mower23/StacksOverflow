@@ -49,9 +49,8 @@ export default function ProjectSupporter() {
   };
 
   const getDesignerName = async () => {
-    console.log("SAFUSADFDS")
-    console.log(project)
-
+    console.log("SAFUSADFDS");
+    console.log(project);
   };
 
   const getReward = async (templateID) => {
@@ -63,11 +62,16 @@ export default function ProjectSupporter() {
 
   const grabProjectInformation = async () => {
     const response = await viewProject(projectID);
-    const project = response[0];
+    const project = await response[0];
+    const currentDate = project.Deadline;
+    const newDate =
+      currentDate.substring(0, 12) + "6" + currentDate.substring(13);
+    const date = new Date(newDate);
+    project["Deadline"] = date;
     setProject(project);
     const response2 = await getDesignerInfo(project.DesignerID);
-    let name = response2[0].Name
-    setDesignerName(name)
+    let name = response2[0].Name;
+    setDesignerName(name);
     const response3 = await getSupporterInfo(supporterID);
     setSupporterName(response3[0].Name);
     setFunds(response3[0].Funds);
@@ -107,9 +111,26 @@ export default function ProjectSupporter() {
     }
   };
 
+  function checkNumSupporters(templateID) {
+    let result = true;
+    for (let i = 0; i < pledges.length; i++) {
+      if (pledges[i].TemplateID === templateID) {
+        if (pledges[i].MaxSupporters !== 0 && pledges[i].NumSupporters >= pledges[i].MaxSupporters) {
+          result = false;
+        }
+      }
+    }
+    return result;
+  }
+
   const createTransactionHandler = async () => {
+    const result = checkNumSupporters(selected.templateID);
+    console.log("SDFSDF")
+    console.log(selected)
     if (selected.pledgeAmount > funds) {
       alert("You do not have enough funds to claim the pledge(s).");
+    } else if (!result) {
+      alert("The max number of supporters has already been reached.");
     } else {
       const response = await createTransaction(
         projectID,
@@ -203,40 +224,46 @@ export default function ProjectSupporter() {
               Project Deadline:{" "}
               {new Date(project.Deadline).toLocaleDateString()}
             </p>
-            <h4>Pledges</h4>
+            <h2>Pledges</h2>
+            <h5><i>Please choose only one.</i></h5>
             <div>
-              <ul>
-                {pledges.length ? (
-                  <ul>
-                    {pledges.map((pledge) => (
-                      <li>
-                        {pledge.MaxSupporters !== 0 ? (
-                          <p>Max Supporters: {pledge.MaxSupporters}</p>
-                        ) : (
-                          <p>Max Supporters: No Limit</p>
-                        )}
-                        <p>Pledge Amount: {pledge.PledgeAmount}</p>
-                        <p>Pledge Reward: {pledge.Reward}</p>
-                        <input
-                          class="form-check-input mt-0"
-                          type="radio"
-                          value=""
-                          onChange={() =>
-                            selectedHandler(
-                              pledge.TemplateID,
-                              pledge.PledgeAmount
-                            )
-                          }
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p>
-                    <i>No Pledges</i>
-                  </p>
-                )}
-              </ul>
+              <form>
+                <ul>
+                  {pledges.length ? (
+                    <ul>
+                      {pledges.map((pledge) => (
+                        <li key={pledge.TemplateID}>
+                          {pledge.MaxSupporters !== 0 ? (
+                            <p>
+                              Supporters: {pledge.NumSupporters} /{" "}
+                              {pledge.MaxSupporters}
+                            </p>
+                          ) : (
+                            <p>Supporters: {pledge.NumSupporters} / No Limit</p>
+                          )}
+                          <p>Pledge Amount: {pledge.PledgeAmount}</p>
+                          <p>Pledge Reward: {pledge.Reward}</p>
+                          <input
+                            className="form-check-input mt-0"
+                            type="checkbox"
+                            value=""
+                            onChange={() =>
+                              selectedHandler(
+                                pledge.TemplateID,
+                                pledge.PledgeAmount
+                              )
+                            }
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>
+                      <i>No Pledges</i>
+                    </p>
+                  )}
+                </ul>
+              </form>
             </div>
             <button
               className="btn btn-primary"
@@ -262,7 +289,7 @@ export default function ProjectSupporter() {
               {claims.length ? (
                 <ul>
                   {claims.map((claim) => (
-                    <li>
+                    <li key={claim.TemplateID}>
                       <p>Pledge Amount: {claim.Amount}</p>
                       <p>Pledge Reward: {claim.Reward}</p>
                     </li>

@@ -84,7 +84,7 @@ export default function ProjectAdmin() {
           {pledges.length ? (
             <ul>
               {pledges.map((pledge) => (
-                <li>
+                <li key={pledge.TemplateID}>
                   {pledge.MaxSupporters !== 0 ? (
                     <p>Max Supporters: {pledge.MaxSupporters}</p>
                   ) : (

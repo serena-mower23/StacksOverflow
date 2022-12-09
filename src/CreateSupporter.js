@@ -45,7 +45,6 @@ export default function CreateSupporter() {
         </div>
       </nav>
       <h2>Create Supporter Account</h2>
-      <form className="needs-validation">
         <div className="mb-3">
           <label className="form-label" htmlFor="username">
             Email:
@@ -86,7 +85,6 @@ export default function CreateSupporter() {
           />
           <div className="invalid-feedback">Please provide a password.</div>
         </div>
-      </form>
       <button
         className="btn btn-primary"
         onClick={(e) => createSupporterHandler()}

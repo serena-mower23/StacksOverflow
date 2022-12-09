@@ -6,6 +6,7 @@ import {
   searchProjects,
   getSupporterInfo,
   getSortedProjects,
+  viewSupporterTemplate
 } from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
@@ -53,6 +54,13 @@ export default function Supporter() {
     { value: "Other", label: "Other" },
   ];
 
+  const getReward = async (templateID) => {
+    const response = await viewSupporterTemplate(templateID);
+
+    let reward = response[0].Reward;
+    return reward;
+  };
+
   const loadTransactionsHandler = async () => {
     const response = await viewSupporterTransactions(supporterID);
 
@@ -63,6 +71,8 @@ export default function Supporter() {
       if (response[i].TemplateID === "N/A") {
         directSupports.push(response[i]);
       } else {
+        const reward = await getReward(response[i].TemplateID);
+        response[i]["Reward"] = reward;
         claims.push(response[i]);
       }
     }
@@ -194,14 +204,14 @@ export default function Supporter() {
                 Search By Genre
               </button>
             </div>
-            <div className="col-6">
+            {/* <div className="col-6">
               <label>Sort Projects:</label>
               <input
                 type="checkbox"
                 checked={isSorted}
                 onChange={() => setIsSorted((state) => !state)}
               />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="col-3">
@@ -210,17 +220,19 @@ export default function Supporter() {
             <ul>
               {claims.map((claim) => (
                 <li key={claim.TransactionID}>
+                  <p>Amount: {claim.Amount}</p>
+                  <p>Reward: {claim.Reward}</p>
                   <Link
                     to={`projects?projectID=${claim.ProjectID}&supporterID=${supporterID}`}
                   >
-                    Plege #{claim.TemplateID}
+                    View Project
                   </Link>
                 </li>
               ))}
             </ul>
           ) : (
             <p>
-              <i>No Claims</i>
+              <i>No Pledges</i>
             </p>
           )}
         </div>
@@ -230,7 +242,6 @@ export default function Supporter() {
             <ul>
               {directSupports.map((dS) => (
                 <li>
-                  <p>TransactionID: {dS.TransactionID}</p>
                   <p>Amount: {dS.Amount}</p>
                   <Link
                     to={`projects?projectID=${dS.ProjectID}&supporterID=${supporterID}`}

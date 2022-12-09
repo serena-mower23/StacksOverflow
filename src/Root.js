@@ -54,7 +54,6 @@ function Root() {
         <nav className="navbar navbar-expand-lg">
           <label className=" m-2 h1">&#128184; $tacksOverflow &#128184;</label>
         </nav>
-        <form className="needs-validation">
           <div className="mb-3">
             <label className="form-label" htmlFor="username">
               Email:
@@ -83,7 +82,6 @@ function Root() {
             />
             <div className="invalid-feedback">Please provide a password.</div>
           </div>
-        </form>
         <div className="d-grid d-sm-block text-center">
           <button
             type="submit"

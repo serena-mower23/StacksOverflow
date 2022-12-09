@@ -3,18 +3,6 @@ import axios from "axios";
 const instance = axios.create({
   baseURL: "https://puwud6fni0.execute-api.us-east-1.amazonaws.com/Prod",
 });
-const options = [
-  { value: "game", label: "Game" },
-  { value: "movie", label: "Movie" },
-  { value: "toy", label: "Toy" },
-  { value: "music", label: "Music" },
-  { value: "tech", label: "Tech" },
-  { value: "fashion", label: "Fashion" },
-  { value: "food", label: "Food" },
-  { value: "art", label: "Art" },
-  { value: "education", label: "Education" },
-  { value: "other", label: "Other" },
-];
 
 export async function listDesignerProjects(id) {
   let projects = [];
@@ -213,8 +201,10 @@ export async function updateFunds(supporterID, amount) {
 
   let value = JSON.stringify(request);
   let data = { body: value };
+  console.log(data);
   console.log("/addFunds");
   const response = await instance.post("/addFund", data);
+  console.log(response)
   if (response.data.statusCode === 200) {
     return "true";
   } else {
@@ -301,6 +291,8 @@ export async function createTransaction(
   let res = null;
   if (response.data.statusCode === 200) {
     res = "true";
+  } else if (response.data.statusCode === 420) {
+    res = "Max supporters reached.";
   } else {
     res = response.data.error;
   }
