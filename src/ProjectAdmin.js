@@ -1,12 +1,11 @@
 import React from "react";
 import { viewProject } from "./controller/Controller";
-import { useLoaderData, Outlet, Link, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { viewTransactions, viewTemplates } from "./controller/Controller";
 
 export default function ProjectAdmin() {
   const params = new URLSearchParams(window.location.search);
   const projectID = params.get("projectID");
-  const designerID = params.get("designerID");
   const [pledges, setPledges] = React.useState("");
   const [project, setProject] = React.useState("");
   const [transactions, setTransactions] = React.useState("");
@@ -84,7 +83,7 @@ export default function ProjectAdmin() {
           {pledges.length ? (
             <ul>
               {pledges.map((pledge) => (
-                <li>
+                <li key={pledge.TemplateID}>
                   {pledge.MaxSupporters !== 0 ? (
                     <p>Max Supporters: {pledge.MaxSupporters}</p>
                   ) : (

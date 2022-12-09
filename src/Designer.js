@@ -1,4 +1,4 @@
-import { Outlet, Link, useLoaderData, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   listDesignerProjects,
   createProject,
@@ -36,7 +36,7 @@ export async function action(
     );
     result = true;
   } else {
-    alert("Hey dumb bitch");
+    alert("Please fill out all of the fields.");
   }
   return result;
 }
@@ -96,25 +96,42 @@ export default function Designer() {
     navigate("/");
   };
 
-  const createProjectHandler = async () => {
-    const result = await action(
-      inputName,
-      inputType,
-      inputStory,
-      inputGoal,
-      new Date(inputDeadline),
-      designerID
-    );
+  function checkDate(date) {
+    const today = new Date();
+    const newDate = new Date(date);
 
-    if (result) {
-      refreshPage();
+    let result;
+    if (newDate > today) {
+      result = true;
+    } else {
+      result = false;
+    }
+    return result;
+  }
+
+  const createProjectHandler = async () => {
+    const check = checkDate(inputDeadline);
+    if (check) {
+      const result = await action(
+        inputName,
+        inputType,
+        inputStory,
+        inputGoal,
+        inputDeadline,
+        designerID
+      );
+      if (result) {
+        refreshPage();
+      }
+    } else {
+      alert("The deadline is before today.");
     }
   };
 
   const deleteProjectHandler = async (projectID) => {
     const response = await deleteProject(projectID);
 
-    if (response) {
+    if (response === "true") {
       refreshPage();
     }
   };
@@ -122,7 +139,7 @@ export default function Designer() {
   const launchProjectHandler = async (projectID) => {
     const response = await launchProject(projectID);
 
-    if (response) {
+    if (response === "true") {
       refreshPage();
     }
   };
@@ -204,7 +221,7 @@ export default function Designer() {
             onChange={(e) => setInputName(e.target.value)}
             className="m-1"
           ></input>
-          <p className="m-1">Project Type:</p>
+          <p className="m-1">Project Genre:</p>
           <Select
             options={genres}
             isSearchable={false}
@@ -222,7 +239,7 @@ export default function Designer() {
             onChange={(e) => setInputGoal(e.target.value)}
             className="m-1"
           ></input>
-          <p className="m-1">Deadline:</p>
+          <p className="m-1">Deadline yyyy/mm/dd:</p>
           <input
             type="text"
             onChange={(e) => setInputDeadline(e.target.value)}
