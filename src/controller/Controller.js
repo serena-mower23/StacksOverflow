@@ -201,10 +201,8 @@ export async function updateFunds(supporterID, amount) {
 
   let value = JSON.stringify(request);
   let data = { body: value };
-  console.log(data);
   console.log("/addFunds");
   const response = await instance.post("/addFund", data);
-  console.log(response)
   if (response.data.statusCode === 200) {
     return "true";
   } else {
@@ -268,8 +266,6 @@ export async function deletePledge(templateID) {
   }
   return res;
 }
-
-export async function searchProjects(search) {}
 
 export async function createTransaction(
   projectID,

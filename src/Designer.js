@@ -1,4 +1,4 @@
-import { Outlet, Link, useLoaderData, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   listDesignerProjects,
   createProject,
@@ -130,7 +130,6 @@ export default function Designer() {
 
   const deleteProjectHandler = async (projectID) => {
     const response = await deleteProject(projectID);
-    console.log(response);
 
     if (response === "true") {
       refreshPage();

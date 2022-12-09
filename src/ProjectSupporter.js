@@ -1,7 +1,6 @@
 import React from "react";
-import { useLoaderData, Outlet, Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
-  viewTransactions,
   viewTemplates,
   updateFunds,
   viewProject,
@@ -46,11 +45,6 @@ export default function ProjectSupporter() {
     } else {
       setPledges(response);
     }
-  };
-
-  const getDesignerName = async () => {
-    console.log("SAFUSADFDS");
-    console.log(project);
   };
 
   const getReward = async (templateID) => {
@@ -115,7 +109,10 @@ export default function ProjectSupporter() {
     let result = true;
     for (let i = 0; i < pledges.length; i++) {
       if (pledges[i].TemplateID === templateID) {
-        if (pledges[i].MaxSupporters !== 0 && pledges[i].NumSupporters >= pledges[i].MaxSupporters) {
+        if (
+          pledges[i].MaxSupporters !== 0 &&
+          pledges[i].NumSupporters >= pledges[i].MaxSupporters
+        ) {
           result = false;
         }
       }
@@ -125,8 +122,6 @@ export default function ProjectSupporter() {
 
   const createTransactionHandler = async () => {
     const result = checkNumSupporters(selected.templateID);
-    console.log("SDFSDF")
-    console.log(selected)
     if (selected.pledgeAmount > funds) {
       alert("You do not have enough funds to claim the pledge(s).");
     } else if (!result) {
@@ -225,7 +220,9 @@ export default function ProjectSupporter() {
               {new Date(project.Deadline).toLocaleDateString()}
             </p>
             <h2>Pledges</h2>
-            <h5><i>Please choose only one.</i></h5>
+            <h5>
+              <i>Please choose only one.</i>
+            </h5>
             <div>
               <form>
                 <ul>

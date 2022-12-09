@@ -1,6 +1,6 @@
 import React from "react";
 import { viewProject } from "./controller/Controller";
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   viewTransactions,
   viewTemplates,
@@ -46,8 +46,9 @@ export default function ProjectDesigner() {
   const grabProjectInformation = async () => {
     const response = await viewProject(projectID);
     const project = await response[0];
-    const currentDate = project.Deadline
-    const newDate = currentDate.substring(0,12) + "6" + currentDate.substring(13);
+    const currentDate = project.Deadline;
+    const newDate =
+      currentDate.substring(0, 12) + "6" + currentDate.substring(13);
     const date = new Date(newDate);
     project["Deadline"] = date;
     setProject(project);
@@ -55,7 +56,6 @@ export default function ProjectDesigner() {
 
   const getDesignerName = async () => {
     const response = await getDesignerInfo(designerID);
-    console.log(response[0]);
     setDesignerName(response[0].Name);
   };
 
@@ -67,8 +67,6 @@ export default function ProjectDesigner() {
       let info = {};
       if (response[i].TemplateID !== "N/A") {
         const response2 = await viewSupporterTemplate(response[i].TemplateID);
-        console.log("sdfsa");
-        console.log(response2);
         info = {
           supporterName: supporter[0].Name,
           amount: response[i].Amount,
@@ -111,7 +109,7 @@ export default function ProjectDesigner() {
   };
 
   const deleteProjectHandler = async (projectID) => {
-    const response = await deleteProject(projectID);  
+    const response = await deleteProject(projectID);
 
     if (response === "true") {
       navigate(-1);
@@ -149,7 +147,8 @@ export default function ProjectDesigner() {
           </p>
           <p>Number of Supporters: {project.NumSupporters}</p>
           <p>
-            Project Deadline: {new Date(project.Deadline - 5).toLocaleDateString()}
+            Project Deadline:{" "}
+            {new Date(project.Deadline - 5).toLocaleDateString()}
             {/* Project Deadline: {project.Deadline} */}
           </p>
           <h4>Pledges</h4>

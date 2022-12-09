@@ -1,12 +1,11 @@
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   viewSupporterTransactions,
   updateFunds,
   listProjects,
-  searchProjects,
   getSupporterInfo,
   getSortedProjects,
-  viewSupporterTemplate
+  viewSupporterTemplate,
 } from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
@@ -83,13 +82,11 @@ export default function Supporter() {
   const loadFundsHandler = async () => {
     const response = await getSupporterInfo(supporterID);
     setSupporterName(response[0].Name);
-    setFunds(response[0].Funds)
+    setFunds(response[0].Funds);
   };
 
   const loadProjectsHandler = async () => {
     const response = await listProjects();
-    console.log("Hello???");
-    console.log(response)
     let activeProjects = [];
     for (let i = 0; i < response.length; i++) {
       if (response[i].IsLaunched === 1) {
@@ -97,13 +94,14 @@ export default function Supporter() {
       }
     }
     setProjects(activeProjects);
+    return activeProjects;
   };
 
   const addFunds = async () => {
     const response = await updateFunds(supporterID, fundAmount);
     if (response === "true") {
       const response2 = await getSupporterInfo(supporterID);
-      setFunds(response2[0].Funds)
+      setFunds(response2[0].Funds);
       refreshPage();
     }
   };
@@ -117,12 +115,14 @@ export default function Supporter() {
     setSearch(genre);
   };
 
-  const genreSearchHandler = () => {
+  const genreSearchHandler = async () => {
     let listProjects = [];
 
-    for (let j = 0; j < projects.length; j++) {
-      if (projects[j].ProjectType === search) {
-        listProjects.push(projects[j]);
+    const currentProjects = await loadProjectsHandler();
+
+    for (let j = 0; j < currentProjects.length; j++) {
+      if (currentProjects[j].ProjectType === search) {
+        listProjects.push(currentProjects[j]);
       }
     }
 
@@ -147,10 +147,6 @@ export default function Supporter() {
     }
     setProjects(activeProjects);
   };
-
-  // const searchHandler = async () => {
-  //   const response = await searchProjects(search);
-  // };
 
   return (
     <div>
