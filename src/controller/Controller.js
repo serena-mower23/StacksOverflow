@@ -375,12 +375,14 @@ export async function getSupporterInfo(supporterID) {
 
 export async function getSortedProjects() {
   console.log("/sortProjects");
-  const response = await instance.post("/sortProjects");
+  const response = await instance.get("/sortProjects");
   let res = null;
   if (response.data.statusCode === 200) {
     res = response.data.body;
   } else {
     res = response.data.error;
   }
+  console.log("response:");
+  console.log(res);
   return res;
 }

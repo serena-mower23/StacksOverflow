@@ -239,7 +239,8 @@ export default function Designer() {
             onChange={(e) => setInputGoal(e.target.value)}
             className="m-1"
           ></input>
-          <p className="m-1">Deadline yyyy/mm/dd:</p>
+          <p className="m-1">Deadline:</p>
+          <p>(yyyy/mm/dd)</p>
           <input
             type="text"
             onChange={(e) => setInputDeadline(e.target.value)}

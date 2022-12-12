@@ -200,14 +200,14 @@ export default function Supporter() {
                 Search By Genre
               </button>
             </div>
-            {/* <div className="col-6">
+            <div className="col-6">
               <label>Sort Projects:</label>
               <input
                 type="checkbox"
                 checked={isSorted}
                 onChange={() => setIsSorted((state) => !state)}
               />
-            </div> */}
+            </div>
           </div>
         </div>
         <div className="col-3">

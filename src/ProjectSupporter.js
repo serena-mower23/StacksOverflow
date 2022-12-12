@@ -62,6 +62,15 @@ export default function ProjectSupporter() {
       currentDate.substring(0, 12) + "6" + currentDate.substring(13);
     const date = new Date(newDate);
     project["Deadline"] = date;
+    if (project.IsLaunched === 0) {
+      project["Status"] = "Inactive";
+    } else if (project.IsLaunched === 1) {
+      project["Status"] = "Active";
+    } else if (project.IsLaunched === 2) {
+      project["Status"] = "Failed";
+    } else if (project.IsLaunched === 3) {
+      project["Status"] = "Succeeded";
+    }
     setProject(project);
     const response2 = await getDesignerInfo(project.DesignerID);
     let name = response2[0].Name;
@@ -214,6 +223,7 @@ export default function ProjectSupporter() {
             <p>
               Money Raised: ${project.MoneyRaised}/${project.ProjectGoal}
             </p>
+            <p>Project Status: {project.Status}</p>
             <p>Number of Supporters: {project.NumSupporters}</p>
             <p>
               Project Deadline:{" "}

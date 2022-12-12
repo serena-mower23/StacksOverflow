@@ -1,30 +1,40 @@
 import React from "react";
-import { viewProject } from "./controller/Controller";
 import { Outlet, useNavigate } from "react-router-dom";
-import { viewTransactions, viewTemplates } from "./controller/Controller";
+import {
+  viewTemplates,
+  viewProject,
+  deleteProject,
+} from "./controller/Controller";
 
 export default function ProjectAdmin() {
   const params = new URLSearchParams(window.location.search);
   const projectID = params.get("projectID");
   const [pledges, setPledges] = React.useState("");
   const [project, setProject] = React.useState("");
-  const [transactions, setTransactions] = React.useState("");
   const navigate = useNavigate();
 
   React.useEffect(() => {
     grabPledgeTemplates();
-    grabTransactions();
+    loadDataHandler();
   }, []);
 
   const loadDataHandler = async () => {
     const response = await viewProject(projectID);
-    const project = response[0];
-    let moneyRaised = 0;
-    for (var i = 0; i < transactions.length; i++) {
-      let amount = transactions[i].Amount;
-      moneyRaised += amount;
-    }
-    project["MoneyRaised"] = moneyRaised;
+    const project = await response[0];
+    const currentDate = project.Deadline;
+    const newDate =
+      currentDate.substring(0, 12) + "6" + currentDate.substring(13);
+    const date = new Date(newDate);
+    project["Deadline"] = date;
+    if (project.IsLaunched === 0) {
+      project["Status"] = "Inactive";
+    } else if (project.IsLaunched === 1) {
+      project["Status"] = "Active";
+    } else if (project.IsLaunched === 2) {
+      project["Status"] = "Failed";
+    } else if (project.IsLaunched === 3) {
+      project["Status"] = "Succeeded";
+    } 
     setProject(project);
   };
 
@@ -38,18 +48,20 @@ export default function ProjectAdmin() {
     }
   };
 
-  const grabTransactions = async () => {
-    const response = await viewTransactions(projectID);
-    setTransactions(response);
-    loadDataHandler();
-  };
-
   const dashboardHandler = async () => {
     navigate(-1);
   };
 
   const logoutHandler = async () => {
     navigate("/");
+  };
+
+  const deleteProjectHandler = async (projectID) => {
+    const response = await deleteProject(projectID);
+
+    if (response === "true") {
+      navigate(-1);
+    }
   };
 
   return (
@@ -70,14 +82,21 @@ export default function ProjectAdmin() {
         </div>
       </nav>
       <div>
-        <button onClick={(e) => dashboardHandler()}>Close Project</button>
+        <button className="btn btn-primary" onClick={(e) => dashboardHandler()}>
+          Close Project
+        </button>
         <h1>{project.ProjectName}</h1>
         <p>Project Type: {project.ProjectType}</p>
         <p>Project Story: {project.ProjectStory}</p>
-        <p>Project Goal: {project.ProjectGoal}</p>
-        <p>Money Raised: {project.MoneyRaised}</p>
-        <p>Number of Supporters: {project.NumSupporter}</p>
-        <p>Project Deadline: {project.Deadline}</p>
+        <p>
+          Money Raised: ${project.MoneyRaised} / ${project.ProjectGoal}
+        </p>
+        <p>Project Status: {project.Status}</p>
+        <p>Number of Supporters: {project.NumSupporters}</p>
+        <p>
+          Project Deadline:{" "}
+          {new Date(project.Deadline - 5).toLocaleDateString()}
+        </p>
         <h4>Pledges</h4>
         <ul>
           {pledges.length ? (
@@ -85,9 +104,12 @@ export default function ProjectAdmin() {
               {pledges.map((pledge) => (
                 <li key={pledge.TemplateID}>
                   {pledge.MaxSupporters !== 0 ? (
-                    <p>Max Supporters: {pledge.MaxSupporters}</p>
+                    <p>
+                      Supporters: {pledge.NumSupporters} /{" "}
+                      {pledge.MaxSupporters}
+                    </p>
                   ) : (
-                    <p>Max Supporters: No Limit</p>
+                    <p>Supporters: {pledge.NumSupporters} / No Limit</p>
                   )}
                   <p>Pledge Amount: {pledge.PledgeAmount}</p>
                   <p>Pledge Reward: {pledge.Reward}</p>
@@ -100,8 +122,13 @@ export default function ProjectAdmin() {
             </p>
           )}
         </ul>
-      </div>
-      <Outlet />
+      </div>{" "}
+      <button
+        className="btn btn-danger"
+        onClick={() => deleteProjectHandler(projectID)}
+      >
+        Delete Project
+      </button>
     </div>
   );
 }

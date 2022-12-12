@@ -46,11 +46,21 @@ export default function ProjectDesigner() {
   const grabProjectInformation = async () => {
     const response = await viewProject(projectID);
     const project = await response[0];
+    if (project.IsLaunched === 0) {
+      project["Status"] = "Inactive";
+    } else if (project.IsLaunched === 1) {
+      project["Status"] = "Active";
+    } else if (project.IsLaunched === 2) {
+      project["Status"] = "Failed";
+    } else if (project.IsLaunched === 3) {
+      project["Status"] = "Succeeded";
+    } 
     const currentDate = project.Deadline;
     const newDate =
       currentDate.substring(0, 12) + "6" + currentDate.substring(13);
     const date = new Date(newDate);
     project["Deadline"] = date;
+
     setProject(project);
   };
 
@@ -145,11 +155,11 @@ export default function ProjectDesigner() {
           <p>
             Money Raised: ${project.MoneyRaised} / ${project.ProjectGoal}
           </p>
+          <p>Project Status: {project.Status}</p>
           <p>Number of Supporters: {project.NumSupporters}</p>
           <p>
             Project Deadline:{" "}
             {new Date(project.Deadline - 5).toLocaleDateString()}
-            {/* Project Deadline: {project.Deadline} */}
           </p>
           <h4>Pledges</h4>
           <ul>
