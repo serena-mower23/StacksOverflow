@@ -142,7 +142,7 @@ export default function Supporter() {
   }
 
   return (
-    <div>
+    <div className="container">
       <nav className="navbar navbar-expand-lg mt-2">
         <div className="container align-items-center">
           <div className="col-2">
