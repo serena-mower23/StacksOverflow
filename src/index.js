@@ -6,13 +6,13 @@ import ErrorPage from "./ErrorPage";
 import reportWebVitals from "./reportWebVitals";
 import Designer from "./Designer";
 import Supporter from "./Supporter";
-import Admin, { loader as adminLoader } from "./Admin";
+import Admin from "./Admin";
 import CreateDesigner from "./CreateDesigner";
 import CreateSupporter from "./CreateSupporter";
-import { loader as designerLoader, action as createAction } from "./Designer";
+import { action as createAction } from "./Designer";
 import Pledge, { action as createPledgeAction } from "./Pledge";
 import Root from "./Root";
-import ProjectDesigner, { loader as projectLoader } from "./ProjectDesigner";
+import ProjectDesigner from "./ProjectDesigner";
 import ProjectSupporter from "./ProjectSupporter";
 import ProjectAdmin from "./ProjectAdmin";
 
@@ -26,7 +26,6 @@ const router = createBrowserRouter([
     path: "/admin",
     element: <Admin />,
     errorElement: <ErrorPage />,
-    loader: adminLoader,
   },
   {
     path: "admin/projects",

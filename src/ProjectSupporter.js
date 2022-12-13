@@ -190,10 +190,10 @@ export default function ProjectSupporter() {
           </div>
           <div className="col-3">
             <button
-              className="nav-link btn btn-link"
+              className="btn btn-primary"
               onClick={(e) => logoutHandler()}
             >
-              Log out
+              Log out of @{supporterID}
             </button>
           </div>
         </div>
@@ -214,6 +214,7 @@ export default function ProjectSupporter() {
             <p>
               Money Raised: ${project.MoneyRaised}/${project.ProjectGoal}
             </p>
+            <p>Project Status: {project.Status}</p>
             <p>Number of Supporters: {project.NumSupporters}</p>
             <p>
               Project Deadline:{" "}
@@ -238,7 +239,7 @@ export default function ProjectSupporter() {
                           ) : (
                             <p>Supporters: {pledge.NumSupporters} / No Limit</p>
                           )}
-                          <p>Pledge Amount: {pledge.PledgeAmount}</p>
+                          <p>Pledge Amount: ${pledge.PledgeAmount}</p>
                           <p>Pledge Reward: {pledge.Reward}</p>
                           <input
                             className="form-check-input mt-0"
@@ -287,7 +288,7 @@ export default function ProjectSupporter() {
                 <ul>
                   {claims.map((claim) => (
                     <li key={claim.TemplateID}>
-                      <p>Pledge Amount: {claim.Amount}</p>
+                      <p>Pledge Amount: ${claim.Amount}</p>
                       <p>Pledge Reward: {claim.Reward}</p>
                     </li>
                   ))}

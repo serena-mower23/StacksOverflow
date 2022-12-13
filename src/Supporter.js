@@ -89,7 +89,7 @@ export default function Supporter() {
     const response = await listProjects();
     let activeProjects = [];
     for (let i = 0; i < response.length; i++) {
-      if (response[i].IsLaunched === 1) {
+      if (response[i].Status === "Active") {
         activeProjects.push(response[i]);
       }
     }
@@ -141,13 +141,29 @@ export default function Supporter() {
     const response = await getSortedProjects();
     let activeProjects = [];
     for (let i = 0; i < response.length; i++) {
-      if (response[i].IsLaunched === 1) {
+      if (response[i].Status === "Active") {
         activeProjects.push(response[i]);
       }
     }
     setProjects(activeProjects);
   };
 
+
+  // const searchHandler = async () => {
+  //   const response = await searchProjects(search);
+  // };
+  function findProjectsByString(projects, str) {
+    return projects.filter(obj => {
+      return Object.values(obj).some(val => {
+        return typeof val === 'string' && val.toLowerCase() === str.toLowerCase();
+      });
+    });
+  }
+  
+  const foundProjects = findProjectsByString(projects, search);
+  
+  console.log(foundProjects);
+  
   return (
     <div>
       <nav className="navbar navbar-expand-lg mt-2">
@@ -169,10 +185,10 @@ export default function Supporter() {
           </div>
           <div className="col-3">
             <button
-              className="nav-link btn btn-link"
+              className="btn btn-primary"
               onClick={(e) => logoutHandler()}
             >
-              Log out
+              Log out of @{supporterID}
             </button>
           </div>
         </div>
@@ -181,11 +197,17 @@ export default function Supporter() {
       <div className="row justify-content-evenly">
         <div className="col-5">
           <h2>Search Projects</h2>
-          {/* <input
+          <input
             type="text"
             placeholder="Search Projects..."
             onChange={(e) => setSearch(e.target.value)}
-          /> */}
+          />
+          <button
+            className="btn btn-primary"
+            onClick={(e) => genreSearchHandler()}
+          >
+            Search By Genre
+          </button>
           <div className="row">
             <div className="col-8">
               <Select
@@ -200,14 +222,14 @@ export default function Supporter() {
                 Search By Genre
               </button>
             </div>
-            {/* <div className="col-6">
+            <div className="col-6">
               <label>Sort Projects:</label>
               <input
                 type="checkbox"
                 checked={isSorted}
                 onChange={() => setIsSorted((state) => !state)}
               />
-            </div> */}
+            </div>
           </div>
         </div>
         <div className="col-3">

@@ -16,11 +16,12 @@ export async function listDesignerProjects(id) {
 
   console.log("/listDesignerProjects");
   const response = await instance.post("/listDesignerProjects", data);
-
+console.log('sdfasdf');
+console.log(response);
   if (response.data.statusCode === 200) {
     projects = response.data.body;
   } else {
-    alert(response.data.error);
+    // alert(response.data);
   }
   return projects;
 }
@@ -40,7 +41,7 @@ export async function viewSupporterTransactions(supporterID) {
   if (response.data.statusCode === 200) {
     pledges = response.data.body;
   } else {
-    alert("response.data.error");
+    // alert("response.data.error");
   }
   return pledges;
 }
@@ -52,7 +53,7 @@ export async function listProjects() {
   if (response.data.statusCode === 200) {
     projects = response.data.body;
   } else {
-    alert(response.data.error);
+    // alert(response.data.error);
   }
   return projects;
 }
@@ -71,7 +72,7 @@ export async function viewProject(projectID) {
   if (response.data.statusCode === 200) {
     project = response.data.body;
   } else {
-    alert(response.data.error);
+    // alert(response.data.error);
   }
   return project;
 }
@@ -375,12 +376,14 @@ export async function getSupporterInfo(supporterID) {
 
 export async function getSortedProjects() {
   console.log("/sortProjects");
-  const response = await instance.post("/sortProjects");
+  const response = await instance.get("/sortProjects");
   let res = null;
   if (response.data.statusCode === 200) {
     res = response.data.body;
   } else {
     res = response.data.error;
   }
+  console.log("response:");
+  console.log(res);
   return res;
 }
