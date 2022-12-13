@@ -6,6 +6,7 @@ import {
   getSupporterInfo,
   getSortedProjects,
   viewSupporterTemplate,
+  viewProject,
 } from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
@@ -22,8 +23,8 @@ export default function Supporter() {
   const [search, setSearch] = React.useState("");
   const [projects, setProjects] = React.useState("");
   const [searchedProjects, setSearchedProjects] = React.useState("");
+  const [searching, setSearching] = React.useState("");
   const [isSorted, setIsSorted] = React.useState("");
-  const [supporterName, setSupporterName] = React.useState("");
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -40,18 +41,7 @@ export default function Supporter() {
     }
   }, [isSorted]);
 
-  const genres = [
-    { value: "Art", label: "Art" },
-    { value: "Education", label: "Education" },
-    { value: "Fashion", label: "Fashion" },
-    { value: "Food", label: "Food" },
-    { value: "Game", label: "Game" },
-    { value: "Movie", label: "Movie" },
-    { value: "Music", label: "Music" },
-    { value: "Toy", label: "Toy" },
-    { value: "Techology", label: "Technology" },
-    { value: "Other", label: "Other" },
-  ];
+  React.useEffect(() => {});
 
   const getReward = async (templateID) => {
     const response = await viewSupporterTemplate(templateID);
@@ -66,7 +56,16 @@ export default function Supporter() {
     let claims = [];
     let directSupports = [];
 
-    for (let i = 0; i < response.length; i++) {
+    let activeTransactions = [];
+
+    for (let j = 0; j < response.length; j++) {
+      const response2 = await viewProject(response[j].ProjectID);
+      if (response2[0].Status === "Active") {
+        activeTransactions.push(response[j]);
+      }
+    }
+
+    for (let i = 0; i < activeTransactions.length; i++) {
       if (response[i].TemplateID === "N/A") {
         directSupports.push(response[i]);
       } else {
@@ -81,7 +80,6 @@ export default function Supporter() {
 
   const loadFundsHandler = async () => {
     const response = await getSupporterInfo(supporterID);
-    setSupporterName(response[0].Name);
     setFunds(response[0].Funds);
   };
 
@@ -106,27 +104,14 @@ export default function Supporter() {
     }
   };
 
-  const genreHandler = (genre) => {
-    let currentGenres = [];
-    for (let i = 0; i < search.length; i++) {
-      currentGenres.push(search[i]);
-    }
-    currentGenres.push(genre);
-    setSearch(genre);
-  };
-
-  const genreSearchHandler = async () => {
-    let listProjects = [];
-
+  const searchHandler = async () => {
+    setSearching(true);
     const currentProjects = await loadProjectsHandler();
 
-    for (let j = 0; j < currentProjects.length; j++) {
-      if (currentProjects[j].ProjectType === search) {
-        listProjects.push(currentProjects[j]);
-      }
-    }
-
-    setSearchedProjects(listProjects);
+    const response = await findProjectsByString(currentProjects);
+    console.log("DSFS");
+    console.log(response);
+    setSearchedProjects(response);
   };
 
   const refreshPage = () => {
@@ -148,22 +133,23 @@ export default function Supporter() {
     setProjects(activeProjects);
   };
 
-
-  // const searchHandler = async () => {
-  //   const response = await searchProjects(search);
-  // };
-  function findProjectsByString(projects, str) {
-    return projects.filter(obj => {
-      return Object.values(obj).some(val => {
-        return typeof val === 'string' && val.toLowerCase() === str.toLowerCase();
+  function findProjectsByString(projects) {
+    return projects.filter((obj) => {
+      console.log("obj");
+      console.log(obj);
+      return Object.values(obj).some((val) => {
+        console.log("val");
+        console.log(val);
+        const response =
+          typeof val === "string" &&
+          val.toLowerCase().includes(search.toLowerCase());
+        console.log("response");
+        console.log(response);
+        return response;
       });
     });
   }
-  
-  const foundProjects = findProjectsByString(projects, search);
-  
-  console.log(foundProjects);
-  
+
   return (
     <div>
       <nav className="navbar navbar-expand-lg mt-2">
@@ -193,132 +179,125 @@ export default function Supporter() {
           </div>
         </div>
       </nav>
-
-      <div className="row justify-content-evenly">
-        <div className="col-5">
-          <h2>Search Projects</h2>
-          <input
-            type="text"
-            placeholder="Search Projects..."
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <button
-            className="btn btn-primary"
-            onClick={(e) => genreSearchHandler()}
-          >
-            Search By Genre
-          </button>
-          <div className="row">
-            <div className="col-8">
-              <Select
-                isSearchable={false}
-                options={genres}
-                onChange={(e) => genreHandler(e.value)}
-              />
-              <button
-                className="btn btn-primary"
-                onClick={(e) => genreSearchHandler()}
-              >
-                Search By Genre
-              </button>
+      <div className="container d-flex flex-column align-items-center">
+        <div className="row mt-5 ms-5">
+          <div className="col-4">
+            <div className="row">
+              <div className="col">
+                <h2>Search Projects</h2>
+                <input
+                  type="text"
+                  placeholder="Search Projects..."
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+                <button
+                  className="btn btn-primary"
+                  onClick={(e) => searchHandler()}
+                >
+                  Search
+                </button>
+              </div>
             </div>
-            <div className="col-6">
-              <label>Sort Projects:</label>
-              <input
-                type="checkbox"
-                checked={isSorted}
-                onChange={() => setIsSorted((state) => !state)}
-              />
+            <div className="row mt-4">
+              <div className="col">
+                {searching ? (
+                  <>
+                    {searchedProjects.length ? (
+                      <ul>
+                        {searchedProjects.map((project) => (
+                          <li key={project.ProjectID}>
+                            <Link
+                              to={`projects?projectID=${project.ProjectID}&supporterID=${supporterID}`}
+                            >
+                              <button className="btn btn-secondary">
+                                {project.ProjectName}
+                              </button>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>
+                        <i>No projects</i>
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {projects.length ? (
+                      <div className="list-group">
+                        {projects.map((project) => (
+                          <Link
+                            to={`projects?projectID=${project.ProjectID}&supporterID=${supporterID}`}
+                          >
+                            <button className="list-group-item list-group-item-action list-group-item-secondary">
+                              {project.ProjectName}
+                            </button>
+                          </Link>
+                        ))}
+                      </div>
+                    ) : (
+                      <p>
+                        <i>No projects</i>
+                      </p>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="col-3">
-          <h2>List of Pledges</h2>
-          {claims.length ? (
-            <ul>
-              {claims.map((claim) => (
-                <li key={claim.TransactionID}>
-                  <p>Amount: {claim.Amount}</p>
-                  <p>Reward: {claim.Reward}</p>
-                  <Link
-                    to={`projects?projectID=${claim.ProjectID}&supporterID=${supporterID}`}
-                  >
-                    View Project
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>
-              <i>No Pledges</i>
-            </p>
-          )}
-        </div>
-        <div className="col-3">
-          <h2>List of Direct Supports</h2>
-          {directSupports.length ? (
-            <ul>
-              {directSupports.map((dS) => (
-                <li>
-                  <p>Amount: {dS.Amount}</p>
-                  <Link
-                    to={`projects?projectID=${dS.ProjectID}&supporterID=${supporterID}`}
-                  >
-                    <p>View Project</p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>
-              <i>No Direct Supports</i>
-            </p>
-          )}
-        </div>
-      </div>
-      <div className="m-5 row">
-        <div className="col-4">
-          {search === "" ? (
-            <>
-              {projects.length ? (
-                <ul>
-                  {projects.map((project) => (
-                    <li key={project.ProjectID}>
-                      <Link
-                        to={`projects?projectID=${project.ProjectID}&supporterID=${supporterID}`}
-                      >
-                        <p>{project.ProjectName}</p>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>
-                  <i>No projects</i>
-                </p>
-              )}
-            </>
-          ) : (
-            <>
-              {searchedProjects.length ? (
-                <ul>
-                  {searchedProjects.map((project) => (
-                    <li key={project.ProjectID}>
-                      <Link
-                        to={`projects?projectID=${project.ProjectID}&supporterID=${supporterID}`}
-                      >
-                        <p>{project.ProjectName}</p>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>
-                  <i>No projects</i>
-                </p>
-              )}
-            </>
-          )}
+          <div className="col">
+            <label>Sort Projects:</label>
+            <input
+              type="checkbox"
+              checked={isSorted}
+              onChange={() => setIsSorted((state) => !state)}
+            />
+          </div>
+          <div className="col">
+            <h2>List of Pledges</h2>
+            {claims.length ? (
+              <ul>
+                {claims.map((claim) => (
+                  <li key={claim.TransactionID}>
+                    <p>Amount: {claim.Amount}</p>
+                    <p>Reward: {claim.Reward}</p>
+                    <Link
+                      to={`projects?projectID=${claim.ProjectID}&supporterID=${supporterID}`}
+                    >
+                      View Project
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>
+                <i>No Pledges</i>
+              </p>
+            )}
+          </div>
+          <div className="col">
+            <h2>List of Direct Supports</h2>
+            {directSupports.length ? (
+              <ul>
+                {directSupports.map((dS) => (
+                  <li key={dS.TransactionID}>
+                    <p>Amount: {dS.Amount}</p>
+
+                    <Link
+                      to={`projects?projectID=${dS.ProjectID}&supporterID=${supporterID}`}
+                    >
+                      <button className="btn btn-primary">View Project</button>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>
+                <i>No Direct Supports</i>
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </div>

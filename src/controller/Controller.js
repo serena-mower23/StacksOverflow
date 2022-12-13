@@ -16,8 +16,8 @@ export async function listDesignerProjects(id) {
 
   console.log("/listDesignerProjects");
   const response = await instance.post("/listDesignerProjects", data);
-console.log('sdfasdf');
-console.log(response);
+  console.log("sdfasdf");
+  console.log(response);
   if (response.data.statusCode === 200) {
     projects = response.data.body;
   } else {
@@ -121,7 +121,13 @@ export async function createProject(
 
   const response = await instance.post("/createProject", data);
   console.log("/createProject");
-  return response;
+  let res;
+  if (response.data.statusCode === 200) {
+    res = "true";
+  } else {
+    res = response.data.error;
+  }
+  return res;
 }
 
 export async function createPledge(projectID, maxSupporters, amount, reward) {
@@ -383,7 +389,17 @@ export async function getSortedProjects() {
   } else {
     res = response.data.error;
   }
-  console.log("response:");
-  console.log(res);
+  return res;
+}
+
+export async function reapProjects() {
+  console.log("/reapProjects");
+  const response = await instance.get("/reapProjects");
+  let res = null;
+  if (response.data.statusCode === 200) {
+    res = "true";
+  } else {
+    res = response.data.error;
+  }
   return res;
 }
