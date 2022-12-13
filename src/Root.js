@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate, Form } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { login } from "./controller/Controller";
 const instance = axios.create({
@@ -54,36 +54,34 @@ function Root() {
         <nav className="navbar navbar-expand-lg">
           <label className=" m-2 h1">&#128184; $tacksOverflow &#128184;</label>
         </nav>
-        <form className="needs-validation">
-          <div className="mb-3">
-            <label className="form-label" htmlFor="username">
-              Email:
-            </label>
-            <input
-              className="form-control form-control-lg"
-              type="text"
-              name="username"
-              id="username"
-              onChange={(e) => setInputUsername(e.target.value)}
-              required
-            />
-            <div className="invalid-feedback">Please provide a username.</div>
-          </div>
-          <div className="mb-3">
-            <label className="form-label" htmlFor="password">
-              Password:
-            </label>
-            <input
-              className="form-control form-control-lg"
-              type="password"
-              name="password"
-              id="password"
-              onChange={(e) => setInputPassword(e.target.value)}
-              required
-            />
-            <div className="invalid-feedback">Please provide a password.</div>
-          </div>
-        </form>
+        <div className="mb-3">
+          <label className="form-label" htmlFor="username">
+            Email:
+          </label>
+          <input
+            className="form-control form-control-lg"
+            type="text"
+            name="username"
+            id="username"
+            onChange={(e) => setInputUsername(e.target.value)}
+            required
+          />
+          <div className="invalid-feedback">Please provide a username.</div>
+        </div>
+        <div className="mb-3">
+          <label className="form-label" htmlFor="password">
+            Password:
+          </label>
+          <input
+            className="form-control form-control-lg"
+            type="password"
+            name="password"
+            id="password"
+            onChange={(e) => setInputPassword(e.target.value)}
+            required
+          />
+          <div className="invalid-feedback">Please provide a password.</div>
+        </div>
         <div className="d-grid d-sm-block text-center">
           <button
             type="submit"

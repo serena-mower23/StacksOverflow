@@ -1,11 +1,11 @@
-import { Outlet, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   viewSupporterTransactions,
-  getFunds,
   updateFunds,
   listProjects,
-  searchProjects,
+  getSupporterInfo,
   getSortedProjects,
+  viewSupporterTemplate,
 } from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
@@ -23,6 +23,7 @@ export default function Supporter() {
   const [projects, setProjects] = React.useState("");
   const [searchedProjects, setSearchedProjects] = React.useState("");
   const [isSorted, setIsSorted] = React.useState("");
+  const [supporterName, setSupporterName] = React.useState("");
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -52,6 +53,13 @@ export default function Supporter() {
     { value: "Other", label: "Other" },
   ];
 
+  const getReward = async (templateID) => {
+    const response = await viewSupporterTemplate(templateID);
+
+    let reward = response[0].Reward;
+    return reward;
+  };
+
   const loadTransactionsHandler = async () => {
     const response = await viewSupporterTransactions(supporterID);
 
@@ -62,6 +70,8 @@ export default function Supporter() {
       if (response[i].TemplateID === "N/A") {
         directSupports.push(response[i]);
       } else {
+        const reward = await getReward(response[i].TemplateID);
+        response[i]["Reward"] = reward;
         claims.push(response[i]);
       }
     }
@@ -70,14 +80,13 @@ export default function Supporter() {
   };
 
   const loadFundsHandler = async () => {
-    const response = await getFunds(supporterID);
-    setFunds(response);
+    const response = await getSupporterInfo(supporterID);
+    setSupporterName(response[0].Name);
+    setFunds(response[0].Funds);
   };
 
   const loadProjectsHandler = async () => {
     const response = await listProjects();
-    console.log("Hello???");
-    console.log(response)
     let activeProjects = [];
     for (let i = 0; i < response.length; i++) {
       if (response[i].IsLaunched === 1) {
@@ -85,13 +94,14 @@ export default function Supporter() {
       }
     }
     setProjects(activeProjects);
+    return activeProjects;
   };
 
   const addFunds = async () => {
     const response = await updateFunds(supporterID, fundAmount);
     if (response === "true") {
-      const response2 = await getFunds(supporterID);
-      setFunds(response2);
+      const response2 = await getSupporterInfo(supporterID);
+      setFunds(response2[0].Funds);
       refreshPage();
     }
   };
@@ -105,12 +115,14 @@ export default function Supporter() {
     setSearch(genre);
   };
 
-  const genreSearchHandler = () => {
+  const genreSearchHandler = async () => {
     let listProjects = [];
 
-    for (let j = 0; j < projects.length; j++) {
-      if (projects[j].ProjectType === search) {
-        listProjects.push(projects[j]);
+    const currentProjects = await loadProjectsHandler();
+
+    for (let j = 0; j < currentProjects.length; j++) {
+      if (currentProjects[j].ProjectType === search) {
+        listProjects.push(currentProjects[j]);
       }
     }
 
@@ -135,6 +147,7 @@ export default function Supporter() {
     }
     setProjects(activeProjects);
   };
+
 
   // const searchHandler = async () => {
   //   const response = await searchProjects(search);
@@ -203,14 +216,14 @@ export default function Supporter() {
                 Search By Genre
               </button>
             </div>
-            <div className="col-6">
+            {/* <div className="col-6">
               <label>Sort Projects:</label>
               <input
                 type="checkbox"
                 checked={isSorted}
                 onChange={() => setIsSorted((state) => !state)}
               />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="col-3">
@@ -219,17 +232,19 @@ export default function Supporter() {
             <ul>
               {claims.map((claim) => (
                 <li key={claim.TransactionID}>
+                  <p>Amount: {claim.Amount}</p>
+                  <p>Reward: {claim.Reward}</p>
                   <Link
                     to={`projects?projectID=${claim.ProjectID}&supporterID=${supporterID}`}
                   >
-                    Plege #{claim.TemplateID}
+                    View Project
                   </Link>
                 </li>
               ))}
             </ul>
           ) : (
             <p>
-              <i>No Claims</i>
+              <i>No Pledges</i>
             </p>
           )}
         </div>
@@ -239,7 +254,6 @@ export default function Supporter() {
             <ul>
               {directSupports.map((dS) => (
                 <li>
-                  <p>TransactionID: {dS.TransactionID}</p>
                   <p>Amount: {dS.Amount}</p>
                   <Link
                     to={`projects?projectID=${dS.ProjectID}&supporterID=${supporterID}`}
