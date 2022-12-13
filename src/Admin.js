@@ -1,9 +1,12 @@
-import { Outlet, Link, useLoaderData, useNavigate } from "react-router-dom";
-import { listProjects, deleteProject } from "./controller/Controller";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  listProjects,
+  deleteProject,
+  reapProjects,
+} from "./controller/Controller";
 import React from "react";
 
 export default function Admin() {
-  const { projects } = useLoaderData();
   const [activeProjects, setActiveProjects] = React.useState("");
   const [inactiveProjects, setInactiveProjects] = React.useState("");
   const [successProjects, setSuccessProjects] = React.useState("");
@@ -55,7 +58,12 @@ export default function Admin() {
     navigate("/");
   };
 
-  const reapProjectHandler = async () => {};
+  const reapProjectHandler = async () => {
+    const response = await reapProjects();
+    if (response === "true") {
+      refreshPage();
+    }
+  };
 
   return (
     <div className="container">
@@ -67,40 +75,41 @@ export default function Admin() {
           </button>
         </nav>
       </div>
-      <div className="row">
-        <div className="col-3">
-          <h2>List of Active Projects</h2>
-          {activeProjects.length ? (
-            <ul>
-              {activeProjects.map((project) => (
-                <li key={project.ProjectID}>
-                  <Link to={`projects?projectID=${project.ProjectID}`}>
-                    <p>{project.ProjectName}</p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
+      <div className="container d-flex flex-column align-items-center">
+        <div className="row mt-5">
+          <div className="col-4">
+            <button
+              className="btn btn-warning"
+              onClick={() => reapProjectHandler()}
+            >
+              Reap Projects
+            </button>
+          </div>
+          <div className="col-5">
             <p>
-              <i>No Active Projects</i>
+              Inactive: {inactiveProjects.length} / Active:{" "}
+              {activeProjects.length} / Succeeded: {successProjects.length} /
+              Failed: {failedProjects.length}
             </p>
-          )}
-          <h2>List of Inactive Projects</h2>
+          </div>
+        </div>
+      </div>
+      <div className="row mt-5">
+        <div className="col-3">
+          <h2>Inactive Projects</h2>
           {inactiveProjects.length ? (
             <ul>
               {inactiveProjects.map((project) => (
                 <li key={project.ProjectID}>
-                  <div className="container-fluid">
-                    <Link to={`projects?projectID=${project.ProjectID}`}>
-                      <p>{project.ProjectName}</p>
-                    </Link>
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={(e) => deleteProjectHandler(project.ProjectID)}
-                    >
-                      Delete
-                    </button>
-                  </div>
+                  <Link to={`projects?projectID=${project.ProjectID}`}>
+                    <p>{project.ProjectName}</p>
+                  </Link>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={(e) => deleteProjectHandler(project.ProjectID)}
+                  >
+                    Delete
+                  </button>
                 </li>
               ))}
             </ul>
@@ -111,7 +120,32 @@ export default function Admin() {
           )}
         </div>
         <div className="col-3">
-          <h2>List of Successful Projects</h2>
+          <h2>Active Projects</h2>
+          {activeProjects.length ? (
+            <ul>
+              {activeProjects.map((project) => (
+                <li key={project.ProjectID}>
+                  <Link to={`projects?projectID=${project.ProjectID}`}>
+                    <p>{project.ProjectName}</p>
+                  </Link>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={(e) => deleteProjectHandler(project.ProjectID)}
+                  >
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>
+              <i>No Active Projects</i>
+            </p>
+          )}
+        </div>
+
+        <div className="col-3">
+          <h2>Successful Projects</h2>
           {successProjects.length ? (
             <ul>
               {successProjects.map((project) => (
@@ -119,6 +153,12 @@ export default function Admin() {
                   <Link to={`projects?projectID=${project.ProjectID}`}>
                     <p>{project.ProjectName}</p>
                   </Link>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={(e) => deleteProjectHandler(project.ProjectID)}
+                  >
+                    Delete
+                  </button>
                 </li>
               ))}
             </ul>
@@ -127,7 +167,9 @@ export default function Admin() {
               <i>No Successful Projects</i>
             </p>
           )}
-          <h2>List of Failed Projects</h2>
+        </div>
+        <div className="col-3">
+          <h2>Failed Projects</h2>
           {failedProjects.length ? (
             <ul>
               {failedProjects.map((project) => (
@@ -135,6 +177,12 @@ export default function Admin() {
                   <Link to={`projects?projectID=${project.ProjectID}`}>
                     <p>{project.ProjectName}</p>
                   </Link>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={(e) => deleteProjectHandler(project.ProjectID)}
+                  >
+                    Delete
+                  </button>
                 </li>
               ))}
             </ul>
@@ -144,14 +192,6 @@ export default function Admin() {
             </p>
           )}
         </div>
-      </div>
-      <div>
-        <button
-          className="btn btn-warning"
-          onClick={() => reapProjectHandler()}
-        >
-          Reap Projects
-        </button>
       </div>
     </div>
   );
