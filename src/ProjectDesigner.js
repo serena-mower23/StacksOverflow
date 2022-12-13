@@ -46,15 +46,6 @@ export default function ProjectDesigner() {
   const grabProjectInformation = async () => {
     const response = await viewProject(projectID);
     const project = await response[0];
-    if (project.IsLaunched === 0) {
-      project["Status"] = "Inactive";
-    } else if (project.IsLaunched === 1) {
-      project["Status"] = "Active";
-    } else if (project.IsLaunched === 2) {
-      project["Status"] = "Failed";
-    } else if (project.IsLaunched === 3) {
-      project["Status"] = "Succeeded";
-    } 
     const currentDate = project.Deadline;
     const newDate =
       currentDate.substring(0, 12) + "6" + currentDate.substring(13);
@@ -135,10 +126,10 @@ export default function ProjectDesigner() {
           </div>
           <div className="col-3">
             <button
-              className="nav-link btn btn-link"
+              className="btn btn-primary"
               onClick={(e) => logoutHandler()}
             >
-              Log out
+              Log out of @{designerID}
             </button>
           </div>
         </div>
@@ -175,9 +166,9 @@ export default function ProjectDesigner() {
                     ) : (
                       <p>Supporters: {pledge.NumSupporters} / No Limit</p>
                     )}
-                    <p>Pledge Amount: {pledge.PledgeAmount}</p>
+                    <p>Pledge Amount: ${pledge.PledgeAmount}</p>
                     <p>Pledge Reward: {pledge.Reward}</p>
-                    {project.IsLaunched === 0 ? (
+                    {project.Status === "Inactive" ? (
                       <button
                         className="btn btn-sm btn-danger"
                         onClick={(e) => deletePledgeHandler(pledge.TemplateID)}
@@ -198,7 +189,7 @@ export default function ProjectDesigner() {
           </ul>
         </div>
         <div className="col">
-          {project.IsLaunched === 0 ? (
+          {project.Status === "Inactive" ? (
             <div>
               <Link
                 to={`/createPledge?projectID=${[
@@ -232,7 +223,7 @@ export default function ProjectDesigner() {
                         {transaction.reward === "Direct Support" ? (
                           <p>Direct Support</p>
                         ) : (
-                          <p>Pledge: {transaction.reward}</p>
+                          <p>Pledge: ${transaction.reward}</p>
                         )}
                         <p>Amount Supported: {transaction.amount}</p>
                       </li>

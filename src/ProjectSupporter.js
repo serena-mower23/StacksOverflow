@@ -62,15 +62,6 @@ export default function ProjectSupporter() {
       currentDate.substring(0, 12) + "6" + currentDate.substring(13);
     const date = new Date(newDate);
     project["Deadline"] = date;
-    if (project.IsLaunched === 0) {
-      project["Status"] = "Inactive";
-    } else if (project.IsLaunched === 1) {
-      project["Status"] = "Active";
-    } else if (project.IsLaunched === 2) {
-      project["Status"] = "Failed";
-    } else if (project.IsLaunched === 3) {
-      project["Status"] = "Succeeded";
-    }
     setProject(project);
     const response2 = await getDesignerInfo(project.DesignerID);
     let name = response2[0].Name;
@@ -199,10 +190,10 @@ export default function ProjectSupporter() {
           </div>
           <div className="col-3">
             <button
-              className="nav-link btn btn-link"
+              className="btn btn-primary"
               onClick={(e) => logoutHandler()}
             >
-              Log out
+              Log out of @{supporterID}
             </button>
           </div>
         </div>
@@ -248,7 +239,7 @@ export default function ProjectSupporter() {
                           ) : (
                             <p>Supporters: {pledge.NumSupporters} / No Limit</p>
                           )}
-                          <p>Pledge Amount: {pledge.PledgeAmount}</p>
+                          <p>Pledge Amount: ${pledge.PledgeAmount}</p>
                           <p>Pledge Reward: {pledge.Reward}</p>
                           <input
                             className="form-check-input mt-0"
@@ -297,7 +288,7 @@ export default function ProjectSupporter() {
                 <ul>
                   {claims.map((claim) => (
                     <li key={claim.TemplateID}>
-                      <p>Pledge Amount: {claim.Amount}</p>
+                      <p>Pledge Amount: ${claim.Amount}</p>
                       <p>Pledge Reward: {claim.Reward}</p>
                     </li>
                   ))}

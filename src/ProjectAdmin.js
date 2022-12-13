@@ -26,15 +26,6 @@ export default function ProjectAdmin() {
       currentDate.substring(0, 12) + "6" + currentDate.substring(13);
     const date = new Date(newDate);
     project["Deadline"] = date;
-    if (project.IsLaunched === 0) {
-      project["Status"] = "Inactive";
-    } else if (project.IsLaunched === 1) {
-      project["Status"] = "Active";
-    } else if (project.IsLaunched === 2) {
-      project["Status"] = "Failed";
-    } else if (project.IsLaunched === 3) {
-      project["Status"] = "Succeeded";
-    } 
     setProject(project);
   };
 
@@ -73,10 +64,10 @@ export default function ProjectAdmin() {
           </div>
           <div className="col-3">
             <button
-              className="nav-link btn btn-link"
+              className="btn btn-primary"
               onClick={(e) => logoutHandler()}
             >
-              Log out
+              Log out of Admin
             </button>
           </div>
         </div>
@@ -111,7 +102,7 @@ export default function ProjectAdmin() {
                   ) : (
                     <p>Supporters: {pledge.NumSupporters} / No Limit</p>
                   )}
-                  <p>Pledge Amount: {pledge.PledgeAmount}</p>
+                  <p>Pledge Amount: ${pledge.PledgeAmount}</p>
                   <p>Pledge Reward: {pledge.Reward}</p>
                 </li>
               ))}

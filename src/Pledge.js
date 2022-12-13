@@ -46,7 +46,7 @@ export default function Pledge() {
 
   return (
     <div id="detail">
-      <button onClick={(e) => projectDetailsHandler()}>
+      <button className="btn btn-primary" onClick={(e) => projectDetailsHandler()}>
         Back to Project Details
       </button>
       <h2>Create Pledge</h2>
@@ -56,11 +56,13 @@ export default function Pledge() {
         onChange={(e) => setInputAmount(e.target.value)}
       ></input>
       <p>Max Supporters:</p>
+      <p><i>For no limit, leave blank.</i></p>
       <input
         type="text"
         onChange={(e) => setInputSupporters(e.target.value)}
       ></input>
       <p>Pledge Reward:</p>
+      <p><i>For no reward, leave blank.</i></p>
       <input
         type="text"
         onChange={(e) => setInputReward(e.target.value)}
