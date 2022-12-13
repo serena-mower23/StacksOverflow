@@ -36,7 +36,7 @@ export default function CreateDesigner() {
           </div>
           <div className="col-3">
             <button
-              className="nav-link btn btn-link"
+              className="btn btn-primary"
               onClick={(e) => logoutHandler()}
             >
               Go back to login
