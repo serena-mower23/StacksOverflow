@@ -148,6 +148,22 @@ export default function Supporter() {
     setProjects(activeProjects);
   };
 
+
+  // const searchHandler = async () => {
+  //   const response = await searchProjects(search);
+  // };
+  function findProjectsByString(projects, str) {
+    return projects.filter(obj => {
+      return Object.values(obj).some(val => {
+        return typeof val === 'string' && val.toLowerCase() === str.toLowerCase();
+      });
+    });
+  }
+  
+  const foundProjects = findProjectsByString(projects, search);
+  
+  console.log(foundProjects);
+  
   return (
     <div>
       <nav className="navbar navbar-expand-lg mt-2">
