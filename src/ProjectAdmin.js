@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   viewTemplates,
   viewProject,
@@ -104,15 +104,15 @@ export default function ProjectAdmin() {
         </div>
       </nav>
       <div className="mt-3 mb-5">
-      <button className="btn btn-primary" onClick={(e) => dashboardHandler()}>
-        Close Project
-      </button>
-      <button
-        className="btn btn-danger ms-4"
-        onClick={() => deleteProjectHandler(projectID)}
-      >
-        Delete Project
-      </button>
+        <button className="btn btn-primary" onClick={(e) => dashboardHandler()}>
+          Close Project
+        </button>
+        <button
+          className="btn btn-danger ms-4"
+          onClick={() => deleteProjectHandler(projectID)}
+        >
+          Delete Project
+        </button>
       </div>
       <div className="row">
         <div className="col">
@@ -181,7 +181,6 @@ export default function ProjectAdmin() {
           </ul>
         </div>
       </div>
-
     </div>
   );
 }

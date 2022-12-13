@@ -10,7 +10,6 @@ import {
 } from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
-import Select from "react-select";
 
 export default function Supporter() {
   const params = new URLSearchParams(window.location.search);
@@ -109,8 +108,6 @@ export default function Supporter() {
     const currentProjects = await loadProjectsHandler();
 
     const response = await findProjectsByString(currentProjects);
-    console.log("DSFS");
-    console.log(response);
     setSearchedProjects(response);
   };
 
@@ -135,16 +132,10 @@ export default function Supporter() {
 
   function findProjectsByString(projects) {
     return projects.filter((obj) => {
-      console.log("obj");
-      console.log(obj);
       return Object.values(obj).some((val) => {
-        console.log("val");
-        console.log(val);
         const response =
           typeof val === "string" &&
           val.toLowerCase().includes(search.toLowerCase());
-        console.log("response");
-        console.log(response);
         return response;
       });
     });

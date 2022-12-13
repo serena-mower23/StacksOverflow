@@ -197,7 +197,10 @@ export default function ProjectSupporter() {
         </div>
       </nav>
       <div className="container align-items-center">
-        <button className="btn btn-primary mb-3 mt-3" onClick={(e) => dashboardHandler()}>
+        <button
+          className="btn btn-primary mb-3 mt-3"
+          onClick={(e) => dashboardHandler()}
+        >
           Close Project
         </button>
         <div className="row">
