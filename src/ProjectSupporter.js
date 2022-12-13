@@ -18,7 +18,6 @@ export default function ProjectSupporter() {
   const [pledges, setPledges] = React.useState("");
   const [project, setProject] = React.useState("");
   const [designerName, setDesignerName] = React.useState("");
-  const [supporterName, setSupporterName] = React.useState("");
   const [selected, setSelected] = React.useState("");
   const [claims, setClaims] = React.useState("");
   const [directSupport, setDS] = React.useState("");
@@ -67,7 +66,6 @@ export default function ProjectSupporter() {
     let name = response2[0].Name;
     setDesignerName(name);
     const response3 = await getSupporterInfo(supporterID);
-    setSupporterName(response3[0].Name);
     setFunds(response3[0].Funds);
   };
 
@@ -185,7 +183,7 @@ export default function ProjectSupporter() {
               &#128176; Add Funds
             </button>
           </div>
-          <div className="col-11">
+          <div className="col-6">
             <label className="m-2 h1">&#128184; $tacksOverflow &#128184;</label>
           </div>
           <div className="col-3">
@@ -198,15 +196,15 @@ export default function ProjectSupporter() {
           </div>
         </div>
       </nav>
-      <div className="container">
+      <div className="container align-items-center">
+        <button
+          className="btn btn-primary mb-3 mt-3"
+          onClick={(e) => dashboardHandler()}
+        >
+          Close Project
+        </button>
         <div className="row">
           <div className="col">
-            <button
-              className="btn btn-primary"
-              onClick={(e) => dashboardHandler()}
-            >
-              Close Project
-            </button>
             <h1>{project.ProjectName}</h1>
             <p>Project Designer: {designerName}</p>
             <p>Project Type: {project.ProjectType}</p>
@@ -220,97 +218,95 @@ export default function ProjectSupporter() {
               Project Deadline:{" "}
               {new Date(project.Deadline).toLocaleDateString()}
             </p>
+          </div>
+          <div className="col">
             <h2>Pledges</h2>
             <h5>
               <i>Please choose only one.</i>
             </h5>
-            <div>
-              <form>
+            <ul>
+              {pledges.length ? (
                 <ul>
-                  {pledges.length ? (
-                    <ul>
-                      {pledges.map((pledge) => (
-                        <li key={pledge.TemplateID}>
-                          {pledge.MaxSupporters !== 0 ? (
-                            <p>
-                              Supporters: {pledge.NumSupporters} /{" "}
-                              {pledge.MaxSupporters}
-                            </p>
-                          ) : (
-                            <p>Supporters: {pledge.NumSupporters} / No Limit</p>
-                          )}
-                          <p>Pledge Amount: ${pledge.PledgeAmount}</p>
-                          <p>Pledge Reward: {pledge.Reward}</p>
-                          <input
-                            className="form-check-input mt-0"
-                            type="checkbox"
-                            value=""
-                            onChange={() =>
-                              selectedHandler(
-                                pledge.TemplateID,
-                                pledge.PledgeAmount
-                              )
-                            }
-                          />
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p>
-                      <i>No Pledges</i>
-                    </p>
-                  )}
+                  {pledges.map((pledge) => (
+                    <li key={pledge.TemplateID}>
+                      {pledge.MaxSupporters !== 0 ? (
+                        <p>
+                          Supporters: {pledge.NumSupporters} /{" "}
+                          {pledge.MaxSupporters}
+                        </p>
+                      ) : (
+                        <p>Supporters: {pledge.NumSupporters} / No Limit</p>
+                      )}
+                      <p>Pledge Amount: ${pledge.PledgeAmount}</p>
+                      <p>Pledge Reward: {pledge.Reward}</p>
+                      <input
+                        className="form-check-input mt-0"
+                        type="checkbox"
+                        value=""
+                        onChange={() =>
+                          selectedHandler(
+                            pledge.TemplateID,
+                            pledge.PledgeAmount
+                          )
+                        }
+                      />
+                    </li>
+                  ))}
                 </ul>
-              </form>
-            </div>
+              ) : (
+                <p>
+                  <i>No Pledges</i>
+                </p>
+              )}
+            </ul>
             <button
               className="btn btn-primary"
               onClick={() => createTransactionHandler()}
             >
               Claim Pledge
             </button>
-            <div className="col">
-              <h4>Make a Direct Support</h4>
-              <input
-                type="text"
-                onChange={(e) => setDirectSupportAmount(e.target.value)}
-              />
-              <button
-                className="btn btn-primary"
-                onClick={(e) => directSupportHandler()}
-              >
-                &#128176; Direct Support
-              </button>
-            </div>
-            <div>
-              <h4>Claimed Pledges</h4>
-              {claims.length ? (
-                <ul>
-                  {claims.map((claim) => (
-                    <li key={claim.TemplateID}>
-                      <p>Pledge Amount: ${claim.Amount}</p>
-                      <p>Pledge Reward: {claim.Reward}</p>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>
-                  <i>No Claimed Pledges</i>
-                </p>
-              )}
-            </div>
-            <div>
-              <h4>Direct Support Amount</h4>
-              {directSupport > 0 ? (
-                <p>
-                  You have directly supported ${directSupport} to this project.
-                </p>
-              ) : (
-                <p>
-                  <i>You haven't directly supported this project.</i>
-                </p>
-              )}
-            </div>
+          </div>
+          <div className="col">
+            <h4>Direct Support</h4>
+            <input
+              type="text"
+              onChange={(e) => setDirectSupportAmount(e.target.value)}
+            />
+            <button
+              className="btn btn-primary"
+              onClick={(e) => directSupportHandler()}
+            >
+              &#128176; Direct Support
+            </button>
+          </div>
+          <div className="col">
+            <h4>Claimed Pledges</h4>
+            {claims.length ? (
+              <ul>
+                {claims.map((claim) => (
+                  <li key={claim.TemplateID}>
+                    <p>Pledge Amount: ${claim.Amount}</p>
+                    <p>Pledge Reward: {claim.Reward}</p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>
+                <i>No Claimed Pledges</i>
+              </p>
+            )}
+          </div>
+          <div className="col-3">
+            <h4>Direct Support Amount</h4>
+            {directSupport > 0 ? (
+              <p>
+                You have directly supported ${directSupport} to this project.
+              </p>
+            ) : (
+              <p>
+                <i>You haven't directly supported this project.</i>
+              </p>
+            )}
           </div>
         </div>
       </div>

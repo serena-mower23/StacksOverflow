@@ -7,56 +7,10 @@ import {
 } from "./controller/Controller";
 import React from "react";
 import "url-search-params-polyfill";
-import Select from "react-select";
-
-export async function action(
-  inputName,
-  inputType,
-  inputStory,
-  inputGoal,
-  inputDeadline,
-  designerID
-) {
-  let result = false;
-  if (
-    inputName &&
-    inputType &&
-    inputStory &&
-    inputGoal &&
-    inputDeadline &&
-    designerID
-  ) {
-    await createProject(
-      inputName,
-      inputType,
-      inputStory,
-      inputGoal,
-      inputDeadline,
-      designerID
-    );
-    result = true;
-  } else {
-    alert("Please fill out all of the fields.");
-  }
-  return result;
-}
 
 export default function Designer() {
   const params = new URLSearchParams(window.location.search);
   const designerID = params.get("designerID");
-
-  const genres = [
-    { value: "Art", label: "Art" },
-    { value: "Education", label: "Education" },
-    { value: "Fashion", label: "Fashion" },
-    { value: "Food", label: "Food" },
-    { value: "Game", label: "Game" },
-    { value: "Movie", label: "Movie" },
-    { value: "Music", label: "Music" },
-    { value: "Toy", label: "Toy" },
-    { value: "Techology", label: "Technology" },
-    { value: "Other", label: "Other" },
-  ];
 
   const [inputName, setInputName] = React.useState("");
   const [inputType, setInputType] = React.useState("");
@@ -107,36 +61,29 @@ export default function Designer() {
     navigate("/");
   };
 
-  function checkDate(date) {
-    const today = new Date();
-    const newDate = new Date(date);
-
-    let result;
-    if (newDate > today) {
-      result = true;
-    } else {
-      result = false;
-    }
-    return result;
-  }
-
   const createProjectHandler = async () => {
-    // const check = checkDate(inputDeadline);
-    const check = true;
-    if (check) {
-      const result = await action(
+    let response;
+    if (
+      inputName &&
+      inputType &&
+      inputStory &&
+      inputGoal &&
+      inputDeadline &&
+      designerID
+    ) {
+      response = await createProject(
         inputName,
         inputType,
         inputStory,
         inputGoal,
-        new Date(inputDeadline),
+        inputDeadline,
         designerID
       );
-      if (result) {
-        refreshPage();
-      }
     } else {
-      alert("The deadline is before today.");
+      alert("Please fill out all of the fields.");
+    }
+    if (response === "true") {
+      refreshPage();
     }
   };
 
@@ -173,50 +120,85 @@ export default function Designer() {
           </div>
         </div>
       </nav>
-      <div className="row">
-        <div className="col-3">
-          <h2>List of Active Projects</h2>
-          {activeProjects.length ? (
-            <ul>
-              {activeProjects.map((project) => (
-                <li key={project.ProjectID}>
-                  <Link
-                    to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
-                  >
-                    <p>{project.ProjectName}</p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
+      <div className="row mt-5">
+        <div className="col text-center">
+          <p className="mb-1">Project Name:</p>
+          <input
+            type="text"
+            onChange={(e) => setInputName(e.target.value)}
+            className="m-1"
+          />
+        </div>
+        <div className="col text-center">
+          <p className="m-1">Project Genre:</p>
+          <input type="text" onChange={(e) => setInputType(e.target.value)} />
+        </div>
+        <div className="col text-center">
+          <p className="m-1">Project Story:</p>
+          <input
+            type="text"
+            onChange={(e) => setInputStory(e.target.value)}
+            className="m-1"
+          />
+        </div>
+        <div className="col text-center">
+          <p className="m-1">Project Goal:</p>
+          <input
+            type="text"
+            onChange={(e) => setInputGoal(e.target.value)}
+            className="m-1"
+          />
+        </div>
+        <div className="col text-center">
+          <p className="m-1">Deadline: (yyyy/mm/dd)</p>
+          <input
+            type="text"
+            onChange={(e) => setInputDeadline(e.target.value)}
+            className="m-1"
+          />
+        </div>
+        <div className="col text-center">
+          <button
+            className="btn btn-primary"
+            onClick={(e) => createProjectHandler()}
+          >
+            Create Project
+          </button>
+        </div>
+      </div>
+      <div className="container d-flex flex-column align-items-center">
+        <div className="row mt-5">
+          <div className="col">
             <p>
-              <i>No Active Projects</i>
+              Inactive: {inactiveProjects.length} / Active:{" "}
+              {activeProjects.length} / Succeeded: {successProjects.length} /
+              Failed: {failedProjects.length}
             </p>
-          )}
-          <h2>List of Inactive Projects</h2>
+          </div>
+        </div>
+      </div>
+      <div className="row mt-4">
+        <div className="col-3">
+          <h2>Inactive Projects</h2>
           {inactiveProjects.length ? (
             <ul>
               {inactiveProjects.map((project) => (
                 <li key={project.ProjectID}>
-                  <div className="container-fluid">
-                    <Link
-                      to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
-                    >
-                      <p>{project.ProjectName}</p>
-                    </Link>
-                    <button
-                      className="btn btn-sm btn-success"
-                      onClick={(e) => launchProjectHandler(project.ProjectID)}
-                    >
-                      Launch
-                    </button>
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={(e) => deleteProjectHandler(project.ProjectID)}
-                    >
-                      Delete
-                    </button>
-                  </div>
+                  <Link to={`projects?projectID=${project.ProjectID}`}>
+                    <p>{project.ProjectName}</p>
+                  </Link>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={(e) => deleteProjectHandler(project.ProjectID)}
+                  >
+                    Delete
+                  </button>
+                  <button
+                    className="btn btn-sm btn-success"
+                    onClick={(e) => launchProjectHandler(project.ProjectID)}
+                  >
+                    Launch
+                  </button>
                 </li>
               ))}
             </ul>
@@ -227,16 +209,44 @@ export default function Designer() {
           )}
         </div>
         <div className="col-3">
-          <h2>List of Successful Projects</h2>
+          <h2>Active Projects</h2>
+          {activeProjects.length ? (
+            <ul>
+              {activeProjects.map((project) => (
+                <li key={project.ProjectID}>
+                  <Link to={`projects?projectID=${project.ProjectID}`}>
+                    <p>{project.ProjectName}</p>
+                  </Link>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={(e) => deleteProjectHandler(project.ProjectID)}
+                  >
+                    Delete
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>
+              <i>No Active Projects</i>
+            </p>
+          )}
+        </div>
+        <div className="col-3">
+          <h2>Successful Projects</h2>
           {successProjects.length ? (
             <ul>
               {successProjects.map((project) => (
                 <li key={project.ProjectID}>
-                  <Link
-                    to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
-                  >
+                  <Link to={`projects?projectID=${project.ProjectID}`}>
                     <p>{project.ProjectName}</p>
                   </Link>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={(e) => deleteProjectHandler(project.ProjectID)}
+                  >
+                    Delete
+                  </button>
                 </li>
               ))}
             </ul>
@@ -245,16 +255,22 @@ export default function Designer() {
               <i>No Successful Projects</i>
             </p>
           )}
-          <h2>List of Failed Projects</h2>
+        </div>
+        <div className="col-3">
+          <h2>Failed Projects</h2>
           {failedProjects.length ? (
             <ul>
               {failedProjects.map((project) => (
                 <li key={project.ProjectID}>
-                  <Link
-                    to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
-                  >
+                  <Link to={`projects?projectID=${project.ProjectID}`}>
                     <p>{project.ProjectName}</p>
                   </Link>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={(e) => deleteProjectHandler(project.ProjectID)}
+                  >
+                    Delete
+                  </button>
                 </li>
               ))}
             </ul>
@@ -263,47 +279,6 @@ export default function Designer() {
               <i>No Failed Projects</i>
             </p>
           )}
-        </div>
-        <div className="col-4 text-center">
-          <p className="mb-1">Project Name:</p>
-          <input
-            type="text"
-            onChange={(e) => setInputName(e.target.value)}
-            className="m-1"
-          ></input>
-          <p className="m-1">Project Genre:</p>
-          <Select
-            options={genres}
-            isSearchable={false}
-            onChange={(e) => setInputType(e.value)}
-          />
-          <p className="m-1">Project Story:</p>
-          <input
-            type="text"
-            onChange={(e) => setInputStory(e.target.value)}
-            className="m-1"
-          ></input>
-          <p className="m-1">Project Goal:</p>
-          <input
-            type="text"
-            onChange={(e) => setInputGoal(e.target.value)}
-            className="m-1"
-          ></input>
-          <p className="m-1">Deadline:</p>
-          <p>(yyyy/mm/dd)</p>
-          <input
-            type="text"
-            onChange={(e) => setInputDeadline(e.target.value)}
-            className="m-1"
-          ></input>
-          <div className="m-1">
-            <button
-              className="btn btn-primary"
-              onClick={(e) => createProjectHandler()}
-            >
-              Create Project
-            </button>
-          </div>
         </div>
       </div>
     </div>

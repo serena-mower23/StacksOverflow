@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider, Route } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import ErrorPage from "./ErrorPage";
 import reportWebVitals from "./reportWebVitals";
@@ -9,7 +9,6 @@ import Supporter from "./Supporter";
 import Admin from "./Admin";
 import CreateDesigner from "./CreateDesigner";
 import CreateSupporter from "./CreateSupporter";
-import { action as createAction } from "./Designer";
 import Pledge, { action as createPledgeAction } from "./Pledge";
 import Root from "./Root";
 import ProjectDesigner from "./ProjectDesigner";
@@ -36,7 +35,6 @@ const router = createBrowserRouter([
     path: "designer",
     element: <Designer />,
     errorElement: <ErrorPage />,
-    action: createAction,
   },
   {
     path: "designer/projects",
