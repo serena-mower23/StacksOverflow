@@ -148,7 +148,7 @@ export default function Supporter() {
           <div className="col-2">
             <label>Funds: ${funds}</label>
           </div>
-          <div className="col-5">
+          <div className="col-4">
             <input
               type="text"
               onChange={(e) => setFundAmount(e.target.value)}
@@ -157,7 +157,7 @@ export default function Supporter() {
               &#128176; Add Funds
             </button>
           </div>
-          <div className="col-11">
+          <div className="col-5">
             <label className="m-2 h1">&#128184; $tacksOverflow &#128184;</label>
           </div>
           <div className="col-3">
