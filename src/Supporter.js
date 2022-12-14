@@ -17,6 +17,8 @@ export default function Supporter() {
 
   const [claims, setClaims] = React.useState("");
   const [directSupports, setDirectSupports] = React.useState("");
+  const [successClaims, setSuccessClaims] = React.useState("");
+  const [successDirectSupports, setSuccessDirectSupports] = React.useState("");
   const [funds, setFunds] = React.useState("");
   const [fundAmount, setFundAmount] = React.useState("");
   const [search, setSearch] = React.useState("");
@@ -40,8 +42,6 @@ export default function Supporter() {
     }
   }, [isSorted]);
 
-  React.useEffect(() => {});
-
   const getReward = async (templateID) => {
     const response = await viewSupporterTemplate(templateID);
 
@@ -51,30 +51,53 @@ export default function Supporter() {
 
   const loadTransactionsHandler = async () => {
     const response = await viewSupporterTransactions(supporterID);
-
     let claims = [];
     let directSupports = [];
 
     let activeTransactions = [];
+    let successTransactions = [];
 
     for (let j = 0; j < response.length; j++) {
       const response2 = await viewProject(response[j].ProjectID);
       if (response2[0].Status === "Active") {
-        activeTransactions.push(response[j]);
+        let transaction = response[j];
+        transaction["ProjectName"] = response2[0].ProjectName;
+        activeTransactions.push(transaction);
+      } else if (response2[0].Status === "Succeeded") {
+        let transaction = response[j];
+        transaction["ProjectName"] = response2[0].ProjectName;
+        successTransactions.push(transaction);
       }
     }
 
     for (let i = 0; i < activeTransactions.length; i++) {
-      if (response[i].TemplateID === "N/A") {
-        directSupports.push(response[i]);
+      if (activeTransactions[i].TemplateID === "N/A") {
+        directSupports.push(activeTransactions[i]);
       } else {
-        const reward = await getReward(response[i].TemplateID);
-        response[i]["Reward"] = reward;
-        claims.push(response[i]);
+        const reward = await getReward(activeTransactions[i].TemplateID);
+        activeTransactions[i]["Reward"] = reward;
+        claims.push(activeTransactions[i]);
       }
     }
+
     setClaims(claims);
     setDirectSupports(directSupports);
+
+    let successClaims = [];
+    let successDS = [];
+
+    for (let i = 0; i < successTransactions.length; i++) {
+      if (successTransactions[i].TemplateID === "N/A") {
+        successDS.push(successTransactions[i]);
+      } else {
+        const reward = await getReward(successTransactions[i].TemplateID);
+        successTransactions[i]["Reward"] = reward;
+        successClaims.push(successTransactions[i]);
+      }
+    }
+
+    setSuccessClaims(successClaims);
+    setSuccessDirectSupports(successDS);
   };
 
   const loadFundsHandler = async () => {
@@ -144,6 +167,7 @@ export default function Supporter() {
   return (
     <div className="container">
       <nav className="navbar navbar-expand-lg mt-2">
+        <img src="stacks.png" width="100" />
         <div className="container align-items-center">
           <div className="col-2">
             <label>Funds: ${funds}</label>
@@ -194,19 +218,17 @@ export default function Supporter() {
                 {searching ? (
                   <>
                     {searchedProjects.length ? (
-                      <ul>
+                      <div className="list-group">
                         {searchedProjects.map((project) => (
-                          <li key={project.ProjectID}>
-                            <Link
-                              to={`projects?projectID=${project.ProjectID}&supporterID=${supporterID}`}
-                            >
-                              <button className="btn btn-secondary">
-                                {project.ProjectName}
-                              </button>
-                            </Link>
-                          </li>
+                          <Link
+                            to={`projects?projectID=${project.ProjectID}&supporterID=${supporterID}`}
+                          >
+                            <button className="list-group-item list-group-item-action list-group-item-secondary">
+                              {project.ProjectName}
+                            </button>
+                          </Link>
                         ))}
-                      </ul>
+                      </div>
                     ) : (
                       <p>
                         <i>No projects</i>
@@ -246,21 +268,21 @@ export default function Supporter() {
             />
           </div>
           <div className="col">
-            <h2>List of Pledges</h2>
+            <h2>Pledges</h2>
             {claims.length ? (
-              <ul>
+              <div>
                 {claims.map((claim) => (
-                  <li key={claim.TransactionID}>
+                  <div>
                     <p>Amount: {claim.Amount}</p>
                     <p>Reward: {claim.Reward}</p>
                     <Link
                       to={`projects?projectID=${claim.ProjectID}&supporterID=${supporterID}`}
                     >
-                      View Project
+                      {claim.ProjectName}
                     </Link>
-                  </li>
+                  </div>
                 ))}
-              </ul>
+              </div>
             ) : (
               <p>
                 <i>No Pledges</i>
@@ -268,21 +290,58 @@ export default function Supporter() {
             )}
           </div>
           <div className="col">
-            <h2>List of Direct Supports</h2>
+            <h2>Direct Supports</h2>
             {directSupports.length ? (
-              <ul>
+              <div>
                 {directSupports.map((dS) => (
-                  <li key={dS.TransactionID}>
+                  <div>
                     <p>Amount: {dS.Amount}</p>
-
                     <Link
                       to={`projects?projectID=${dS.ProjectID}&supporterID=${supporterID}`}
                     >
-                      <button className="btn btn-primary">View Project</button>
+                      {dS.ProjectName}
                     </Link>
-                  </li>
+                  </div>
                 ))}
-              </ul>
+              </div>
+            ) : (
+              <p>
+                <i>No Direct Supports</i>
+              </p>
+            )}
+          </div>
+          <div className="col">
+            <h1 className="mb-4">Successful Projects Supported</h1>
+            <h2>Pledges</h2>
+            {successClaims.length ? (
+              <div>
+                {successClaims.map((claim) => (
+                  <div>
+                    <p>
+                      <b>{claim.ProjectName}</b>
+                    </p>
+                    <p>Amount: {claim.Amount}</p>
+                    <p>Reward: {claim.Reward}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>
+                <i>No Pledges</i>
+              </p>
+            )}
+            <h2>Direct Supports</h2>
+            {successDirectSupports.length ? (
+              <div>
+                {successDirectSupports.map((dS) => (
+                  <div>
+                    <p>
+                      <b>{dS.ProjectName}</b>
+                    </p>
+                    <p>Amount: {dS.Amount}</p>
+                  </div>
+                ))}
+              </div>
             ) : (
               <p>
                 <i>No Direct Supports</i>

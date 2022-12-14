@@ -168,7 +168,7 @@ export default function ProjectDesigner() {
                     )}
                     <p>Pledge Amount: ${pledge.PledgeAmount}</p>
                     <p>Pledge Reward: {pledge.Reward}</p>
-                    {project.Status === "" ? (
+                    {project.Status === "Inactive" ? (
                       <button
                         className="btn btn-sm btn-danger"
                         onClick={(e) => deletePledgeHandler(pledge.TemplateID)}
