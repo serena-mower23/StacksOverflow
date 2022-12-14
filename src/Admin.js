@@ -69,6 +69,7 @@ export default function Admin() {
     <div className="container">
       <div className="container d-flex flex-column mt-2 align-items-center">
         <nav className="navbar navbar-expand-lg">
+          <img src="stacks.png" width="100" />
           <label className="m-2 h1">&#128184; $tacksOverflow &#128184;</label>
           <button className="btn btn-primary" onClick={(e) => logoutHandler()}>
             Log out of Admin

@@ -183,7 +183,7 @@ export default function ProjectSupporter() {
               &#128176; Add Funds
             </button>
           </div>
-          <div className="col-6">
+          <div className="col-5">
             <label className="m-2 h1">&#128184; $tacksOverflow &#128184;</label>
           </div>
           <div className="col-3">
@@ -196,7 +196,7 @@ export default function ProjectSupporter() {
           </div>
         </div>
       </nav>
-      <div className="container align-items-center">
+      <div className="container align-items-center ms-5">
         <button
           className="btn btn-primary mb-3 mt-3"
           onClick={(e) => dashboardHandler()}

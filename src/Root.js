@@ -51,6 +51,7 @@ function Root() {
   return (
     <>
       <div className="container mt-5 d-flex flex-column align-items-center">
+      <img src="stacks.png" width="100" />
         <nav className="navbar navbar-expand-lg">
           <label className=" m-2 h1">&#128184; $tacksOverflow &#128184;</label>
         </nav>

@@ -107,6 +107,7 @@ export default function Designer() {
     <div className="container">
       <nav className="navbar navbar-expand-lg mt-2">
         <div className="container align-items-center">
+          <img src="stacks.png" width="100" />
           <div className="col-11">
             <label className="m-2 h1">&#128184; $tacksOverflow &#128184;</label>
           </div>
@@ -184,7 +185,9 @@ export default function Designer() {
             <ul>
               {inactiveProjects.map((project) => (
                 <li key={project.ProjectID}>
-                  <Link to={`projects?projectID=${project.ProjectID}`}>
+                  <Link
+                    to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
+                  >
                     <p>{project.ProjectName}</p>
                   </Link>
                   <button
@@ -214,7 +217,9 @@ export default function Designer() {
             <ul>
               {activeProjects.map((project) => (
                 <li key={project.ProjectID}>
-                  <Link to={`projects?projectID=${project.ProjectID}`}>
+                  <Link
+                    to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
+                  >
                     <p>{project.ProjectName}</p>
                   </Link>
                   <button
@@ -238,7 +243,9 @@ export default function Designer() {
             <ul>
               {successProjects.map((project) => (
                 <li key={project.ProjectID}>
-                  <Link to={`projects?projectID=${project.ProjectID}`}>
+                  <Link
+                    to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
+                  >
                     <p>{project.ProjectName}</p>
                   </Link>
                   <button
@@ -262,7 +269,9 @@ export default function Designer() {
             <ul>
               {failedProjects.map((project) => (
                 <li key={project.ProjectID}>
-                  <Link to={`projects?projectID=${project.ProjectID}`}>
+                  <Link
+                    to={`projects?projectID=${project.ProjectID}&designerID=${designerID}`}
+                  >
                     <p>{project.ProjectName}</p>
                   </Link>
                   <button
